@@ -12,5 +12,3 @@ spec/dummy/.sass-cache
 # text editors files
 .project
 *.swp
-
-Gemfile.lock
