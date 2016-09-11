@@ -1,14 +1,17 @@
 .flyboy
   - content_for :context do
     = render "dorsale/flyboy/tasks/context", task: @task
-
-    = render "#{@task.taskable.class.to_s.tableize}/context", taskable: @task.taskable
+    = render "dorsale/flyboy/tasks/taskable_context", taskable: @task.taskable
 
   - content_for :main do
     .task-comments
       = render "dorsale/flyboy/task_comments/list", task: @task
 
     - if @task.description.present?
-      .well = text2html @task.description
+      .panel.panel-default
+        .panel-heading: .panel-title
+          = @task.t(:description)
+        .panel-body
+          = text2html @task.description
 
   = render_contextual

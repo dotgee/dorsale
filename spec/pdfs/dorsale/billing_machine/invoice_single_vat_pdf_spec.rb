@@ -16,14 +16,10 @@ describe ::Dorsale::BillingMachine::InvoiceSingleVatPdf, pdfs: true do
     i
   }
 
-  let(:pdf) {
-    invoice.pdf
-  }
-
   let(:content) {
     tempfile = Tempfile.new("pdf")
     tempfile.binmode
-    tempfile.write(pdf.render)
+    tempfile.write(invoice.to_pdf)
     tempfile.flush
     Yomu.new(tempfile.path).text
   }
@@ -39,7 +35,7 @@ describe ::Dorsale::BillingMachine::InvoiceSingleVatPdf, pdfs: true do
     invoice = ::Dorsale::BillingMachine::Invoice.new(id_card: id_card)
 
     expect {
-      invoice.pdf.render
+      invoice.to_pdf
     }.to_not raise_error
   end
 end

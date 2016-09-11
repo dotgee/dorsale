@@ -1,8 +1,5 @@
-#sub_header
-  = yield :sub_header
-
 .row
-  aside.col-sm-4.col-xs-12
+  aside#context.col-sm-4.col-xs-12
     = yield :context
-  .col-sm-8.col-xs-12
+  #context-main.col-sm-8.col-xs-12
     = yield :main

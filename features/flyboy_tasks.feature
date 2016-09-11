@@ -7,7 +7,7 @@ Feature: Manage tasks
     Given an existing folder
     When I consult this folder
     And I create a task
-    Then I am on the created task
+    Then I am on this folder
     And the task is created
 
   Scenario: Read a task

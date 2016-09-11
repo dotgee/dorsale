@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Dorsale::Flyboy::Task do
   it { is_expected.to belong_to(:taskable) }
@@ -38,7 +38,7 @@ describe Dorsale::Flyboy::Task do
     end
 
     it 'should ensure that term >= reminder' do
-      date = Date.today
+      date = Time.zone.now.to_date
       task = build(:flyboy_task, reminder: date+1.day, term: date)
       expect(task).to_not be_valid
     end
@@ -46,15 +46,15 @@ describe Dorsale::Flyboy::Task do
 
   describe '#snooze' do
     before do
-      @today = Date.today
+      @today = Time.zone.now.to_date
       @task = build(:flyboy_task, reminder: @today - 5 , term: @today + 5)
     end
 
     context 'term not passed' do
       it "should snooze the reminder and term with default value" do
         @task.snooze
-        expect(@task.reminder).to eq Date.today + 2
-        expect(@task.term).to eq Date.today + 35
+        expect(@task.reminder).to eq Time.zone.now.to_date + 2
+        expect(@task.term).to eq Time.zone.now.to_date + 35
       end
 
       context 'reminder too far is the past' do
@@ -62,15 +62,15 @@ describe Dorsale::Flyboy::Task do
           @task.reminder = @today - 30
           @task.term = @today + 1
           @task.snooze
-          expect(@task.reminder).to eq Date.today + 1
-          expect(@task.term).to eq Date.today + 1
+          expect(@task.reminder).to eq Time.zone.now.to_date + 1
+          expect(@task.term).to eq Time.zone.now.to_date + 1
         end
       end
     end
 
     context 'term passed' do
       before do
-        @task.term = Date.today - 2
+        @task.term = Time.zone.now.to_date - 2
       end
 
       it "should snooze the reminder and term with default value from current date" do
@@ -87,14 +87,13 @@ describe Dorsale::Flyboy::Task do
       expect(::Dorsale::Flyboy::Task).to respond_to :delayed
     end
     it "should return delayed unfinished tasks" do
-      task = create(:flyboy_task, owner: @user1, term: Date.today+1)
-      task_1 = create(:flyboy_task, owner: @user1, term: Date.today-1, done: true)
-      task_2 = create(:flyboy_task, owner: @user1, term: Date.today-1, done: false)
-      task_3 = create(:flyboy_task, owner: @user1, term: Date.today-2, done: true)
-      task_4 = create(:flyboy_task, owner: @user1, term: Date.today-2, done: false)
+      task = create(:flyboy_task, owner: @user1, term: Time.zone.now.to_date+1)
+      task_1 = create(:flyboy_task, owner: @user1, term: Time.zone.now.to_date-1, done: true)
+      task_2 = create(:flyboy_task, owner: @user1, term: Time.zone.now.to_date-1, done: false)
+      task_3 = create(:flyboy_task, owner: @user1, term: Time.zone.now.to_date-2, done: true)
+      task_4 = create(:flyboy_task, owner: @user1, term: Time.zone.now.to_date-2, done: false)
       tasks = ::Dorsale::Flyboy::Task.delayed
-      expect(tasks).to eq [task_2,task_4]
-      expect(tasks).to_not eq [task, task_1, task_3]
+      expect(tasks).to contain_exactly(task_2, task_4)
     end
   end
   describe ".today" do
@@ -102,12 +101,11 @@ describe Dorsale::Flyboy::Task do
       expect(::Dorsale::Flyboy::Task).to respond_to :today
     end
     it "should return today unfinished tasks" do
-      task = create(:flyboy_task, owner: @user1, term: Date.today+1)
-      task_1 = create(:flyboy_task, owner: @user1, term: Date.today, done: true)
-      task_2 = create(:flyboy_task, owner: @user1, term: Date.today, done: false)
+      task = create(:flyboy_task, owner: @user1, term: Time.zone.now.to_date+1)
+      task_1 = create(:flyboy_task, owner: @user1, term: Time.zone.now.to_date, done: true)
+      task_2 = create(:flyboy_task, owner: @user1, term: Time.zone.now.to_date, done: false)
       tasks = ::Dorsale::Flyboy::Task.today
-      expect(tasks).to eq [task_2]
-      expect(tasks).to_not eq [task, task_1]
+      expect(tasks).to contain_exactly(task_2)
     end
   end
   describe ".tomorrow" do
@@ -115,12 +113,11 @@ describe Dorsale::Flyboy::Task do
       expect(::Dorsale::Flyboy::Task).to respond_to :tomorrow
     end
     it "should return tomorrow unfinished tasks" do
-      task = create(:flyboy_task, owner: @user1, term: Date.today)
+      task = create(:flyboy_task, owner: @user1, term: Time.zone.now.to_date)
       task_1 = create(:flyboy_task, owner: @user1, term: Date.tomorrow, done: true)
       task_2 = create(:flyboy_task, owner: @user1, term: Date.tomorrow, done: false)
       tasks = ::Dorsale::Flyboy::Task.tomorrow
-      expect(tasks).to eq [task_2]
-      expect(tasks).to_not eq [task, task_1]
+      expect(tasks).to contain_exactly(task_2)
     end
   end
   describe ".this_week" do
@@ -129,14 +126,13 @@ describe Dorsale::Flyboy::Task do
     end
     it "should return this week unfinished tasks" do
       Timecop.travel(2015, 5, 21, 12, 0, 0) do
-        task = create(:flyboy_task, owner: @user1, term: Date.today-7, done: false)
-        task_1 = create(:flyboy_task, owner: @user1, term: Date.today+2, done: true)
-        task_2 = create(:flyboy_task, owner: @user1, term: Date.today+2, done: false)
-        task_3 = create(:flyboy_task, owner: @user1, term: Date.today+3, done: false)
-        task_4 = create(:flyboy_task, owner: @user1, term: Date.today+5, done: false)
+        task = create(:flyboy_task, owner: @user1, term: Time.zone.now.to_date-7, done: false)
+        task_1 = create(:flyboy_task, owner: @user1, term: Time.zone.now.to_date+2, done: true)
+        task_2 = create(:flyboy_task, owner: @user1, term: Time.zone.now.to_date+2, done: false)
+        task_3 = create(:flyboy_task, owner: @user1, term: Time.zone.now.to_date+3, done: false)
+        task_4 = create(:flyboy_task, owner: @user1, term: Time.zone.now.to_date+5, done: false)
         tasks = ::Dorsale::Flyboy::Task.this_week
-        expect(tasks).to eq [task_2,task_3]
-        expect(tasks).to_not eq [task, task_1, task_4]
+        expect(tasks).to contain_exactly(task_2, task_3)
       end
     end
   end
@@ -146,14 +142,13 @@ describe Dorsale::Flyboy::Task do
     end
     it "should return next week unfinished tasks" do
       Timecop.travel(2015, 5, 21) do
-        task = create(:flyboy_task, owner: @user1, term: Date.today, done: false)
-        task_1 = create(:flyboy_task, owner: @user1, term: Date.today+7, done: true)
-        task_2 = create(:flyboy_task, owner: @user1, term: Date.today+7, done: false)
-        task_3 = create(:flyboy_task, owner: @user1, term: Date.today+9, done: false)
-        task_4 = create(:flyboy_task, owner: @user1, term: Date.today+12, done: false)
+        task = create(:flyboy_task, owner: @user1, term: Time.zone.now.to_date, done: false)
+        task_1 = create(:flyboy_task, owner: @user1, term: Time.zone.now.to_date+7, done: true)
+        task_2 = create(:flyboy_task, owner: @user1, term: Time.zone.now.to_date+7, done: false)
+        task_3 = create(:flyboy_task, owner: @user1, term: Time.zone.now.to_date+9, done: false)
+        task_4 = create(:flyboy_task, owner: @user1, term: Time.zone.now.to_date+12, done: false)
         tasks = ::Dorsale::Flyboy::Task.next_week
-        expect(tasks).to eq [task_2,task_3]
-        expect(tasks).to_not eq [task, task_1, task_4]
+        expect(tasks).to contain_exactly(task_2, task_3)
       end
     end
   end

@@ -61,19 +61,19 @@ describe Dorsale::TextHelper, type: :helper do
     }
 
     it "should work with strings" do
-      expect(info quotation_line, :unit).to eq %(<div class="info"><strong class="info-label">Unité</strong> : <span class="info-value quotation_line-unit">abc</span></div>)
+      expect(info quotation_line, :unit).to eq %(<div class="info"><strong class="info-label">Unité</strong><span class="info-separator">:</span><span class="info-value quotation_line-unit">abc</span></div>)
     end
 
     it "should accept other tags" do
-      expect(info quotation_line, :unit, nil, tag: :p).to eq %(<p class="info"><strong class="info-label">Unité</strong> : <span class="info-value quotation_line-unit">abc</span></p>)
+      expect(info quotation_line, :unit, nil, tag: :p).to eq %(<p class="info"><strong class="info-label">Unité</strong><span class="info-separator">:</span><span class="info-value quotation_line-unit">abc</span></p>)
     end
 
-    it "should accept separator" do
-      expect(info quotation_line, :unit, separator: " -> ").to eq %(<div class="info"><strong class="info-label">Unité</strong> -> <span class="info-value quotation_line-unit">abc</span></div>)
+    it "should accept custom separator" do
+      expect(info quotation_line, :unit, separator: "->").to eq %(<div class="info"><strong class="info-label">Unité</strong><span class="info-separator">-&gt;</span><span class="info-value quotation_line-unit">abc</span></div>)
     end
 
     it "should accept nested values" do
-      expect(info quotation_line.quotation, :state).to eq %(<div class="info"><strong class="info-label">État</strong> : <span class="info-value quotation-state">En attente</span></div>)
+      expect(info quotation_line.quotation, :state).to eq %(<div class="info"><strong class="info-label">État</strong><span class="info-separator">:</span><span class="info-value quotation-state">En attente</span></div>)
     end
 
     it "should override value" do
@@ -101,7 +101,7 @@ describe Dorsale::TextHelper, type: :helper do
     end
 
     it "should work with class" do
-      expect(info Dorsale::CustomerVault::Person, :count, 123).to eq %(<div class="info"><strong class="info-label">Nombre de contacts</strong> : <span class="info-value person-count">123</span></div>)
+      expect(info Dorsale::CustomerVault::Person, :count, 123).to eq %(<div class="info"><strong class="info-label">Nombre de contacts</strong><span class="info-separator">:</span><span class="info-value person-count">123</span></div>)
     end
   end
 

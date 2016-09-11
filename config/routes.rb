@@ -34,6 +34,9 @@ Dorsale::Engine.routes.draw do
   end
 
   namespace :billing_machine do
+    resources :id_cards, except: [:destroy, :show]
+    resources :payment_terms, except: [:destroy, :show]
+
     resources :invoices, except: [:destroy] do
       member do
         get :copy
@@ -49,26 +52,38 @@ Dorsale::Engine.routes.draw do
   end
 
   namespace :customer_vault do
-    resources :corporations, except: [:index] do
-      resources :links, except: [:index]
-    end
-
-    resources :individuals, :except => [:index] do
-      resources :links, except: [:index]
-    end
-
     namespace :people do
-      get "/", action: "index"
       get :activity
       get :list
     end
+
+    resources :people do
+      resources :links, except: [:index]
+    end
+
+    resources :corporations, path: "people", except: [:new] do
+      resources :links, except: [:index]
+    end
+
+    resources :individuals,  path: "people", except: [:new] do
+      resources :links, except: [:index]
+    end
   end
 
+  get "customer_vault/people/new/corporation" => "customer_vault/people#new", type: "corporation", as: :new_customer_vault_corporation
+  get "customer_vault/people/new/individual"  => "customer_vault/people#new", type: "individual",  as: :new_customer_vault_individual
+
+
   namespace :expense_gun do
+    resources :categories, except: [:destroy, :show]
+
     resources :expenses, except: [:destroy] do
-      resources :expense_lines
       member do
-        %w(submit accept refuse cancel).map { |action| patch action }
+        get :copy
+        patch :submit
+        patch :accept
+        patch :refuse
+        patch :cancel
       end
     end
 

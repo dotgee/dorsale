@@ -1,15 +1,5 @@
-.filters
-  = form_tag dorsale.small_data_filters_path, class: "form-inline"
-
-    input type="hidden" name="filters[tags][]" value=""
-    .form-group
-      label.sr-only for="filtet-tags"
-        = ::Dorsale::CustomerVault::Person.t(:tag)
-      select.form-control#filter-tags name="filters[tags][]" multiple=true style="width: 20em"
-        option value="" = ::Dorsale::CustomerVault::Person.t(:all_tags)
-        - @tags.map do |tag|
-          option value=tag selected=@filters.get("tags").to_a.include?(tag)
-            = tag
-
-    = filter_reset_button
-    = filter_submit_button
+= filters_form do |f|
+  = f.input :tags,
+    :collection    => @tags,
+    :input_html    => {multiple: true},
+    :placeholder => ::Dorsale::CustomerVault::Person.t(:all_tags)

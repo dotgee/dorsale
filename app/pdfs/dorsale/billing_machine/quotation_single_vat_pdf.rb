@@ -1,7 +1,3 @@
-module Dorsale
-  module BillingMachine
-    class QuotationSingleVatPdf < ::Dorsale::BillingMachine::InvoiceSingleVatPdf
-      include ::Dorsale::BillingMachine::QuotationPdfCommonMethods
-    end
-  end
+class Dorsale::BillingMachine::QuotationSingleVatPdf < ::Dorsale::BillingMachine::InvoiceSingleVatPdf
+  include ::Dorsale::BillingMachine::QuotationPdfCommonMethods
 end

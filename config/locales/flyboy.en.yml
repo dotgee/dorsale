@@ -10,12 +10,6 @@ en:
       open_error: "One error occurs, folder can't be opened"
       close_ok: "Folder closed"
       close_error: "One error occurs, folder can't be closed"
-      status:
-        all: "All status"
-        open: "Open"
-        pending: "Pending"
-        closed: "Closed"
-        unknown: "Unknown"
 
     tasks:
       create_ok: "Task created"
@@ -38,9 +32,7 @@ en:
         expire: "expire today, please delay it or close it"
 
   actions:
-    complete: "Complete"
     label: "Actions"
-    search: "Search"
 
     folders:
       new_task: "New task"
@@ -50,9 +42,11 @@ en:
       dorsale/flyboy/folder:
         one: "Folder"
         other: "Folders"
+
       dorsale/flyboy/task:
         one: "Task"
         other: "Tasks"
+
     attributes:
       dorsale/flyboy/folder:
         name: "Name"
@@ -61,6 +55,14 @@ en:
         revision: "Revision"
         status: "State"
         progress: "Progress"
+
+      dorsale/flyboy/folder/status:
+        all: "All status"
+        open: "Open"
+        pending: "Pending"
+        closed: "Closed"
+        unknown: "Unknown"
+
       dorsale/flyboy/task:
         taskable: "Origin"
         owner: "Owner"
@@ -73,6 +75,7 @@ en:
         done: "Done ?"
         description: "Description"
         progress: "Progress"
+
       dorsale/flyboy/task_comment:
         progress: "Progress"
         description: "Description"

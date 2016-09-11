@@ -4,10 +4,10 @@ ul.list-group.attachments
       = link_to a, a.file.url, download: a.download_filename
 
       .pull-right
-        - if can?(:update, a)
+        - if policy(a).update?
           = update_button dorsale.edit_alexandrie_attachment_path(a), action: :rename
 
         = " "
 
-        - if can?(:delete, a)
+        - if policy(a).delete?
           = delete_button dorsale.alexandrie_attachment_path(a), remote: true

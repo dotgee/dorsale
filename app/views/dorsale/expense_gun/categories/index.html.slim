@@ -1,0 +1,11 @@
+.expense_gun
+  - content_for :title
+    = ::Dorsale::ExpenseGun::Category.ts
+
+  - content_for :actions
+    = create_button new_expense_gun_category_path, action: :create
+
+  - content_for :table
+    = render "dorsale/expense_gun/categories/list", categories: @categories
+
+  = render_dorsale_index

@@ -14,13 +14,14 @@ Given(/^an existing task named "(.*?)"$/) do |name|
 end
 
 Given(/^an existing task$/) do
-  @task = create(:flyboy_task)
+  @task   = create(:flyboy_task)
+  @folder = @task.taskable
 end
 
 Given(/^an existing snoozable task$/) do
   create(:flyboy_task,
     :reminder => Date.yesterday,
-    :term     => Date.today
+    :term     => Time.zone.now.to_date
   )
 end
 
@@ -31,25 +32,25 @@ Given(/^(\d+) existing tasks$/) do |n|
 end
 
 Given(/^a task with an owner that's the term is today$/) do
-  @task = FactoryGirl.create(:flyboy_task,
+  @task = create(:flyboy_task,
     :reminder => Date.yesterday,
-    :term     => Date.today,
+    :term     => Time.zone.now.to_date,
     :owner    => create(:user),
   )
 end
 
 Given(/^a task without owner$/) do
-  @task = FactoryGirl.create(:flyboy_task,
+  @task = create(:flyboy_task,
     :reminder => Date.yesterday,
-    :term     => Date.today,
+    :term     => Time.zone.now.to_date,
     :owner    => nil,
   )
 end
 
 Given(/^a closed task with an owner$/) do
-  @task = FactoryGirl.create(:flyboy_task,
+  @task = create(:flyboy_task,
     :reminder => Date.yesterday,
-    :term     => Date.today,
+    :term     => Time.zone.now.to_date,
     :owner    => create(:user),
     :progress => 100,
     :done     => true,
@@ -122,7 +123,7 @@ end
 When(/^I delete this task$/) do
   visit dorsale.flyboy_task_path(@task)
   find("a[href$='tasks/#{@task.id}/edit']").click
-  find(".task-context a[data-method=delete]").click
+  find(".context a[data-method=delete]").click
 end
 
 Then(/^I am on the created task$/) do
@@ -132,7 +133,6 @@ end
 
 Then(/^the task is created$/) do
   expect(page).to have_content "I-am-the-task-title"
-  expect(page).to have_content "I-am-the-task-description"
 end
 
 Then(/^I see this task$/) do
@@ -165,12 +165,12 @@ end
 
 Then(/^I download PDF file$/) do
   expect(page.status_code).to eq 200
-  expect(page.response_headers['Content-Type']).to eq "application/pdf"
+  expect(page.response_headers['Content-Type']).to match "application/pdf"
 end
 
 Then(/^I download CSV file$/) do
   expect(page.status_code).to eq 200
-  expect(page.response_headers['Content-Type']).to eq "text/csv"
+  expect(page.response_headers['Content-Type']).to match "text/csv"
 end
 
 Then(/^I download XLS file$/) do

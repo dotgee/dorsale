@@ -9,6 +9,18 @@ fr:
       delete_error : "Impossible de supprimer le fichier."
       no_file_selected: "Pas de fichier selectionné"
 
+  categories:
+    create_ok : "La Catégorie a été créée."
+    update_ok : "La Catégorie a été modifiée."
+
+  id_cards:
+    create_ok : "La Carte a été créée."
+    update_ok : "La Carte a été modifiée."
+
+  payment_terms:
+    create_ok : "La Paiement a été créé."
+    update_ok : "La Paiement a été modifié."
+
   activerecord:
     models:
       dorsale/alexandrie/attachment:

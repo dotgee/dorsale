@@ -15,7 +15,7 @@ end
 
 When(/^he click on update user button$/) do
   expect(page).to have_content @user.email
-  find("[href$=edit]").click
+  find("#main [href$=edit]").click
 end
 
 When(/^he update the user$/) do

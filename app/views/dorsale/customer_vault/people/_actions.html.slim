@@ -1,6 +1,5 @@
-p.actions.top
-  = create_button dorsale.new_customer_vault_individual_path, action: :new_individual
-  = create_button dorsale.new_customer_vault_corporation_path, action: :new_corporation
+= create_button dorsale.new_customer_vault_individual_path, action: :new_individual
+= create_button dorsale.new_customer_vault_corporation_path, action: :new_corporation
 
-  - if @people_without_pagination
-    = download_button url_for(format: :xls), download: "people.xls"
+- if @people_without_pagination
+  = download_button url_for(format: :xls), download: "people.xls"

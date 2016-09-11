@@ -1,94 +1,67 @@
-.expenses
-  .actions-block.hidden-print
-    - if can? :edit, @expense
-      = link_to t("expense_gun.expense_line.new"), dorsale.new_expense_gun_expense_expense_line_path(@expense), class: "btn btn-success"
-      = link_to t("expense_gun.expense.edit"), dorsale.edit_expense_gun_expense_path(@expense), class: "btn btn-default"
+.expense_gun
+  .actions.top.hidden-print
+    - if policy(@expense).update?
+      = update_button dorsale.edit_expense_gun_expense_path(@expense)
 
-    = link_to t("expense_gun.expense.list"), dorsale.expense_gun_expenses_path, class: "btn btn-default"
+    - if policy(@expense).copy?
+      = copy_button dorsale.copy_expense_gun_expense_path(@expense)
 
-    a.btn.btn-default href="#" onclick="print(); return false;" = t("expense_gun.expense.print")
+    - if policy(@expense).submit?
+      = link_to t("expense_gun.expense.actions.submit"), dorsale.submit_expense_gun_expense_path(@expense), data: {method: "patch", confirm: t("actions.confirm")}, class: "btn btn-primary"
 
-  h1
-    = t("expense_gun.expense.label")
-    = " : "
-    = @expense.name
+    - if policy(@expense).accept?
+      = link_to t("expense_gun.expense.actions.accept"), dorsale.accept_expense_gun_expense_path(@expense), data: {method: "patch", confirm: t("actions.confirm")}, class: "btn btn-success"
 
-  p
-    span.date
-      strong = t("labels.date") + " : "
-      = date @expense.date
-      br
-    span.user
-      strong = t("labels.employee") + " : "
-      = @expense.user.to_s if @expense.respond_to?(:user)
-      br
-    span.state class="#{@expense.state}"
-      strong = t("labels.state") + " : "
-      = t "labels.states." + @expense.state
+    - if policy(@expense).refuse?
+      = link_to t("expense_gun.expense.actions.refuse"), dorsale.refuse_expense_gun_expense_path(@expense), data: {method: "patch", confirm: t("actions.confirm")}, class: "btn btn-danger"
+
+    - if policy(@expense).cancel?
+      = link_to t("expense_gun.expense.actions.cancel"), dorsale.cancel_expense_gun_expense_path(@expense), data: {method: "patch", confirm: t("actions.confirm")}, class: "btn btn-warning"
+
+    = print_button
+
+  .panel.panel-default
+    .panel-heading: .panel-title
+        = @expense.t
+        = " : "
+        = @expense.name
+
+    .panel-body
+      = info @expense, :date
+      = info @expense, :user
+      = info @expense, :state
 
   hr
 
-  - for expense_line in @expense.expense_lines
-    .panel.panel-default
-
+  - @expense.expense_lines.each do |expense_line|
+    .panel.panel-default.expense-line
       .panel-body
         .row
-          .col-md-6
-            p
-              strong = t("labels.name") + " : "
-              = expense_line.name
-            p
-              strong = t("labels.date") + " : "
-              = date expense_line.date
-            p
-              strong = t("labels.category") + " : "
-              = expense_line.category.name
-              - if expense_line.category.code.present?
-                = " (#{expense_line.category.code})"
-          .col-md-6
-            p
-              strong = t("labels.total_all_taxes") + " : "
-              = euros expense_line.total_all_taxes
-            p
-              strong = t("labels.vat") + " : "
-              = euros expense_line.vat
-            p
-              strong = t("labels.company_part") + " : "
-              = percentage expense_line.company_part
+          .col-md-4
+            = info expense_line, :name
+            = info expense_line, :category
+            = info expense_line, :date
 
-      .panel-footer
-        .row
-          .col-md-6.hidden-print
-            - if can? :edit, @expense
-              = link_to t("expense_gun.expense_line.edit"), dorsale.edit_expense_gun_expense_expense_line_path(expense_line.expense, expense_line), class: "btn btn-default"
-              = link_to t("expense_gun.expense_line.destroy"), dorsale.expense_gun_expense_expense_line_path(expense_line.expense, expense_line), class: "btn btn-danger", "data-method" => "delete", "data-confirm" => "Confirm ?"
-          .col-md-6
-            p
-              strong = t("labels.employee_payback") + " : "
-              = euros expense_line.employee_payback
-            p
-              strong = t("labels.deductible_vat") + " : "
-              = euros expense_line.total_vat_deductible
+          .col-md-4
+            = info expense_line, :total_all_taxes,  helper: :euros
+            = info expense_line, :company_part,     helper: :percentage
+            = info expense_line, :employee_payback, helper: :euros
+
+          .col-md-4
+            = info expense_line, :vat,                  helper: :euros
+            = info expense_line, :total_vat_deductible, helper: :euros
 
   hr
 
   .panel.panel-default
     .panel-body
-      .row
-        .col-md-6
-          strong = t("labels.total") + " : "
-        .col-md-6
-          p
-            strong = t("labels.total_all_taxes") + " : "
-            = euros @expense.total_all_taxes
-          p
-            strong = t("labels.employee_payback") + " : "
-            = euros @expense.total_employee_payback
-          p
-            strong = t("labels.deductible_vat") + " : "
-            = euros @expense.total_vat_deductible
+      = info @expense, :total_all_taxes,        helper: :euros
+      = info @expense, :total_employee_payback, helper: :euros
+      = info @expense, :total_vat_deductible,   helper: :euros
 
-  .attachments-panel
+  hr
+
+  .attachments-panel.hidden-print
     = panel title: @expense.t(:documents)
       .panel-body
         = attachments_for @expense

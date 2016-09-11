@@ -1,24 +1,20 @@
-module Dorsale
-  module PolymorphicId
-    module ClassMethods
-      def polymorphic_id_for(relation_name)
-        module_src = File.read(__FILE__).split("__END__").last
-        module_src = module_src.gsub("relation", relation_name.to_s)
-        send :include, eval(module_src)
-      end
-    end
+module Dorsale::PolymorphicId
+  extend ActiveSupport::Concern
+  included do
 
-    def self.included(model)
-      model.send(:extend, Dorsale::PolymorphicId::ClassMethods)
+    def self.polymorphic_id_for(relation_name)
+      module_src = File.read(__FILE__).split("__END__").last
+      module_src = module_src.gsub("relation", relation_name.to_s)
+      send :include, eval(module_src)
     end
 
     def guid
       return nil if new_record?
 
-      "#{self.class}-#{self.id}"
+      "#{self.class.base_class}-#{self.id}"
     end
-  end
-end
+  end # included
+end # module
 
 ActiveRecord::Base.send(:include, Dorsale::PolymorphicId)
 

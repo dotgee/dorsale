@@ -3,7 +3,7 @@ class DorsaleAlexandrieAttachmentsAddName < ActiveRecord::Migration
     add_column :dorsale_alexandrie_attachments, :name, :string
 
     Dorsale::Alexandrie::Attachment.all.each do |a|
-      a.update_attributes!(name: a.file_identifier)
+      a.update!(name: a.file_identifier)
     end
   end
 end

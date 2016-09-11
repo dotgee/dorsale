@@ -1,0 +1,11 @@
+.billing_machine
+  - content_for :title
+    = ::Dorsale::BillingMachine::IdCard.ts
+
+  - content_for :actions
+    = create_button new_billing_machine_id_card_path, action: :create
+
+  - content_for :table
+    = render "dorsale/billing_machine/id_cards/list", id_cards: @id_cards
+
+  = render_dorsale_index

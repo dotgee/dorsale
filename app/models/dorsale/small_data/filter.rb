@@ -1,55 +1,51 @@
-module Dorsale
-  module SmallData
-    class Filter
-      def initialize(jar)
-        @jar = jar
-      end
+class Dorsale::SmallData::Filter
+  def initialize(jar)
+    @jar = jar
+  end
 
-      def store(filters)
-        @jar["filters"] = filters.to_json
-      end
+  def store(filters)
+    @jar["filters"] = filters.to_json
+  end
 
-      def read
-        JSON.parse @jar["filters"].to_s
-      rescue JSON::ParserError
-        {}
-      end
+  def read
+    JSON.parse @jar["filters"].to_s
+  rescue JSON::ParserError
+    {}
+  end
 
-      def get(key)
-        read[key.to_s]
-      end
+  def get(key)
+    read[key.to_s]
+  end
 
-      def set(key, value)
-        array           = read
-        array[key.to_s] = value
-        store(array)
-      end
+  def set(key, value)
+    array           = read
+    array[key.to_s] = value
+    store(array)
+  end
 
-      def strategies
-        self.class::STRATEGIES
-      end
+  def strategies
+    self.class::STRATEGIES
+  end
 
-      def apply(query)
-        strategies.each do |key, strategy|
-          value = get(key)
+  def apply(query)
+    strategies.each do |key, strategy|
+      value = get(key)
 
-          next if value.blank?
+      next if value.blank?
 
-          query = strategy.apply(query, value)
-        end
+      query = strategy.apply(query, value)
+    end
 
-        return query
-      end
+    return query
+  end
 
-      def method_missing(method, *args)
-        key = method.to_s
+  def method_missing(method, *args)
+    key = method.to_s
 
-        if strategies.key?(key)
-          get(key)
-        else
-          super
-        end
-      end
-    end # Filter
-  end # SmallData
-end # Dorsale
+    if strategies.key?(key)
+      get(key)
+    else
+      super
+    end
+  end
+end

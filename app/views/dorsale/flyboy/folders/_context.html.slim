@@ -1,18 +1,18 @@
 - folder = folder || taskable
 
-.folder-context: .context
-  = context_icon :tasks
-  = context_title folder.name
-  = render "dorsale/flyboy/folders/actions", folder: folder
+.context
+  .context-title
+    = icon :tasks
+    = " "
+    = folder
 
-  .infos
-    strong
-      = folder.t(:progress)
-      = " : "
-    = progress_bar(percentage: folder.progress, label: true)
+  .context-body
+    = info folder, :progress, progress_bar(percentage: folder.progress, label: true)
+    = info folder, :revision
+    = info folder, :status
 
-  = context_info folder.t(:revision), folder.revision
-  = context_info folder.t(:status), t("messages.folders.status.#{folder.status}")
+    - if request.path == dorsale.flyboy_folder_path(folder)
+      = info folder, :description, helper: :text2html
 
-  - if request.path == dorsale.flyboy_folder_path(folder)
-    = context_info folder.t(:description), text2html("\n" +folder.description)
+  .context-footer
+    = render "dorsale/flyboy/folders/actions", folder: folder

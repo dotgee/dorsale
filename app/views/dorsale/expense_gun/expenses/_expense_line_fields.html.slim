@@ -1,0 +1,17 @@
+.panel.panel-default.nested-fields
+  .panel-heading
+    .pull-right
+      = link_to_remove_association (icon(:trash) + " " + t("actions.delete")), f, class: "btn btn-xs btn-danger"
+    .panel-title = f.object.t
+
+  .panel-body
+    = f.hidden_field :id
+    .row
+      .col-md-6
+        = f.input :name
+        = f.input :date, as: :string, input_html: {type: :date}
+        = f.association :category, collection: @categories
+      .col-md-6
+        = f.input :total_all_taxes
+        = f.input :vat
+        = f.input :company_part

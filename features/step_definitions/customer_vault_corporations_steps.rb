@@ -1,32 +1,34 @@
 Given(/^(\d+) existing corporations$/) do |count|
-  FactoryGirl.create_list(:customer_vault_corporation, Integer(count))
+  create_list(:customer_vault_corporation, Integer(count))
 end
 
 When(/^I create an new corporation$/) do
+  @corporations_count = Dorsale::CustomerVault::Corporation.count
+
   visit dorsale.new_customer_vault_corporation_path
 end
 
 When(/^I add the corporation's informations$/) do
-  fill_in 'corporation_name', with: 'AGILiDEE'
-  fill_in 'corporation_email', with: 'contact@agilidee.com'
-  fill_in 'corporation_www', with: 'www.agilidee.com'
-  fill_in 'corporation_phone', with: '04 91 00 00 00'
-  fill_in 'corporation_fax', with: '09 00 00 00 00'
+  fill_in 'person_corporation_name', with: 'AGILiDEE'
+  fill_in 'person_email', with: 'contact@agilidee.com'
+  fill_in 'person_www', with: 'www.agilidee.com'
+  fill_in 'person_phone', with: '04 91 00 00 00'
+  fill_in 'person_fax', with: '09 00 00 00 00'
 end
 
 When(/^I fill the corporation capital, immatriculation1, immatriculation2, legal form$/) do
-  fill_in 'corporation_capital', with: '1000'
-  fill_in 'corporation_immatriculation_number_1', with: 'RCS 201523658'
-  fill_in 'corporation_immatriculation_number_2', with: 'SIREN 5485632569'
-  fill_in 'corporation_legal_form', with: 'SARL'
+  fill_in 'person_capital', with: '1000'
+  fill_in 'person_immatriculation_number_1', with: 'RCS 201523658'
+  fill_in 'person_immatriculation_number_2', with: 'SIREN 5485632569'
+  fill_in 'person_legal_form', with: 'SARL'
 end
 
 When(/^I fill the corporation's address$/) do
-  fill_in 'corporation_address_attributes_street', with: '3 Rue Marx Dormoy'
-  fill_in 'corporation_address_attributes_street_bis', with: ''
-  fill_in 'corporation_address_attributes_city', with: 'Marseille'
-  fill_in 'corporation_address_attributes_zip', with: '13004'
-  fill_in 'corporation_address_attributes_country', with: 'France'
+  fill_in 'person_address_attributes_street', with: '3 Rue Marx Dormoy'
+  fill_in 'person_address_attributes_street_bis', with: ''
+  fill_in 'person_address_attributes_city', with: 'Marseille'
+  fill_in 'person_address_attributes_zip', with: '13004'
+  fill_in 'person_address_attributes_country', with: 'France'
 end
 
 When(/^I validate the new corporation$/) do
@@ -42,23 +44,18 @@ When(/^he go on the next page$/) do
 end
 
 Then(/^i see an error message for the missing name$/) do
-  expect(page).to have_selector ".corporation_name.has-error"
+  expect(page).to have_selector ".person_corporation_name.has-error"
 end
 
 Then(/^he can see (\d+) corporate$/) do |count|
   page.should have_selector '.person', count: count
 end
 
-Then(/^the corporation is created with all the data provided$/) do
-  expect(find(".corporation-context")).to have_content "3 Rue Marx Dormoy, 13004 Marseille, France"
-  expect(find(".corporation-context")).to have_content "contact@agilidee.com"
-  expect(find(".corporation-context")).to have_content "www.agilidee.com"
-  expect(find(".corporation-context")).to have_content "04 91 00 00 00"
-  expect(find(".corporation-context")).to have_content "09 00 00 00 00"
-  expect(find(".corporation-context")).to have_content "1000"
-  expect(find(".corporation-context")).to have_content "RCS 201523658"
-  expect(find(".corporation-context")).to have_content "SIREN 5485632569"
-  expect(find(".corporation-context")).to have_content "SARL"
+Then(/^the corporation is created$/) do
+  expect(Dorsale::CustomerVault::Corporation.count).to eq(@corporations_count + 1)
+  @corporation = Dorsale::CustomerVault::Corporation.reorder(:id).last
+
+  expect(@corporation.corporation_name).to eq "AGILiDEE"
 end
 
 When(/^I go on this corporation$/) do
@@ -121,9 +118,12 @@ end
 
 When(/^I add tags to this corporation$/) do
   page.execute_script %(
-    $(".corporation_tag_list select")[0].selectize.createItem("mytag1");
-    $(".corporation_tag_list select")[0].selectize.createItem("mytag2");
+    $("#person_tag_list").append("<option value='mytag1'>mytag1</option>")
+    $("#person_tag_list").append("<option value='mytag2'>mytag2</option>")
   )
+
+  select "mytag1"
+  select "mytag2"
 end
 
 When(/^I submit this corporation$/) do
@@ -137,13 +137,11 @@ Then(/^tags are added$/) do
 end
 
 Given(/^an existing corporation with tags$/) do
-  @corporation = FactoryGirl.create(:customer_vault_corporation, tag_list: "mytag1, mytag2")
+  @corporation = create(:customer_vault_corporation, tag_list: "mytag1, mytag2")
 end
 
 When(/^I remove tags to this corporation$/) do
-  page.execute_script %(
-    $(".corporation_tag_list select")[0].selectize.removeItem("mytag1");
-  )
+  unselect "mytag1"
 end
 
 Then(/^tags are removed$/) do
@@ -165,10 +163,14 @@ Given(/^a link between this individual and this corporation$/) do
 end
 
 Then(/^I see only the open task in the context$/) do
-  expect(find(".person-context")).to have_content "I-am-open"
-  expect(find(".person-context")).to_not have_content "I-am-closed"
+  expect(find("#context")).to have_content "I-am-open"
+  expect(find("#context")).to_not have_content "I-am-closed"
 end
 
 Then(/^I see the link in the context$/) do
-  expect(find(".person-context")).to have_content "I-am-a-link"
+  expect(find("#context")).to have_content "I-am-a-link"
+end
+
+Then(/^I am on the corporation page$/) do
+  wait_for { current_path }.to eq dorsale.customer_vault_corporation_path(@corporation)
 end

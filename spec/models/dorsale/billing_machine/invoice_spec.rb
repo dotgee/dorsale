@@ -55,32 +55,32 @@ describe ::Dorsale::BillingMachine::Invoice, type: :model do
 
   describe "payment_status" do
     it "should be pending if nothing special" do
-      invoice = create(:billing_machine_invoice, due_date: Date.today, date: Date.today, paid: false)
+      invoice = create(:billing_machine_invoice, due_date: Time.zone.now.to_date, date: Time.zone.now.to_date, paid: false)
       expect(invoice.payment_status).to eq(:pending)
     end
 
     it "should be late if a bit late" do
-        invoice = create(:billing_machine_invoice, due_date: Date.today-1, date: Date.today-1, paid: false)
+        invoice = create(:billing_machine_invoice, due_date: Time.zone.now.to_date-1, date: Time.zone.now.to_date-1, paid: false)
         expect(invoice.payment_status).to eq(:late)
     end
 
     it "should be on_alert if a too late" do
-        invoice = create(:billing_machine_invoice, due_date: Date.today-16, date: Date.today-16, paid: false)
+        invoice = create(:billing_machine_invoice, due_date: Time.zone.now.to_date-16, date: Time.zone.now.to_date-16, paid: false)
         expect(invoice.payment_status).to eq(:on_alert)
     end
 
     it "should be paid if paid" do
-        invoice = create(:billing_machine_invoice, due_date: Date.today-16, date: Date.today-16, paid: true)
+        invoice = create(:billing_machine_invoice, due_date: Time.zone.now.to_date-16, date: Time.zone.now.to_date-16, paid: true)
         expect(invoice.payment_status).to eq(:paid)
     end
 
     it "should be on_alert if no due date is defined" do
-        invoice = create(:billing_machine_invoice, due_date: nil, date: Date.today, paid: false)
+        invoice = create(:billing_machine_invoice, due_date: nil, date: Time.zone.now.to_date, paid: false)
         expect(invoice.payment_status).to eq(:on_alert)
     end
 
     it "should be on_alert if no due date is defined" do
-        invoice = create(:billing_machine_invoice, due_date: nil, date: Date.today, paid: true)
+        invoice = create(:billing_machine_invoice, due_date: nil, date: Time.zone.now.to_date, paid: true)
         expect(invoice.payment_status).to eq(:paid)
     end
 
@@ -195,65 +195,4 @@ describe ::Dorsale::BillingMachine::Invoice, type: :model do
     end
   end
 
-  describe 'to_csv' do
-    let(:id_card) { create(:billing_machine_id_card) }
-    let(:customer) {
-      create(:customer_vault_corporation,
-        :name => "cutomerName",
-        :address_attributes => {
-          :street     => "address1",
-          :street_bis => "address2",
-          :zip        => "13005",
-          :city       => "Marseille",
-          :country    => "country",
-        }
-      )
-    }
-
-    let(:columns_names) {'"Date";"Numéro";"Objet";"Client";"Adresse 1";"Adresse 2";"Code postal";"Ville";"Pays";"Remise commerciale";"Montant HT";"Montant TVA";"Montant TTC";"Acompte";"Solde à payer"'+"\n"}
-    it 'should return csv', ignore_semaphore: true do
-      invoice0 = create(:billing_machine_invoice,
-        :label               => "invoiceLabel",
-        :date                => "2014-07-31",
-        :unique_index        => 1,
-        :commercial_discount => 1,
-        :advance             => 3.5,
-        :id_card             => id_card,
-        :customer            => customer,
-      )
-
-      invoice0.lines.create(quantity: 1, unit_price: 9.99, vat_rate: 19.6)
-
-      invoice1 = invoice0.dup
-
-      invoice1.update(label: 'çé"à;ç\";,@\\', date: "2014-08-01", commercial_discount:0, unique_index: 2, advance: 3.0)
-
-      invoice1.lines.create(quantity: 1, unit_price: 13.0 , vat_rate: 20)
-
-      csv_output = ::Dorsale::BillingMachine::Invoice.to_csv
-
-      expect(csv_output).to be ==
-        columns_names +
-        '"2014-07-31";"2014-01";"invoiceLabel";"cutomerName";"address1";"address2";'\
-        '"13005";"Marseille";"country";"1,00";"8,99";"1,76";"10,75";"3,50";"7,25"' + "\n"\
-        '"2014-08-01";"2014-02";"çé""à;ç\"";,@\";"cutomerName";"address1";"address2";'\
-        '"13005";"Marseille";"country";"0,00";"13,00";"2,60";"15,60";"3,00";"12,60"' + "\n"
-    end
-
-    it 'should return expected csv with nil values' do
-      invoice0 = create(:billing_machine_invoice,
-        :id_card             => id_card,
-        :advance             => nil,
-        :label               => nil,
-        :customer            => nil,
-        :payment_term        => nil,
-        :commercial_discount => nil,
-      )
-      csv_output = ::Dorsale::BillingMachine::Invoice.to_csv
-
-      expect(csv_output).to be ==
-        columns_names +
-        '"2014-02-19";"2014-01";"";"";"";"";"";"";"";"0,00";"0,00";"0,00";"0,00";"0,00";"0,00"' + "\n"
-    end
-  end
 end

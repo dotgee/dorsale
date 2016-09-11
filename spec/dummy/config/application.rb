@@ -24,7 +24,10 @@ module Dummy
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     config.i18n.default_locale = :fr
 
-    config.active_record.raise_in_transactional_callbacks = true
+    config.action_controller.permit_all_parameters = true
+
+    config.active_job.queue_adapter = :delayed_job
+    Delayed::Worker.delay_jobs = false
 
     config.action_mailer.delivery_method = :sendmail
   end

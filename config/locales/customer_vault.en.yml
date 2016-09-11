@@ -1,5 +1,11 @@
 en:
-  customer_vault: "Directory"
+  customer_vault:
+    name: "Directory"
+    activity: "Activity"
+    identity_informations: "Identity informations"
+    contact_informations: "Contact informations"
+    address_informations: "Address informations"
+    additional_informations: "Additional informations"
 
   sections:
     activity: "Activity"
@@ -30,7 +36,6 @@ en:
       delete_error : "One error occurs, link not deleted."
 
   actions:
-    activity: "Activity"
     new_individual: "New individual"
     new_corporation: "New corporation"
     new_link: "New link"

@@ -1,0 +1,42 @@
+.panel.panel-default
+  .panel-heading: .panel-title
+    - if @id_card.new_record?
+      = t("actions.new_id_card")
+    - else
+      = t("actions.update")
+      = " : "
+      = @id_card
+
+  .panel-body
+    = horizontal_form_for @id_card do |f|
+      = f.input :id_card_name
+      = f.input :entity_name
+      = f.input :siret
+      = f.input :legal_form
+      = f.input :capital
+      = f.input :registration_number
+      = f.input :intracommunity_vat
+      = f.input :address1
+      = f.input :address2
+      = f.input :zip
+      = f.input :city
+      = f.input :phone
+      = f.input :contact_full_name
+      = f.input :contact_phone
+      = f.input :contact_address_1
+      = f.input :contact_address_2
+      = f.input :contact_zip
+      = f.input :contact_city
+      = f.input :iban
+      = f.input :bic_swift
+      = f.input :bank_name
+      = f.input :bank_address
+      = f.input :ape_naf
+      = f.input :custom_info_1
+      = f.input :custom_info_2
+      = f.input :custom_info_3
+      = f.input :contact_fax
+      = f.input :contact_email
+      = f.input :logo, wrapper: :horizontal_form
+      = f.input :registration_city
+      = form_buttons

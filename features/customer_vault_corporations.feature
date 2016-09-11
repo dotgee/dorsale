@@ -13,7 +13,8 @@ Feature: Manage corporations
     And I fill the corporation's address
     And I fill the corporation capital, immatriculation1, immatriculation2, legal form
     And I validate the new corporation
-    Then the corporation is created with all the data provided
+    Then the corporation is created
+    And I am on the corporation page
 
   Scenario: Add tags
     Given an existing corporation

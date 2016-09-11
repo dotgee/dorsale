@@ -1,0 +1,171 @@
+.billing_machine
+  tr.invoice.paid td,
+  tr.quotation.accepted td,
+    background: darken($state-success-bg, 5)
+
+  tr.quotation.pending td,
+    background: white
+
+  tr.invoice.late td,
+  tr.quotation.pending.late td,
+    background: darken($state-warning-bg, 5)
+
+  tr.invoice.on_alert td,
+  tr.quotation.refused td,
+    background: darken($state-danger-bg, 5)
+
+  tr.quotation.canceled td,
+    background: #DDDDDD
+
+
+
+  .label.invoice.pending,
+  .label.quotation.pending
+    @extend .label-info
+
+  .label.invoice.paid,
+  .label.quotation.accepted,
+    @extend .label-success
+
+  .label.invoice.late,
+  .label.quotation.late,
+    @extend .label-warning
+
+  .label.invoice.on_alert,
+  .label.quotation.refused,
+    @extend .label-danger
+
+
+  .label.quotation.canceled,
+    @extend .label-default
+
+
+  .label
+    font-size: 50%
+    vertical-align: top
+    display: inline-block
+    margin: 0.5em 0.75em
+
+
+#billing_machine-form,
+#billing_machine-show,
+  table
+    width: 100%
+
+    td, th
+      border: 1px solid #DDD
+
+    th
+      width: 8em
+      padding: 0.5em
+
+    td
+      padding: 0 0.25em 0 0
+
+    td > input,
+    td > textarea,
+      text-align: right
+      margin: 0.5em 0 0.5em 1em
+      padding: 0.5em
+      background: transparent
+      width: calc(100% - 2em)
+      outline: none
+      border: none
+      border-radius: 0px !important
+      box-shadow: none
+      border-bottom: 1px solid #E0E0E0
+
+    textarea
+      display: block
+      height: initial !important
+      resize: none
+      overflow: hidden
+
+    span.unit
+      display: inline-block
+      width: 1em
+      text-align: right
+
+    th.line-label
+      width: auto
+      text-align: left
+
+    td.line-label,
+    td.line-label input,
+    td.line-label textarea,
+    td.line-unit,
+    td.line-unit input,
+    td.line-unit textarea,
+      text-align: left
+
+    th.actions,
+    td.actions,
+      padding: 0
+      width: 2.5em
+      text-align: center
+
+    th.actions
+      border: none
+
+    // disabled fields
+    td[class*=total],
+    td[class*=balance],
+    td[class*=vat_amount],
+      background: #F1F2F3
+
+      > input
+        border: none
+
+    tfoot td[colspan],
+      border: none
+
+  a#add-new-line
+    margin-bottom: 3em
+
+  .form-control
+    @extend .input-sm
+
+  .form-group
+    margin: 0
+
+  .form-group + .form-group
+    margin-top: 1em
+
+  label abbr
+    border: none
+
+  #lines-table
+    margin-bottom: 2em
+
+  #totals-table
+    width: 24em
+    margin: 0 0 0 auto
+
+    th
+      width: 16em
+      text-align: right
+      padding-right: 1em
+
+    td
+      width: 8em
+
+  #invoice_comments,
+  #quotation_comments,
+    height: 5.5em !important
+
+
+#billing_machine-show
+  table
+    th, td
+      padding: 0.5em
+
+    td
+      text-align: right
+
+    td[class*=total],
+    td[class*=balance],
+    td[class*=vat_amount],
+      background: #FFFFFF
+
+#billing_machine-show + .attachments-panel
+  margin-top: 1em

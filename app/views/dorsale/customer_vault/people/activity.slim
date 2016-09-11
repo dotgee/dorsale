@@ -1,12 +1,25 @@
 .customer_vault
-  = render "dorsale/customer_vault/people/actions"
+  - content_for :title
+    = icon(:comments)
+    = " "
+    = t("customer_vault.activity")
+
+  - content_for :actions
+    = render "dorsale/customer_vault/people/actions"
+
+  - content_for :page_header
   = render "dorsale/customer_vault/people/index_tabs"
 
-  - if @comments.empty?
-    p = t("messages.no_activity")
+  - content_for :page_body
+    - if @comments.empty?
+      p = t("messages.no_activity")
 
-  - else
-    - @comments.map do |comment|
-      = render "dorsale/customer_vault/people/comment", comment: comment
+    - else
+      #comments-list
+        - @comments.map do |comment|
+          = render "dorsale/customer_vault/people/comment", comment: comment
 
+  - content_for :pagination
     = paginate @comments
+
+  = render_dorsale_index

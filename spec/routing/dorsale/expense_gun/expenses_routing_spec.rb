@@ -54,5 +54,10 @@ describe ::Dorsale::ExpenseGun::ExpensesController, type: :routing do
       route_to("dorsale/expense_gun/expenses#cancel", id: "1")
     end
 
+    it "#copy" do
+      expect(get "/expense_gun/expenses/1/copy").to \
+      route_to("dorsale/expense_gun/expenses#copy", id: "1")
+    end
+
   end
 end

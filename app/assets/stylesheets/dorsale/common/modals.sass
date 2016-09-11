@@ -1,0 +1,45 @@
+body.modal-open
+  height: 100%
+  overflow: hidden
+
+#modal
+  display: block !important // override bootstrap
+  z-index: 9999
+
+#modal, #modal-overlay
+  position: fixed
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
+  overflow: auto
+
+#modal-overlay
+  background: rgba(0, 0, 0, 0.75)
+
+#modal-body
+  position: relative
+  margin: 10vh auto
+  padding: 2em
+  width: auto
+  min-width: 50%
+  max-width: 980px
+  background: white
+  z-index: 9999
+
+  &.fixed-height
+    max-height: 80vh
+    overflow: auto
+
+#modal-close
+  color: white
+  position: absolute
+  font-size: 4em
+  line-height: 0.5em
+  top: 0.25em
+  right: 0.25em
+  border: none
+  background: none
+
+#modal:not(.closable) #modal-close
+  display: none

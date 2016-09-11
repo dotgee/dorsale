@@ -33,38 +33,38 @@ Given(/^a bunch of existing quotations$/) do
   create(:billing_machine_quotation,
     :id_card  => @id_card,
     :customer => c1,
-    :date     => Date.today,
+    :date     => Time.zone.now.to_date,
   )
   create(:billing_machine_quotation,
     :id_card  => @id_card,
     :customer => c2,
-    :date     => Date.today,
+    :date     => Time.zone.now.to_date,
   )
   create(:billing_machine_quotation,
     :id_card  => @id_card,
     :customer => c3,
-    :date     => Date.today,
+    :date     => Time.zone.now.to_date,
   )
   create(:billing_machine_quotation,
     :id_card  => @id_card,
     :customer => c1,
-    :date     => Date.today - 2.days,
+    :date     => Time.zone.now.to_date - 2.days,
   )
 
   create(:billing_machine_quotation,
     :id_card  => @id_card,
     :customer => i1,
-    :date     => Date.today - 3.days,
+    :date     => Time.zone.now.to_date - 3.days,
   )
   create(:billing_machine_quotation,
     :id_card  => @id_card,
     :customer => i2,
-    :date     => Date.today - 3.days,
+    :date     => Time.zone.now.to_date - 3.days,
   )
   create(:billing_machine_quotation,
     :id_card  => @id_card,
     :customer => i3,
-    :date     => Date.today - 3.days,
+    :date     => Time.zone.now.to_date - 3.days,
   )
 end
 
@@ -169,12 +169,9 @@ Then(/^the quotation's label has changed$/) do
   page.should have_field('quotation_label', with: @new_label)
 end
 
-Then(/^it's added to the quotation list$/) do
-  page.should have_selector '.date', text: @date
-  @quotation = ::Dorsale::BillingMachine::Quotation.unscoped.order(:id).last
-  page.should have_selector '.tracking_id', text: @quotation.tracking_id
-  page.should have_selector '.customer_name', text: @customer.name
-  page.should have_selector '.total_excluding_taxes', text: '180,00 €'
+Then(/^I am on the created quotation$/) do
+  @quotation = Dorsale::BillingMachine::Quotation.reorder(:id).last
+  expect(current_path).to eq dorsale.billing_machine_quotation_path(@quotation)
 end
 
 Then(/^he can see all the quotation informations$/) do
@@ -184,7 +181,7 @@ Then(/^he can see all the quotation informations$/) do
 end
 
 Then(/^the quotation default date is set to today's date\.$/) do
-  page.should have_field('quotation_date', with: I18n.l(Date.today))
+  page.should have_field('quotation_date', with: I18n.l(Time.zone.now.to_date))
 end
 
 Then(/^he should see (\d+) quotations$/) do |arg1|

@@ -1,32 +1,35 @@
 = simple_form_for (@task_comment || @task.comments.new), as: :task_comment do |f|
-  table
+  .panel.panel-default: table
     thead
       tr
-        th = Dorsale::Flyboy::TaskComment.t(:progress)
-        th = Dorsale::Flyboy::TaskComment.t(:description)
-        th
+        th.task_comment-progress
+          = Dorsale::Flyboy::TaskComment.t(:progress)
+
+        th.task_comment-description
+          = Dorsale::Flyboy::TaskComment.t(:description)
+
     tbody
-      - if can?(:update, @task)
+      - if policy(@task).update?
         tr
-          td.task_progress
+          td.task_comment-progress
             = f.input :progress, label: false
-  
-          td.description
-            = f.input :description, label: false
-  
-          td.actions
+
+          td.task_comment-description
             = f.hidden_field :task_id
-            input.btn.btn-success type="submit" value=t("actions.create")
+
+            .input-group
+              = f.text_area :description, rows: 3, class: "form-control"
+              span.input-group-addon
+                input.nostyle type="submit" value=t("actions.create")
+
 
       - @task.reload.comments.map do |comment|
         tr
-          td.task_progress
+          td.task_comment-progress
             = progress_bar percentage: comment.progress, label: true
 
-          td.description
+          td.task_comment-description
             p: small
               span.date = l(comment.date)
 
             p = text2html comment.description
-
-          td.actions

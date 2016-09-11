@@ -1,4 +1,26 @@
-- if person.instance_of? ::Dorsale::CustomerVault::Individual
-    = render "dorsale/customer_vault/individuals/context", individual: person
-- if person.instance_of? ::Dorsale::CustomerVault::Corporation
-    = render "dorsale/customer_vault/corporations/context", corporation: person
+- person = person || taskable
+
+.context
+  .context-title
+    = icon(:users) if person.corporation?
+    = icon(:user)  if person.individual?
+    = " "
+    = person
+
+  .context-body
+    p.text-center = avatar_img(person)
+
+    = info person, :tags,     person_tags(person)
+    = info person, :email,    helper: :email_link
+    = info person, :phone,    helper: :tel_link
+    = info person, :mobile,   helper: :tel_link
+    = info person, :fax,      helper: :tel_link
+    = info person, :skype,    helper: :email_link
+    = info person, :www,      helper: :web_link
+    = info person, :twitter,  helper: :web_link
+    = info person, :facebook, helper: :web_link
+    = info person, :linkedin, helper: :web_link
+    = info person, :viadeo,   helper: :web_link
+
+  .context-footer
+    = actions_for(person)

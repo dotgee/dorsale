@@ -1,31 +1,39 @@
-module Dorsale
-  module Flyboy
-    class TaskCommentsController < ::Dorsale::Flyboy::ApplicationController
-      def create
-        @task_comment ||= TaskComment.new(task_comment_params)
-        @task_comment.author = current_user
+class Dorsale::Flyboy::TaskCommentsController < ::Dorsale::Flyboy::ApplicationController
+  def create
+    skip_policy_scope
 
-        @task = @task_comment.task
+    @task_comment ||= model.new(task_comment_params_for_create)
+    @task         ||= @task_comment.task
 
-        authorize! :update, @task
+    authorize @task, :update?
 
-        if @task_comment.save
-          redirect_to @task
-        else
-          render "dorsale/flyboy/tasks/show"
-        end
-      end
-
-      private
-
-      def permitted_params
-        [:task_id, :progress, :description]
-      end
-
-      def task_comment_params
-        params.require(:task_comment).permit(permitted_params)
-      end
-
+    if @task_comment.save
+      redirect_to @task
+    else
+      render "dorsale/flyboy/tasks/show"
     end
   end
+
+  private
+
+  def model
+    ::Dorsale::Flyboy::TaskComment
+  end
+
+  def permitted_params
+    [
+      :task_id,
+      :progress,
+      :description,
+    ]
+  end
+
+  def task_comment_params
+    params.fetch(:task_comment, {}).permit(permitted_params)
+  end
+
+  def task_comment_params_for_create
+    task_comment_params.merge(author: current_user)
+  end
+
 end

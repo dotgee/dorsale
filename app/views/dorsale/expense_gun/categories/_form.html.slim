@@ -1,0 +1,15 @@
+.panel.panel-default
+  .panel-heading: .panel-title
+    - if @category.new_record?
+      = t("expense_gun.category.actions.create")
+    - else
+      = t("actions.update")
+      = " : "
+      = @category
+
+  .panel-body
+    = horizontal_form_for @category, as: :category do |f|
+      = f.input :name
+      = f.input :code
+      = f.input :vat_deductible, as: :select
+      = form_buttons

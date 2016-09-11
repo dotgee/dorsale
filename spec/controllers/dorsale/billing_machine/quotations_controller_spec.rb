@@ -10,10 +10,10 @@ describe Dorsale::BillingMachine::QuotationsController, type: :controller do
   describe "#index" do
     it "stats should not include canceled quotations" do
       q1 = create(:billing_machine_quotation_line, quantity: 1, unit_price: 10)
-      q1.quotation.update_attributes!(state: "pending")
+      q1.quotation.update!(state: "pending")
 
       q2 = create(:billing_machine_quotation_line, quantity: 1, unit_price: 10)
-      q2.quotation.update_attributes!(state: "canceled")
+      q2.quotation.update!(state: "canceled")
 
       get :index
       expect(assigns(:total_excluding_taxes)).to eq 10

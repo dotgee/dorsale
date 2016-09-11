@@ -1,18 +1,7 @@
 fr:
   expense_gun:
     expense:
-      label  : "Note de frais"
-      list   : "Liste des notes de frais"
-      new    : "Nouvelle note de frais"
-      edit   : "Modifier la note"
-      print  : "Imprimer"
-      show   : "Afficher"
-      edit   : "Modifier"
-      submit : "Soumettre"
-      accept : "Accepter"
-      refuse : "Refuser"
-      cancel : "Annuler"
-      flash:
+      messages:
         created  : "La note de frais a été créée."
         updated  : "La note de frais a été mise à jour."
         submited : "La note de frais a été soumise."
@@ -20,53 +9,58 @@ fr:
         refused  : "La note de frais a été refusée."
         canceled : "La note de frais a été annulée."
 
+      actions:
+        create : "Nouvelle note de frais"
+        submit : "Soumettre"
+        accept : "Accepter"
+        refuse : "Refuser"
+        cancel : "Annuler"
+
     expense_line:
-      label           : "Frais"
-      new             : "Nouveau frais"
-      edit            : "Modifier"
-      destroy         : "Supprimer"
-      back_to_expense : "Retour à la note"
-      flash:
-        created   : "Le frais a été ajouté."
-        updated   : "Le frais a été modifié."
-        destroyed : "Le frais a été supprimé."
+      actions:
+        create: "Nouvelle dépense"
 
-  labels: &labels
-      name             : "Nom"
-      date             : "Date"
-      category         : "Catégorie"
-      category_id      : "Catégorie"
-      total_all_taxes  : "Total TTC"
-      vat              : "TVA"
-      company_part     : "Part entreprise"
-      employee         : "Employé"
-      state            : "État"
-      employee_payback : "Remboursement employé"
-      deductible_vat   : "TVA déductible"
-      total            : "Total"
+    category:
+      actions:
+        create: "Nouvelle catégorie"
 
-      states:
+  activerecord:
+    models:
+      dorsale/expense_gun/expense:
+        one: "Note de frais"
+        other: "Notes de frais"
+
+      dorsale/expense_gun/expense_line:
+        one: "Dépense"
+        other: "Dépenses"
+
+      dorsale/expense_gun/category:
+        one: "Catégorie"
+        other: "Catégories"
+
+    attributes:
+      dorsale/expense_gun/expense:
+        user                   : "Employé"
+        total_employee_payback : "Total remboursement employé"
+        vat_deductible         : "TVA déductible"
+        total_vat_deductible   : "Total TVA déductible"
+        total_all_taxes        : "Total TTC"
+
+      dorsale/expense_gun/expense_line:
+        name                 : "Description"
+        employee_payback     : "Remboursement employé"
+        vat                  : "Montant TVA"
+        company_part         : "Part entreprise"
+        total_vat_deductible : "TVA déductible"
+        total_all_taxes      : "Montant TTC"
+
+      dorsale/expense_gun/category:
+        vat_deductible : "TVA déductible"
+
+      dorsale/expense_gun/expense/state:
         all      : "Toutes"
         new      : "Nouvelle"
         submited : "Soumise"
         accepted : "Accepée"
         refused  : "Refusée"
         canceled : "Annulée"
-
-  simple_form:
-    "yes" : 'Oui'
-    "no"  : 'Non'
-
-    required:
-      text: 'Requis'
-      mark: '*'
-
-    error_notification:
-      default_message: "Merci de vérifier les problèmes ci-desous :"
-
-    labels:
-      defaults:
-        <<: *labels
-
-    options:
-      defaults:

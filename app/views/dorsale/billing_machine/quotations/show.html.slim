@@ -1,19 +1,21 @@
 .billing_machine
-  .actions
-    - if can?(:update, @quotation)
+  .actions.top
+    - if policy(@quotation).update?
       = update_button dorsale.edit_billing_machine_quotation_path(@quotation)
 
-    - if can?(:download, @quotation)
+    - if policy(@quotation).download?
       = download_button dorsale.billing_machine_quotation_path(@quotation, format: :pdf)
 
-    - if can?(:copy, @quotation)
+    - if policy(@quotation).copy?
       = copy_button dorsale.copy_billing_machine_quotation_path(@quotation), method: :post, confirm: true
 
-    - if can?(:create, @quotation)
+    - if policy(@quotation).create?
       = dorsale_button dorsale.create_invoice_billing_machine_quotation_path(@quotation), action: :create_invoice, icon: :magic
 
-    - if can?(:delete, @quotation)
+    - if policy(@quotation).delete?
       = delete_button dorsale.billing_machine_quotation_path(@quotation)
+
+  hr
 
   = render "dorsale/billing_machine/invoices/details", document: @quotation
 

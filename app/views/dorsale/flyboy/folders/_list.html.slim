@@ -1,30 +1,41 @@
-table
+table#folders-list
   thead
     tr
-      th
-        = sortable_column Dorsale::Flyboy::Folder.t, column: "name"
-      th.hidden-xs
-        = sortable_column Dorsale::Flyboy::Folder.t(:progress), column: "progress"
-      th.hidden-xs
+      th.folder-status
         = sortable_column Dorsale::Flyboy::Folder.t(:status), column: "status"
-      th
+
+      th.folder-progress.hidden-xs.hidden-xs
+        = sortable_column Dorsale::Flyboy::Folder.t(:progress), column: "progress"
+
+      th.folder-name
+        = sortable_column Dorsale::Flyboy::Folder.t, column: "name"
+
+      th.actions
         = t("actions.actions")
 
   tbody
     - folders.each do |folder|
       tr.folder class=folder_color(folder)
-        td.name
-          - if can? :read, folder
+        td.folder-status
+          - if folder.status.to_s == "open"
+            = icon(:unlock)
+          - elsif folder.status.to_s == "closed"
+            = icon(:lock)
+          - else
+            = icon(:question)
+
+          = " "
+          = folder.t("status.#{folder.status}")
+
+        td.folder-progress.hidden-xs
+          = progress_bar percentage: folder.progress, label: true
+
+        td.folder-name
+          - if policy(folder).read?
             = link_to folder.name, dorsale.flyboy_folder_path(folder)
           - else
             = folder.name
 
-        td.folder_progress.hidden-xs
-          = progress_bar percentage: folder.progress, label: true
-
-        td.status.hidden-xs
-          = t("messages.folders.status.#{folder.status}")
-
         td.actions
-          - if can? :create, Dorsale::Flyboy::Task.new(taskable: folder)
+          - if policy(Dorsale::Flyboy::Task.new(taskable: folder)).create?
             = create_button dorsale.new_flyboy_task_path(taskable_guid: folder.guid), text: t("actions.folders.new_task")

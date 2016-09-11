@@ -1,19 +1,2 @@
-- individual = individual || taskable
-
-.individual-context: .context
-  = context_icon :user
-  = context_title individual.name
-  = actions_for individual, url: dorsale.customer_vault_individual_path(individual)
-
-  = context_info individual.t(:tags),       person_tags(individual)
-  = context_info individual.t(:phone),      tel_link(individual.phone)
-  = context_info individual.t(:mobile),     tel_link(individual.mobile)
-  = context_info individual.t(:email),      email_link(individual.email)
-  = context_info individual.t(:www),        web_link(individual.www)
-  = context_info individual.t(:twitter),    twitter_link(individual.twitter)
-  = context_info individual.t(:fax),        tel_link(individual.fax)
-  = context_info individual.t(:skype),      individual.skype
-  = context_info individual.t(:short_name), individual.short_name
-
-  - if individual.address.present?
-    = context_info individual.t(:address), individual.address.one_line
+- person = person || taskable
+= render "dorsale/customer_vault/people/context", person: person

@@ -1,13 +1,23 @@
 .billing_machine
-
-    = render "dorsale/billing_machine/invoices/filters"
-
+  - content_for :page_header
     = render "dorsale/billing_machine/invoices/header_infos", invoices: @invoices
 
-    .actions
-      = create_button dorsale.new_billing_machine_invoice_path
-      = download_button dorsale.billing_machine_invoices_path(format: :csv), action: :export_csv
+  - content_for :filters
+    = render "dorsale/billing_machine/invoices/filters"
 
+  - content_for :title
+    = icon(:euro)
+    = " "
+    = Dorsale::BillingMachine::Invoice.ts
+
+  - content_for :actions
+    = create_button dorsale.new_billing_machine_invoice_path
+    = download_button dorsale.billing_machine_invoices_path(format: :csv), action: :export_csv
+
+  - content_for :table
     = render "dorsale/billing_machine/invoices/list", invoices: @invoices
+
+  - content_for :pagination
     = paginate @invoices
 
+  = render_dorsale_index

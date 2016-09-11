@@ -11,10 +11,10 @@ require "turbolinks"
 require "bootstrap-kaminari-views"
 require "bootstrap-datepicker-rails"
 require "cocoon"
-require "selectize-rails"
+require "select2-rails"
 
 require "rails-i18n"
-require "cancan"
+require "pundit"
 require "awesome_print"
 require "kaminari-i18n"
 require "carrierwave"
@@ -26,7 +26,7 @@ require "prawn"
 require "prawn/table"
 require "combine_pdf"
 
-if %w(development test).include?(Rails.env)
+if Rails.env.test? || Rails.env.development?
   require "pry"
   require "factory_girl_rails"
   require "factory_girl"
@@ -39,6 +39,7 @@ require "dorsale/simple_form_bootstrap"
 require "dorsale/model_i18n"
 require "dorsale/model_to_s"
 require "dorsale/alexandrie/prawn"
+require "dorsale/form_back_url"
 
 require "acts-as-taggable-on"
 require "active_record_comma_type_cast"
@@ -49,16 +50,24 @@ module Dorsale
     isolate_namespace Dorsale
 
     initializer "factory_girl" do
-      if %w(development test).include?(Rails.env)
+      if Rails.env.test? || Rails.env.development?
         FactoryGirl.definition_file_paths.unshift Dorsale::Engine.root.join("spec/factories/").to_s
+      end
+    end
+
+    initializer "check_rails_version" do
+      if Rails.version < "5.0.0"
+        warn "Dorsale 3 supports only Rails 5, please update Rails."
+      end
+    end
+
+    initializer "check_pundit_policies" do
+      if Rails.env.test? || Rails.env.development?
+        Dorsale::PolicyChecker.check!
       end
     end
 
     Mime::Type.register "application/vnd.ms-excel", :xls
     Mime::Type.register "application/vnd.ms-excel", :xlsx
   end
-end
-
-Dir.glob Dorsale::Engine.root.join("app/**/concerns/*.rb") do |f|
-  require f
 end

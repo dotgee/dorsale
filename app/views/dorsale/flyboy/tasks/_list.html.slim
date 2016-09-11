@@ -1,43 +1,67 @@
-table
+table#tasks-list
   thead
     tr
-      - unless nested
-        th.hidden-xs
-          = sortable_column Dorsale::Flyboy::Task.t(:taskable), column: "taskable"
-      th
-        = sortable_column Dorsale::Flyboy::Task.t, column: "name"
-      th.hidden-xs
+      th.task-status
+      th.task-snooze
+      th.task-progress.hidden-xs
         = sortable_column Dorsale::Flyboy::Task.t(:progress), column: "progress"
-      th.hidden-xs
-        = sortable_column Dorsale::Flyboy::Task.t(:term),  column: "term"
 
-      th = t("actions.label")
+      th.task-name
+        = sortable_column Dorsale::Flyboy::Task.t, column: "name"
+
+      - unless nested
+        th.taskable-name.hidden-xs
+          = sortable_column Dorsale::Flyboy::Task.t(:taskable), column: "taskable"
+
+      th.task-term.hidden-xs
+        = sortable_column Dorsale::Flyboy::Task.t(:term),  column: "term"
 
   tbody
     - tasks.each do |task|
-      tr.task id="task_#{task.id}" class=task_color(task)
-        - unless nested
-          td.taskable.hidden-xs
-            - if can?(:read, task.taskable)
-              = link_to task.taskable.name, engine_polymorphic_path(task.taskable)
-            - else
-              = task.taskable.name
-
-        td.name
-          - if can?(:read, task)
-            = link_to task.name, dorsale.flyboy_task_path(task)
+      tr.task class=task_color(task)
+        td.task-status
+          - if task.done?
+            span.title-tooltip title=task.t(:done)
+              = icon(:check_square_o)
+          - elsif policy(task).complete?
+            a(
+              href         = dorsale.complete_flyboy_task_path(task)
+              data-method  = :patch
+              data-confirm = t("actions.confirm")
+              title        = t("actions.complete")
+              class        = "title-tooltip"
+            )
+              = icon(:square_o)
           - else
-            = task.name
+            span.title-tooltip title=task.t(:done)
+              = icon(:square_o)
 
-        td.task_progress.hidden-xs
+        td.task-snooze
+          - if policy(task).snooze?
+            a(
+              href         = dorsale.snooze_flyboy_task_path(task)
+              data-method  = :patch
+              data-confirm = t("actions.confirm")
+              title        = t("actions.snooze")
+              class        = "title-tooltip"
+            )
+              = icon(:clock_o)
+
+        td.task-progress.hidden-xs
           = progress_bar percentage: task.progress, label: true
 
-        td.term.hidden-xs
+        td.task-name
+          - if policy(task).read?
+            = link_to task.to_s, dorsale.flyboy_task_path(task)
+          - else
+            = task.to_s
+
+        - unless nested
+          td.taskable-name.hidden-xs
+            - if policy(task.taskable).read?
+              = link_to task.taskable.to_s, engine_polymorphic_path(task.taskable)
+            - else
+              = task.taskable.to_s
+
+        td.task-term.hidden-xs
           = l(task.term)
-
-        td.actions
-          - if can?(:snooze, task)
-            = snooze_button dorsale.snooze_flyboy_task_path(task)
-
-          - if can?(:complete, task)
-            = complete_button dorsale.complete_flyboy_task_path(task)

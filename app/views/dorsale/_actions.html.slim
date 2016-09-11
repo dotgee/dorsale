@@ -1,26 +1,8 @@
-.btn-group
-  button.btn.btn-default.btn-sm.dropdown-toggle.actions data-toggle="dropdown"
-    = t("actions.actions")
-    = " "
-    = icon :"caret-down"
-  ul.dropdown-menu
-    - if url && url != request.path
-      li
-        a.link_edit href=url
-          = icon :"file-o"
-          = " "
-          = t("actions.read")
+- if url && url != request.path && policy(obj).read?
+  = read_button(url)
 
-    - if edit_url && edit_url != request.path
-      li
-        a.link_edit href=edit_url
-          = icon :pencil
-          = " "
-          = t("actions.edit")
+- if edit_url && edit_url != request.path && policy(obj).update?
+  = update_button(edit_url)
 
-    - if delete_url
-      li
-        a.link_delete href=delete_url data-method="delete" data-confirm=t("actions.confirm")
-          = icon :trash
-          = " "
-          = t("actions.delete")
+- if delete_url && policy(obj).delete? && request.path == edit_url
+  = delete_button(url)

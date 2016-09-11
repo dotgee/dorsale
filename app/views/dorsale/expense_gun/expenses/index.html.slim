@@ -1,62 +1,50 @@
-h1 = t("expense_gun.expense.list")
+.expense_gun
+  - content_for :title
+    = icon(:euro)
+    = " "
+    = Dorsale::ExpenseGun::Expense.ts
 
-.row.expenses
-  .col-md-4
-    ul.nav.nav-pills.nav-stacked
+  - content_for :pagination
+    = paginate @expenses
+
+  - content_for :actions
+    = create_button dorsale.new_expense_gun_expense_path, text: t("expense_gun.expense.actions.create")
+
+  - content_for :page_body
+    hr
+
+    ul.nav.nav-pills
+      li class=("active" if params[:state] == "all")
+        a href=dorsale.url_for(state: "all", only_path: true)
+          = Dorsale::ExpenseGun::Expense.t("state.all")
+          span.badge = @all_expenses.count
+
       - for state in %w(submited new accepted refused canceled)
         li class=("active" if params[:state] == state)
           a href=dorsale.url_for(state: state, only_path: true)
-            = t("labels.states.#{state}").pluralize
-            span.badge.pull-right = @all_expenses.where(state: state).count
-
-      li class=("active" if params[:state] == "all")
-        a href=dorsale.url_for(state: "all", only_path: true)
-          = t("labels.states.all")
-          span.badge.pull-right = @all_expenses.count
-
+            = Dorsale::ExpenseGun::Expense.t("state.#{state}").pluralize
+            span.badge = @all_expenses.where(state: state).count
     hr
 
-    p = link_to t("expense_gun.expense.new"), dorsale.new_expense_gun_expense_path, class: "btn btn-success"
-
-  .col-md-8
-    - for expense in @expenses
-      .panel.panel-default
+    - @expenses.each do |expense|
+      .panel.panel-default.expense
         .panel-heading
-          .row
-            .col-md-8
-              h2.panel-title = expense.name
-            .col-md-4
-              .date = date expense.date
+          .pull-right
+            = read_button dorsale.expense_gun_expense_path(expense)
+
+            - if policy(expense).update?
+              = update_button dorsale.edit_expense_gun_expense_path(expense)
+
+          .panel-title = expense.name
+
         .panel-body
-          p
-            strong = t("labels.employee") + " : "
-            = expense.user.to_s if expense.respond_to?(:user)
+          .row
+            .col-md-6
+              = info expense, :user
+              = info expense, :total_all_taxes,        helper: :euros
+              = info expense, :total_employee_payback, helper: :euros
+            .col-md-6
+              = info expense, :state
+              = info expense, :date
 
-          p
-            strong = t("labels.state") + " : "
-            = t("labels.states.#{expense.current_state}")
-
-          p
-            strong = t("labels.total_all_taxes") + " : "
-            = euros expense.total_all_taxes
-
-        .panel-footer
-          = link_to t("expense_gun.expense.show"), dorsale.expense_gun_expense_path(expense), class: "btn btn-default"
-
-          - if can? :edit, expense
-            = link_to t("expense_gun.expense.edit"), dorsale.edit_expense_gun_expense_path(expense), class: "btn btn-default"
-
-          - if can? :submit, expense
-            = link_to t("expense_gun.expense.submit"), dorsale.submit_expense_gun_expense_path(expense), data: {method: "patch"}, class: "btn btn-primary"
-
-          - if can? :accept, expense
-            = link_to t("expense_gun.expense.accept"), dorsale.accept_expense_gun_expense_path(expense), data: {method: "patch"}, class: "btn btn-success"
-
-          - if can? :refuse, expense
-            = link_to t("expense_gun.expense.refuse"), dorsale.refuse_expense_gun_expense_path(expense), data: {method: "patch"}, class: "btn btn-danger"
-
-          - if can? :cancel, expense
-            = link_to t("expense_gun.expense.cancel"), dorsale.cancel_expense_gun_expense_path(expense), data: {method: "patch"}, class: "btn btn-warning"
-
-
-== paginate @expenses
+  = render_dorsale_index

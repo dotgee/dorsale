@@ -1,0 +1,26 @@
+table.table.default#category
+  thead
+    tr
+      th.actions.category-name
+        = ::Dorsale::ExpenseGun::Category.t(:name)
+      th.actions.category-code
+        = ::Dorsale::ExpenseGun::Category.t(:code)
+      th.actions.category-vat_deductible
+        = ::Dorsale::ExpenseGun::Category.t(:vat_deductible)
+      th.actions.category-action
+        = "Action"
+
+  tbody
+    - @categories.each do |category|
+      tr.actions.category
+        td.actions.category-name
+          = category.name
+        td.actions.category-code
+          = category.code
+        td.actions.category-vat_deductible
+          - if category.vat_deductible?
+            = icon(:check)
+          - else
+            = icon(:remove)
+        td.actions.category-action
+          = update_button edit_expense_gun_category_path(category), id: "edit-#{category.id}"

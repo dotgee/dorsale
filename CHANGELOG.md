@@ -1,5 +1,49 @@
 # Changelog
 
+## Next realease
+
+- Migrate from CanCan to Pundit
+- ExpenseGun improvements
+  - UX
+  - Nested form
+  - Copy expense
+- Replace Selectize by Select2
+- Changes js/css file names :
+  - dorsale/dependencies
+  - dorsale/common
+  - dorsale/engines
+- CustomerVault
+  - Corporation and Individual merged into STI model
+  - Add avatar and other new fields
+- Refactoring
+- UX improvements
+
+## 3.0.3
+
+- Refactor controllers
+- Refactor back url
+- Update config cucumber
+- Rename abilities (index => list, show => read)
+- Change some redirects after create/update
+
+## 3.0.2
+
+- Add new controllers :
+  - Expense Categories
+  - Payment Terms
+  - Id Cards
+- Fix Expenses VAT min amount
+
+## 3.0.1
+
+- Fix ExpenseGun min amounts
+
+## 3.0.0
+
+- Migrate to Rails 5
+- Drop Rails 4 support
+- Delete 2.8.x versions
+
 ## 2.7.3
 
 - Fix Fix ActiveRecordCommaTypeCast to accept NBSP

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Dorsale::Flyboy::Folder do
   it { is_expected.to have_many(:tasks).dependent(:destroy) }

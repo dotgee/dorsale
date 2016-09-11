@@ -1,12 +1,6 @@
-module Dorsale
-  module Flyboy
-    module SmallData
-      class FilterForTasks < ::Dorsale::SmallData::Filter
-        STRATEGIES = {
-          "fb_status" => FilterStrategyByDone.new,
-          "owner"     => ::Dorsale::SmallData::FilterStrategyByKeyValue.new("owner_id")
-        }
-      end
-    end
-  end
+class Dorsale::Flyboy::SmallData::FilterForTasks < ::Dorsale::SmallData::Filter
+  STRATEGIES = {
+    "fb_status" => ::Dorsale::Flyboy::SmallData::FilterStrategyByDone.new,
+    "owner"     => ::Dorsale::SmallData::FilterStrategyByKeyValue.new("owner_id")
+  }
 end

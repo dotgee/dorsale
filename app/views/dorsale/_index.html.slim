@@ -1,0 +1,24 @@
+#page_header = yield(:page_header)
+
+- if content_for(:search)
+  .row
+    .col-md-8
+    .col-md-4
+      = yield(:search)
+
+= yield(:filters)
+
+- if content_for?(:title) || content_for?(:actions) || content_for?(:table)
+  .panel.panel-default
+    - if content_for?(:title) || content_for?(:actions)
+      .panel-heading: .panel-title
+        = yield(:title)
+        .pull-right = yield(:actions)
+
+    = yield(:table)
+
+= yield(:page_body)
+
+= yield(:pagination)
+
+#page_footer = yield(:page_footer)

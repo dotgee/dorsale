@@ -15,9 +15,13 @@ describe Dorsale::Flyboy::TasksController, type: :controller do
     create(:flyboy_task, taskable: task.taskable, done: true)
   }
 
-  let(:valid_attributes) {
-    { name: "New Task" , taskable_id: task.taskable.id, taskable_type: task.taskable.class, reminder: Date.today, term: Date.today}
-  }
+  let(:valid_attributes) {{
+    :name          => "New Task" ,
+    :taskable_id   => task.taskable.id,
+    :taskable_type => task.taskable.class,
+    :reminder      => (Time.zone.now.to_date - 3.days),
+    :term          => Time.zone.now.to_date,
+  }}
 
   describe "#complete" do
     before(:each) do
@@ -25,24 +29,24 @@ describe Dorsale::Flyboy::TasksController, type: :controller do
     end
 
     it "should mark the task as done" do
-      patch :complete, {id: task.id}
+      patch :complete, params: {id: task.id}
       expect(task.reload.done).to be true
     end
 
     it "should set progress to 100" do
-      patch :complete, {id: task.id}
+      patch :complete, params: {id: task.id}
       expect(task.reload.progress).to eq(100)
     end
 
     it "should add a task_comment" do
       count = task.comments.count
-      patch :complete, {id: task.id}
+      patch :complete, params: {id: task.id}
       expect(task.reload.comments.count).to eq(count+1)
       expect(task.comments.last.progress).to eq(100)
     end
 
     it "should redirect to the referer page" do
-      patch :complete, {id: task.id}
+      patch :complete, params: {id: task.id}
       expect(response).to redirect_to "where_i_came_from"
     end
   end
@@ -87,51 +91,52 @@ describe Dorsale::Flyboy::TasksController, type: :controller do
       end
 
       it "sorting by taskable asc" do
-        get :index, sort: "taskable"
+        get :index, params: {sort: "taskable"}
         expect(assigns(:tasks).to_a).to eq [@task1, @task2, @task3]
       end
 
       it "sorting by taskable desc" do
-        get :index, sort: "-taskable"
+        get :index, params: {sort: "-taskable"}
         expect(assigns(:tasks).to_a).to eq [@task3, @task2, @task1]
       end
 
       it "sorting by name asc" do
-        get :index, sort: "name"
+        get :index, params: {sort: "name"}
         expect(assigns(:tasks).to_a).to eq [@task1, @task2, @task3]
       end
 
       it "sorting by name desc" do
-        get :index, sort: "-name"
+        get :index, params: {sort: "-name"}
         expect(assigns(:tasks).to_a).to eq [@task3, @task2, @task1]
       end
 
       it "sorting by progress asc" do
-        get :index, sort: "progress"
+        get :index, params: {sort: "progress"}
         expect(assigns(:tasks).to_a).to eq [@task2, @task3, @task1]
       end
 
       it "sorting by progress desc" do
-        get :index, sort: "-progress"
+        get :index, params: {sort: "-progress"}
         expect(assigns(:tasks).to_a).to eq [@task1, @task3, @task2]
       end
 
       it "sorting by term asc" do
-        get :index, sort: "term"
+        get :index, params: {sort: "term"}
         expect(assigns(:tasks).to_a).to eq [@task1, @task3, @task2]
       end
 
       it "sorting by term desc" do
-        get :index, sort: "-term"
+        get :index, params: {sort: "-term"}
         expect(assigns(:tasks).to_a).to eq [@task2, @task3, @task1]
       end
     end
 
     context "export" do
       render_views
+
       it "should not paginate the CSV" do
         50.times { task.dup.save }
-        get :index, format: :csv
+        get :index, params: {format: :csv}
         exported_lines_count_plus_header = CSV.parse(response.body).count
         task_count = Dorsale::Flyboy::Task.count
         expect(exported_lines_count_plus_header).to eq task_count+1
@@ -141,21 +146,21 @@ describe Dorsale::Flyboy::TasksController, type: :controller do
 
   describe "GET show" do
     it "assigns the requested task as @task" do
-      get :show, {:id => task.to_param}
+      get :show, params: {:id => task.to_param}
       expect(assigns(:task)).to eq(task)
     end
   end
 
   describe "GET new" do
     it "assigns a new task as @task" do
-      get :new, {:folder_id => task.taskable.id}
+      get :new, params: {:folder_id => task.taskable.id}
       expect(assigns(:task)).to be_a_new(Dorsale::Flyboy::Task)
     end
   end
 
   describe "GET edit" do
     it "assigns the requested task as @task" do
-      get :edit, {:id => task.to_param}
+      get :edit, params: {:id => task.to_param}
       expect(assigns(:task)).to eq(task)
     end
   end
@@ -165,25 +170,25 @@ describe Dorsale::Flyboy::TasksController, type: :controller do
 
       it "creates a new Task" do
         expect {
-          post :create, {:task => valid_attributes}
+          post :create, params: {:task => valid_attributes}
         }.to change(Dorsale::Flyboy::Task, :count).by(1)
       end
 
       it "assigns a newly created task as @task" do
-        post :create, {:task => valid_attributes}
+        post :create, params: {:task => valid_attributes}
         expect(assigns(:task)).to be_a(Dorsale::Flyboy::Task)
         expect(assigns(:task)).to be_persisted
       end
 
       it "redirects to the created task" do
-        post :create, {:task => valid_attributes}
+        post :create, params: {:task => valid_attributes}
         expect(response).to redirect_to Dorsale::Flyboy::Task.order("id ASC").last
       end
 
       it "should send a mail to the owner" do
         owner = create(:user)
         ActionMailer::Base.deliveries.clear
-        post :create, {:task => valid_attributes.merge(owner_guid: owner.guid)}
+        post :create, params: {:task => valid_attributes.merge(owner_guid: owner.guid)}
         expect(ActionMailer::Base.deliveries.count).to eq 1
         email = ActionMailer::Base.deliveries.last
         expect(email.to).to include owner.email
@@ -194,20 +199,20 @@ describe Dorsale::Flyboy::TasksController, type: :controller do
 
       it "should not send a mail if there is no owner" do
         ActionMailer::Base.deliveries.clear
-        post :create, {:task => valid_attributes}
+        post :create, params: {:task => valid_attributes}
         expect(ActionMailer::Base.deliveries.count).to eq 0
       end
 
       it "should not send a mail if the author is the owner" do
         ActionMailer::Base.deliveries.clear
-        post :create, {:task => valid_attributes}
+        post :create, params: {:task => valid_attributes}
         expect(ActionMailer::Base.deliveries.count).to eq 0
       end
     end
 
     describe "with invalid params" do
       it "assigns a newly created but unsaved task as @task" do
-        post :create, task: {name: nil, taskable_id: task.taskable.id, taskable_type: task.taskable.class}
+        post :create, params: {task: {name: nil, taskable_id: task.taskable.id, taskable_type: task.taskable.class}}
         expect(assigns(:task)).to be_a_new(Dorsale::Flyboy::Task)
       end
     end
@@ -218,13 +223,13 @@ describe Dorsale::Flyboy::TasksController, type: :controller do
     describe "with valid params" do
       it "assigns the requested task as @task" do
         task = Dorsale::Flyboy::Task.create! valid_attributes
-        patch :update, {:id => task.to_param, :task => valid_attributes}
+        patch :update, params: {:id => task.to_param, :task => valid_attributes}
         expect(assigns(:task)).to eq(task)
       end
 
       it "redirects to the task" do
         task = Dorsale::Flyboy::Task.create! valid_attributes
-        patch :update, {:id => task.to_param, :task => valid_attributes}
+        patch :update, params: {:id => task.to_param, :task => valid_attributes}
         expect(response).to redirect_to(task)
       end
     end
@@ -233,7 +238,7 @@ describe Dorsale::Flyboy::TasksController, type: :controller do
       it "assigns the task as @task" do
         task = Dorsale::Flyboy::Task.create! valid_attributes
 
-        patch :update, {
+        patch :update, params: {
           :id   => task.to_param,
           :task => {:name => nil}
         }
@@ -247,13 +252,13 @@ describe Dorsale::Flyboy::TasksController, type: :controller do
     it "destroys the requested task" do
       task = Dorsale::Flyboy::Task.create! valid_attributes
       expect {
-        delete :destroy, {:id => task.to_param}
+        delete :destroy, params: {:id => task.to_param}
       }.to change(Dorsale::Flyboy::Task, :count).by(-1)
     end
 
     it "redirects to the tasks list" do
       task = Dorsale::Flyboy::Task.create! valid_attributes
-      delete :destroy, {:id => task.to_param}
+      delete :destroy, params: {:id => task.to_param}
       expect(response).to redirect_to(flyboy_tasks_path)
     end
   end
@@ -261,8 +266,8 @@ describe Dorsale::Flyboy::TasksController, type: :controller do
   describe "snooze" do
     it "should redirect to the task list to refresh it" do
       task = Dorsale::Flyboy::Task.create! valid_attributes
-      patch :snooze, {:id => task.to_param}
-      expect(response).to redirect_to(flyboy_tasks_path)
+      patch :snooze, params: {:id => task.to_param}
+      expect(response).to redirect_to(task)
     end
   end
 
@@ -276,7 +281,7 @@ describe Dorsale::Flyboy::TasksController, type: :controller do
 
       Timecop.travel "2016-03-09 15:00:00" do
         @delayed_task        = create(:flyboy_task, term: Date.yesterday)           # tuesday
-        @today_task          = create(:flyboy_task, term: Date.today)               # thursday - today
+        @today_task          = create(:flyboy_task, term: Time.zone.now.to_date)               # thursday - today
         @tomorrow_task       = create(:flyboy_task, term: Date.tomorrow)            # wednesday
         @this_week_task      = create(:flyboy_task, term: Date.parse("2016-03-12")) # sunday
         @next_week_task      = create(:flyboy_task, term: Date.parse("2016-03-14")) # monday next week

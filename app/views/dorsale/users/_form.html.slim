@@ -1,13 +1,16 @@
-.well
-  = horizontal_form_for @user, multipart: true do |f|
-    = f.input :email
-    = f.input :is_active, as: :boolean, wrapper: :horizontal_radio_and_checkboxes
-    = f.input :avatar, wrapper: :horizontal_form
+.panel.panel-default
+  .panel-heading: .panel-title
+    - if @user.new_record?
+      = t("actions.new_user")
+    - else
+      = t("actions.update")
+      = " : "
+      = @user
 
-    .form-group
-      label.col-md-3.control-label
-        = @user.t(:current_avatar)
-      .col-md-9
-        = avatar_img(@user)
+  .panel-body
+    = horizontal_form_for @user, multipart: true do |f|
+      = f.input :email
+      = f.input :is_active, as: :boolean, wrapper: :horizontal_radio_and_checkboxes
+      = render "dorsale/forms/avatar", f: f
 
-    = form_buttons obj: @user
+      = form_buttons obj: @user

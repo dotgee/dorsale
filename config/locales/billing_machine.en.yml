@@ -1,6 +1,8 @@
 en:
   actions:
     create_invoice: "Create invoice"
+    new_payment_term: "New payment terms"
+    new_id_card: "New Id Card"
 
   attributes:
     id_card: "Id Card"
@@ -57,10 +59,21 @@ en:
 
   activerecord:
     models:
-      dorsale/billing_machine/invoice: "Invoice"
-      dorsale/billing_machine/quotation: "Quotation"
-      dorsale/billing_machine/id_card: "Id card"
-      dorsale/billing_machine/payment_term: "Payment term"
+      dorsale/billing_machine/invoice:
+        one: "Invoice"
+        other: "Invoices"
+
+      dorsale/billing_machine/quotation:
+        one: "Quotation"
+        other: "Quotations"
+
+      dorsale/billing_machine/id_card:
+        one: "Id card"
+        other: "Id cards"
+
+      dorsale/billing_machine/payment_term:
+        one: "Payment term"
+        other: "Payment terms"
 
     attributes:
       dorsale/billing_machine/invoice:

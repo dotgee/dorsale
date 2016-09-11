@@ -1,5 +1,3 @@
-module Dorsale
-  class ApplicationMailer < ::ApplicationMailer
-    helper Dorsale::AllHelpers
-  end
+class Dorsale::ApplicationMailer < ::ApplicationMailer
+  helper Dorsale::AllHelpers
 end

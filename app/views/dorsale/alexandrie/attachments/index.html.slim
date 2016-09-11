@@ -1,3 +1,6 @@
 = render "dorsale/flash"
-= render "dorsale/alexandrie/attachments/form", attachable: @attachable
+
+- if policy(::Dorsale::Alexandrie::Attachment).create?
+  = render "dorsale/alexandrie/attachments/form", attachable: @attachable
+
 = render "dorsale/alexandrie/attachments/list", attachable: @attachable

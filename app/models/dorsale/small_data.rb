@@ -1,0 +1,2 @@
+module Dorsale::SmallData
+end

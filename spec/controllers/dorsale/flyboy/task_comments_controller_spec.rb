@@ -12,7 +12,7 @@ describe Dorsale::Flyboy::TaskCommentsController, type: :controller do
 
   describe "#create" do
     it "should create the task_comment" do
-      post :create, task_id: task.id, task_comment: task_comment.attributes
+      post :create, params: {task_id: task.id, task_comment: task_comment.attributes}
       expect(assigns(:task_comment).persisted?).to be true
     end
   end

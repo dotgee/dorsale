@@ -6,4 +6,10 @@ class ApplicationController < ActionController::Base
   helper ::Dorsale::AllHelpers
 
   before_action :authenticate_user!
+
+  rescue_from Pundit::NotAuthorizedError do |e|
+    raise e if Rails.env.test?
+    flash[:alert] = "Not authorized."
+    redirect_to "/"
+  end
 end

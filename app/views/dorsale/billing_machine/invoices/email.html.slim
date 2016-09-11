@@ -1,42 +1,44 @@
 .billing_machine
-  h1 = t("actions.email")
-  .well
-    = horizontal_form_for :email do |f|
-      = f.input(:subject,
-        :as => :string,
-        :label => t("attributes.subject"),
-        :input_html => {value: @subject},
-      )
+  .panel.panel-default
+    .panel-heading: .panel-title = t("actions.email")
 
-      = f.input(:to,
-        :disabled => true,
-        :label => t("attributes.to"),
-        :input_html => {value: "#{@invoice.customer} <#{@invoice.customer.email}>"},
-      )
+    .panel-body
+      = horizontal_form_for :email do |f|
+        = f.input(:subject,
+          :as => :string,
+          :label => t("attributes.subject"),
+          :input_html => {value: @subject},
+        )
 
-      = f.input(:attachment,
-        :disabled => true,
-        :label => t("attributes.attachment"),
-        :input_html => {value: "#{@invoice.class.t}_#{@invoice.tracking_id}.pdf"},
-      )
+        = f.input(:to,
+          :disabled => true,
+          :label => t("attributes.to"),
+          :input_html => {value: "#{@invoice.customer} <#{@invoice.customer.email}>"},
+        )
 
-      = f.input(:body,
-        :as => :text,
-        :label => t("attributes.body"),
-        :input_html => {value: @body},
-      )
+        = f.input(:attachment,
+          :disabled => true,
+          :label => t("attributes.attachment"),
+          :input_html => {value: "#{@invoice.class.t}_#{@invoice.tracking_id}.pdf"},
+        )
+
+        = f.input(:body,
+          :as => :text,
+          :label => t("attributes.body"),
+          :input_html => {value: @body},
+        )
 
 
-      .actions
-        button.btn.btn-success type="submit"
-          = icon(:send)
-          = " "
-          = t("actions.send")
+        .actions
+          button.btn.btn-success type="submit"
+            = icon(:send)
+            = " "
+            = t("actions.send")
 
-        a.btn.btn-default href=dorsale.billing_machine_invoice_path(@invoice)
-          = icon(:times)
-          = " "
-          = t("actions.cancel")
+          a.btn.btn-default href=dorsale.billing_machine_invoice_path(@invoice)
+            = icon(:times)
+            = " "
+            = t("actions.cancel")
 
   hr
 

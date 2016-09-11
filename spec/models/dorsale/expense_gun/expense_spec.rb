@@ -1,20 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe ::Dorsale::ExpenseGun::Expense, type: :model do
+  it { is_expected.to have_many(:expense_lines).dependent(:destroy) }
+  it { is_expected.to validate_presence_of :name }
+  it { is_expected.to validate_presence_of :date }
+
   it "expense factory should be valid?" do
     expect(build(:expense_gun_expense)).to be_valid
   end
 
-  it "shoud validates presence of name" do
-    expect(build(:expense_gun_expense)).to validate_presence_of :name
-  end
-
-  it "shoud validates presence of date" do
-    expect(build(:expense_gun_expense)).to validate_presence_of :date
-  end
-
   it "default #date should be tody" do
-    expect(::Dorsale::ExpenseGun::Expense.new.date).to eq Date.today
+    expect(::Dorsale::ExpenseGun::Expense.new.date).to eq Time.zone.now.to_date
   end
 
   it "new expense should have new state" do
@@ -27,67 +23,67 @@ RSpec.describe ::Dorsale::ExpenseGun::Expense, type: :model do
     end
 
     it "new expense can be submited" do
-      expect(@expense.submit).to be true
+      expect(@expense.go_to_submited).to be true
       expect(@expense.current_state).to be :submited
     end
 
     it "new expense can't be accepted" do
-      expect(@expense.accept).to be false
+      expect(@expense.go_to_accepted).to be false
       expect(@expense.current_state).to be :new
     end
 
     it "new expense can't be refused" do
-      expect(@expense.refuse).to be false
+      expect(@expense.go_to_refused).to be false
       expect(@expense.current_state).to be :new
     end
 
     it "new expense can be canceled" do
-      expect(@expense.cancel).to be true
+      expect(@expense.go_to_canceled).to be true
       expect(@expense.current_state).to be :canceled
     end
   end
 
   describe "submited state" do
     before :each do
-      @expense = FactoryGirl.build(:expense_gun_expense)
-      @expense.submit
+      @expense = build(:expense_gun_expense)
+      @expense.go_to_submited
     end
 
     it "submitted expense can be accepted" do
-      expect(@expense.accept).to be true
+      expect(@expense.go_to_accepted).to be true
       expect(@expense.current_state).to be :accepted
     end
 
     it "submitted expense can be refused" do
-      expect(@expense.refuse).to be true
+      expect(@expense.go_to_refused).to be true
       expect(@expense.current_state).to be :refused
     end
 
     it "submitted expense can be canceled" do
-      expect(@expense.cancel).to be true
+      expect(@expense.go_to_canceled).to be true
       expect(@expense.current_state).to be :canceled
     end
   end
 
   describe "acceped state" do
     before :each do
-      @expense = FactoryGirl.build(:expense_gun_expense)
-      @expense.submit
-      @expense.accept
+      @expense = build(:expense_gun_expense)
+      @expense.go_to_submited
+      @expense.go_to_accepted
     end
 
     it "acceped expense can't be submited" do
-      expect(@expense.submit).to be false
+      expect(@expense.go_to_submited).to be false
       expect(@expense.current_state).to be :accepted
     end
 
     it "acceped expense can't be refused" do
-      expect(@expense.refuse).to be false
+      expect(@expense.go_to_refused).to be false
       expect(@expense.current_state).to be :accepted
     end
 
     it "acceped expense can be canceled" do
-      expect(@expense.cancel).to be true
+      expect(@expense.go_to_canceled).to be true
       expect(@expense.current_state).to be :canceled
     end
   end
@@ -95,44 +91,44 @@ RSpec.describe ::Dorsale::ExpenseGun::Expense, type: :model do
   describe "refused state" do
     before :each do
       @expense = build(:expense_gun_expense)
-      @expense.submit
-      @expense.refuse
+      @expense.go_to_submited
+      @expense.go_to_refused
     end
 
     it "refused expense can't be submited" do
-      expect(@expense.submit).to be false
+      expect(@expense.go_to_submited).to be false
       expect(@expense.current_state).to be :refused
     end
 
     it "refused expense can't be acceped" do
-      expect(@expense.accept).to be false
+      expect(@expense.go_to_accepted).to be false
       expect(@expense.current_state).to be :refused
     end
 
     it "refused expense can't be canceled" do
-      expect(@expense.cancel).to be false
+      expect(@expense.go_to_canceled).to be false
       expect(@expense.current_state).to be :refused
     end
   end
 
   describe "canceled state" do
     before :each do
-      @expense = FactoryGirl.build(:expense_gun_expense)
-      @expense.cancel
+      @expense = build(:expense_gun_expense)
+      @expense.go_to_canceled
     end
 
     it "canceled expense can't be submited" do
-      expect(@expense.submit).to be false
+      expect(@expense.go_to_submited).to be false
       expect(@expense.current_state).to be :canceled
     end
 
     it "canceled expense can't be acceped" do
-      expect(@expense.accept).to be false
+      expect(@expense.go_to_accepted).to be false
       expect(@expense.current_state).to be :canceled
     end
 
     it "canceled expense can't be refused" do
-      expect(@expense.refuse).to be false
+      expect(@expense.go_to_refused).to be false
       expect(@expense.current_state).to be :canceled
     end
   end
@@ -145,7 +141,7 @@ RSpec.describe ::Dorsale::ExpenseGun::Expense, type: :model do
   end
 
   it "#total_employee_payback should return sum of lines" do
-    expense = FactoryGirl.build(:expense_gun_expense, expense_lines: [])
+    expense = build(:expense_gun_expense, expense_lines: [])
     expense.expense_lines << build(:expense_gun_expense_line, total_all_taxes: 10, company_part: 100)
     expense.expense_lines << build(:expense_gun_expense_line, total_all_taxes: 10, company_part: 50)
     expect(expense.total_employee_payback).to eq 15.0
@@ -166,15 +162,5 @@ RSpec.describe ::Dorsale::ExpenseGun::Expense, type: :model do
     expect(::Dorsale::ExpenseGun::Expense.new(state: :acceped).may_edit?).to be false
     expect(::Dorsale::ExpenseGun::Expense.new(state: :refused).may_edit?).to be false
     expect(::Dorsale::ExpenseGun::Expense.new(state: :canceled).may_edit?).to be false
-  end
-
-  it "destroy an expense should destroy associated expense lines" do
-    expense          = create(:expense_gun_expense)
-    expense_line_ids = expense.expense_lines.map(&:id)
-    expect(expense_line_ids.any?).to be true
-    expense.destroy
-    expense_line_ids.map do |id|
-      expect(::Dorsale::ExpenseGun::ExpenseLine.exists?(id)).to be false
-    end
   end
 end

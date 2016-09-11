@@ -1,6 +1,2 @@
-module Dorsale
-  module Alexandrie
-    class FileUploader < ::Dorsale::FileUploader
-    end
-  end
+class Dorsale::Alexandrie::FileUploader < ::Dorsale::FileUploader
 end

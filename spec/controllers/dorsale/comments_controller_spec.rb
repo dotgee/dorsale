@@ -19,12 +19,12 @@ describe Dorsale::CommentsController, type: :controller do
 
   describe "create" do
     it "should create comment" do
-      post :create, comment: valid_attributes, back_url: "/"
+      post :create, params: {comment: valid_attributes, back_url: "/"}
       expect(assigns(:comment)).to be_persisted
     end
 
     it "should redirect to back_url" do
-      post :create, comment: valid_attributes, back_url: "/"
+      post :create, params: {comment: valid_attributes, back_url: "/"}
       expect(response).to redirect_to("/")
     end
   end
@@ -32,7 +32,7 @@ describe Dorsale::CommentsController, type: :controller do
   describe "update" do
     it "should update comment text" do
       comment = create(:dorsale_comment)
-      patch :update, id: comment, comment: {text: "New-comment-text"}, back_url: "/"
+      patch :update, params: {id: comment, comment: {text: "New-comment-text"}, back_url: "/"}
       expect(response).to redirect_to("/")
       expect(comment.reload.text).to eq "New-comment-text"
     end
@@ -41,7 +41,7 @@ describe Dorsale::CommentsController, type: :controller do
   describe "destroy" do
     it "should destroy comment" do
       comment = create(:dorsale_comment)
-      delete :destroy, id: comment, back_url: "/"
+      delete :destroy, params: {id: comment, back_url: "/"}
       expect(response).to redirect_to("/")
     end
   end

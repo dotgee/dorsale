@@ -1,21 +1,36 @@
 .customer_vault
-  = render "dorsale/customer_vault/people/actions"
-  = render "dorsale/customer_vault/people/index_tabs"
-  = render "dorsale/customer_vault/people/filters"
+  - content_for :title
+    = icon(:book)
+    = " "
+    = ::Dorsale::CustomerVault::Person.ts
 
-  - if @people.empty?
-    p = t("messages.no_people")
+  - content_for :filters
+    = render "dorsale/customer_vault/people/filters"
 
-  - else
-    .people
-      - @people.each do |person|
-        - if person.instance_of? ::Dorsale::CustomerVault::Individual
-            = render "dorsale/customer_vault/individuals/list_details", i: person
+  - content_for :page_header
+    = render "dorsale/customer_vault/people/index_tabs"
 
-        - if person.instance_of? ::Dorsale::CustomerVault::Corporation
-            = render "dorsale/customer_vault/corporations/list_details", c: person
+  - content_for :actions
+    = render "dorsale/customer_vault/people/actions"
 
+  - content_for :page_body
+    - if @people.empty?
+      p = t("messages.no_people")
+
+    - else
+      .people: .row
+        - @people.each_with_index do |person, index|
+          .col-md-6
+            = render "dorsale/customer_vault/people/list_item", person: person
+
+          - if index.odd?
+            .clearfix
+
+  - content_for :pagination
     = paginate @people
 
+  - content_for :page_footer
     .text-center
-      = info ::Dorsale::CustomerVault::Person, :count, @total_contact.count
+      = info ::Dorsale::CustomerVault::Person, :count, @people_without_pagination.count
+
+  = render_dorsale_index

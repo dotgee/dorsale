@@ -50,5 +50,5 @@ Feature: Invoice Management
     And the total including taxes is "201,60"
     When he saves the quotation
     Then a message signals the success of the quotation creation
-    Then it's added to the quotation list
+    Then I am on the created quotation
     And the quotation informations are visible on the quotation details

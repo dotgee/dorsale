@@ -13,7 +13,16 @@ end
 Then(/^the person task is created$/) do
   expect(::Dorsale::Flyboy::Task.count).to eq(@tasks_count + 1)
   @task = ::Dorsale::Flyboy::Task.order(:id).last
-  expect(current_path).to eq dorsale.flyboy_task_path(@task)
+
+  if @corporation
+    url = dorsale.customer_vault_corporation_path(@corporation)
+  elsif @individual
+    url = dorsale.customer_vault_individual_path(@individual)
+  else
+    raise "invalid person"
+  end
+
+  expect(current_path).to eq url
 end
 
 Then(/^the task appear$/) do

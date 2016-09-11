@@ -24,7 +24,7 @@ describe ::Dorsale::BillingMachine::Quotation do
 
   describe "default values" do
     it "default date should be today" do
-      expect(::Dorsale::BillingMachine::Quotation.new.date).to eq Date.today
+      expect(::Dorsale::BillingMachine::Quotation.new.date).to eq Time.zone.now.to_date
     end
 
     it "default expires_at should be date + 1 month" do
@@ -163,74 +163,6 @@ describe ::Dorsale::BillingMachine::Quotation do
       expect(quotation.vat_amount).to eq(0.0)
       expect(quotation.total_including_taxes).to eq(0.0)
       expect(quotation.balance).to eq(0.0)
-    end
-  end
-
-  describe "#create_copy!" do
-    it "should duplicate infos, lines, and documents" do
-      q  = create(:billing_machine_quotation, label: "ABC")
-      ql = create(:billing_machine_quotation_line, quotation: q, label: "DEF")
-      pdf = create(:alexandrie_attachment, attachable: q)
-
-      q2 = q.create_copy!.reload
-      expect(q2).to be_persisted
-      expect(q2.label).to eq "ABC"
-      expect(q2.lines.count).to eq 1
-      expect(q2.lines.first.label).to eq "DEF"
-      expect(q2.attachments.count).to eq 1
-    end
-
-    it "should reset date" do
-      q = create(:billing_machine_quotation, date: 3.days.ago)
-      expect(q.date).to_not eq Date.today
-      expect(q.create_copy!.date).to eq Date.today
-    end
-
-    it "should reset unique_index, tracking_id, created_at, updated_at" do
-      q1 = create(:billing_machine_quotation)
-      q2 = q1.create_copy!.reload
-      expect(q1.unique_index).to_not eq q2.unique_index
-      expect(q1.tracking_id).to_not eq q2.tracking_id
-      expect(q1.created_at).to_not eq q2.created_at
-      expect(q1.updated_at).to_not eq q2.updated_at
-    end
-
-    it "should reset state to pending" do
-      q1 = create(:billing_machine_quotation, state: "canceled")
-      q2 = q1.create_copy!
-
-      expect(q1.reload.state).to eq "canceled"
-      expect(q2.reload.state).to eq "pending"
-    end
-  end
-
-  describe "#to_new_invoice" do
-    it "should convert quotation to invoice" do
-      q  = create(:billing_machine_quotation, label: "ABC")
-      ql = create(:billing_machine_quotation_line, quotation: q, label: "DEF")
-
-      i = q.to_new_invoice
-
-      expect(i).to be_a Dorsale::BillingMachine::Invoice
-      expect(i).to_not be_persisted
-      expect(i.label).to eq "ABC"
-      expect(i.lines.length).to eq 1
-      expect(i.lines.first.label).to eq "DEF"
-    end
-
-    it "should reset date" do
-      q = create(:billing_machine_quotation, date: 3.days.ago)
-      expect(q.date).to_not eq Date.today
-      expect(q.to_new_invoice.date).to eq Date.today
-    end
-
-    it "should reset unique_index, tracking_id, created_at, updated_at" do
-      q = create(:billing_machine_quotation, unique_index: 56544)
-      i = q.to_new_invoice
-      expect(i.unique_index).to_not eq q.unique_index
-      expect(i.tracking_id).to_not eq q.tracking_id
-      expect(i.created_at).to_not eq q.created_at
-      expect(i.updated_at).to_not eq q.updated_at
     end
   end
 

@@ -7,30 +7,33 @@ else
   puts ".ruby-version file not found"
 end
 
-gem "rails", "~> 4.2.6"
+gem "rails", "5.0.0"
 gem 'devise'
 gem 'devise-bootstrap-views'
 gem 'devise-i18n'
-gem "database_cleaner"
+gem 'pg'
+gem 'uglifier'
+gem "pry-rails"
+gem "awesome_print"
+gem "delayed_job_active_record"
+gem "acts-as-taggable-on", github: "mbleigh/acts-as-taggable-on"
 
 gemspec
 
-group :production, :development do
-  gem 'pg'
-  gem 'uglifier'
-  gem "whenever"
-  gem "exception_notification"
+group :development, :test do
+  gem "byebug"
+  gem "faker"
+  gem "database_cleaner"
 end
 
-group :development, :test do
-  gem "thor"
-  gem "pry"
-  gem "sqlite3"
-  gem "zeus"
-  gem "rspec-rails"
+group :test do
   gem "minitest"
+  gem "thor"
+  gem "sqlite3"
+  gem "rspec-rails"
+  gem "rspec-wait"
   gem "shoulda-matchers", "2.5.0"
-  gem "faker"
+  gem "rails-controller-testing"
   gem "cucumber-rails", require: false
   gem "capybara"
   gem "poltergeist"

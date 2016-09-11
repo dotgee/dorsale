@@ -1,2 +1,8 @@
 .flyboy
-  = render "dorsale/flyboy/folders/form"
+  - content_for :context do
+    = render "dorsale/flyboy/folders/context", folder: @folder
+
+  - content_for :main do
+    = render "dorsale/flyboy/folders/form"
+
+  = render_contextual

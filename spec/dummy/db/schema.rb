@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,7 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160317124838) do
+ActiveRecord::Schema.define(version: 20160910164840) do
+
+  create_table "delayed_jobs", force: :cascade do |t|
+    t.integer  "priority",   default: 0, null: false
+    t.integer  "attempts",   default: 0, null: false
+    t.text     "handler",                null: false
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["priority", "run_at"], name: "delayed_jobs_priority"
+  end
 
   create_table "dorsale_addresses", force: :cascade do |t|
     t.string   "street"
@@ -81,9 +95,8 @@ ActiveRecord::Schema.define(version: 20160317124838) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal  "vat_rate"
+    t.index ["invoice_id"], name: "index_dorsale_billing_machine_invoice_lines_on_invoice_id"
   end
-
-  add_index "dorsale_billing_machine_invoice_lines", ["invoice_id"], name: "index_dorsale_billing_machine_invoice_lines_on_invoice_id"
 
   create_table "dorsale_billing_machine_invoices", force: :cascade do |t|
     t.integer  "customer_id"
@@ -105,12 +118,11 @@ ActiveRecord::Schema.define(version: 20160317124838) do
     t.string   "tracking_id"
     t.decimal  "commercial_discount"
     t.text     "comments"
+    t.index ["customer_id"], name: "index_dorsale_billing_machine_invoices_on_customer_id"
+    t.index ["customer_type"], name: "index_dorsale_billing_machine_invoices_on_customer_type"
+    t.index ["id_card_id"], name: "index_dorsale_billing_machine_invoices_on_id_card_id"
+    t.index ["payment_term_id"], name: "index_dorsale_billing_machine_invoices_on_payment_term_id"
   end
-
-  add_index "dorsale_billing_machine_invoices", ["customer_id"], name: "index_dorsale_billing_machine_invoices_on_customer_id"
-  add_index "dorsale_billing_machine_invoices", ["customer_type"], name: "index_dorsale_billing_machine_invoices_on_customer_type"
-  add_index "dorsale_billing_machine_invoices", ["id_card_id"], name: "index_dorsale_billing_machine_invoices_on_id_card_id"
-  add_index "dorsale_billing_machine_invoices", ["payment_term_id"], name: "index_dorsale_billing_machine_invoices_on_payment_term_id"
 
   create_table "dorsale_billing_machine_payment_terms", force: :cascade do |t|
     t.string   "label"
@@ -128,9 +140,8 @@ ActiveRecord::Schema.define(version: 20160317124838) do
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
     t.decimal  "vat_rate"
+    t.index ["quotation_id"], name: "index_dorsale_billing_machine_quotation_lines_on_quotation_id"
   end
-
-  add_index "dorsale_billing_machine_quotation_lines", ["quotation_id"], name: "index_dorsale_billing_machine_quotation_lines_on_quotation_id"
 
   create_table "dorsale_billing_machine_quotations", force: :cascade do |t|
     t.integer  "customer_id"
@@ -150,12 +161,11 @@ ActiveRecord::Schema.define(version: 20160317124838) do
     t.string   "tracking_id"
     t.decimal  "commercial_discount"
     t.string   "state"
+    t.index ["customer_id"], name: "index_dorsale_billing_machine_quotations_on_customer_id"
+    t.index ["customer_type"], name: "index_dorsale_billing_machine_quotations_on_customer_type"
+    t.index ["id_card_id"], name: "index_dorsale_billing_machine_quotations_on_id_card_id"
+    t.index ["payment_term_id"], name: "index_dorsale_billing_machine_quotations_on_payment_term_id"
   end
-
-  add_index "dorsale_billing_machine_quotations", ["customer_id"], name: "index_dorsale_billing_machine_quotations_on_customer_id"
-  add_index "dorsale_billing_machine_quotations", ["customer_type"], name: "index_dorsale_billing_machine_quotations_on_customer_type"
-  add_index "dorsale_billing_machine_quotations", ["id_card_id"], name: "index_dorsale_billing_machine_quotations_on_id_card_id"
-  add_index "dorsale_billing_machine_quotations", ["payment_term_id"], name: "index_dorsale_billing_machine_quotations_on_payment_term_id"
 
   create_table "dorsale_comments", force: :cascade do |t|
     t.integer  "author_id"
@@ -168,7 +178,7 @@ ActiveRecord::Schema.define(version: 20160317124838) do
     t.string   "author_type"
   end
 
-  create_table "dorsale_customer_vault_corporations", force: :cascade do |t|
+  create_table "dorsale_customer_vault_corporations_bak", force: :cascade do |t|
     t.string   "name"
     t.string   "short_name"
     t.text     "email"
@@ -184,7 +194,7 @@ ActiveRecord::Schema.define(version: 20160317124838) do
     t.string   "european_union_vat_number"
   end
 
-  create_table "dorsale_customer_vault_individuals", force: :cascade do |t|
+  create_table "dorsale_customer_vault_individuals_bak", force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
     t.string   "short_name"
@@ -204,17 +214,35 @@ ActiveRecord::Schema.define(version: 20160317124838) do
   create_table "dorsale_customer_vault_links", force: :cascade do |t|
     t.string   "title"
     t.integer  "alice_id"
-    t.string   "alice_type"
+    t.string   "alice_type_bak"
     t.integer  "bob_id"
-    t.string   "bob_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "bob_type_bak"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
-  add_index "dorsale_customer_vault_links", ["alice_id"], name: "index_dorsale_customer_vault_links_on_alice_id"
-  add_index "dorsale_customer_vault_links", ["alice_type"], name: "index_dorsale_customer_vault_links_on_alice_type"
-  add_index "dorsale_customer_vault_links", ["bob_id"], name: "index_dorsale_customer_vault_links_on_bob_id"
-  add_index "dorsale_customer_vault_links", ["bob_type"], name: "index_dorsale_customer_vault_links_on_bob_type"
+  create_table "dorsale_customer_vault_people", force: :cascade do |t|
+    t.string   "type"
+    t.integer  "old_id"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "corporation_name"
+    t.string   "short_name"
+    t.string   "avatar"
+    t.string   "email"
+    t.string   "phone"
+    t.string   "mobile"
+    t.string   "fax"
+    t.string   "skype"
+    t.text     "www"
+    t.text     "twitter"
+    t.text     "facebook"
+    t.text     "linkedin"
+    t.text     "viadeo"
+    t.text     "data"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
 
   create_table "dorsale_expense_gun_categories", force: :cascade do |t|
     t.string  "name"
@@ -232,10 +260,9 @@ ActiveRecord::Schema.define(version: 20160317124838) do
     t.float    "company_part"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.index ["category_id"], name: "index_dorsale_expense_gun_expense_lines_on_category_id"
+    t.index ["expense_id"], name: "index_dorsale_expense_gun_expense_lines_on_expense_id"
   end
-
-  add_index "dorsale_expense_gun_expense_lines", ["category_id"], name: "index_dorsale_expense_gun_expense_lines_on_category_id"
-  add_index "dorsale_expense_gun_expense_lines", ["expense_id"], name: "index_dorsale_expense_gun_expense_lines_on_expense_id"
 
   create_table "dorsale_expense_gun_expenses", force: :cascade do |t|
     t.string   "name"
@@ -257,10 +284,9 @@ ActiveRecord::Schema.define(version: 20160317124838) do
     t.integer  "version"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+    t.index ["folderable_id"], name: "index_dorsale_flyboy_folders_on_folderable_id"
+    t.index ["folderable_type"], name: "index_dorsale_flyboy_folders_on_folderable_type"
   end
-
-  add_index "dorsale_flyboy_folders", ["folderable_id"], name: "index_dorsale_flyboy_folders_on_folderable_id"
-  add_index "dorsale_flyboy_folders", ["folderable_type"], name: "index_dorsale_flyboy_folders_on_folderable_type"
 
   create_table "dorsale_flyboy_task_comments", force: :cascade do |t|
     t.integer  "task_id"
@@ -271,9 +297,8 @@ ActiveRecord::Schema.define(version: 20160317124838) do
     t.datetime "updated_at",  null: false
     t.string   "author_type"
     t.integer  "author_id"
+    t.index ["task_id"], name: "index_dorsale_flyboy_task_comments_on_task_id"
   end
-
-  add_index "dorsale_flyboy_task_comments", ["task_id"], name: "index_dorsale_flyboy_task_comments_on_task_id"
 
   create_table "dorsale_flyboy_tasks", force: :cascade do |t|
     t.integer  "taskable_id"
@@ -288,15 +313,21 @@ ActiveRecord::Schema.define(version: 20160317124838) do
     t.datetime "updated_at",    null: false
     t.string   "owner_type"
     t.integer  "owner_id"
+    t.index ["taskable_id"], name: "index_dorsale_flyboy_tasks_on_taskable_id"
+    t.index ["taskable_type"], name: "index_dorsale_flyboy_tasks_on_taskable_type"
   end
-
-  add_index "dorsale_flyboy_tasks", ["taskable_id"], name: "index_dorsale_flyboy_tasks_on_taskable_id"
-  add_index "dorsale_flyboy_tasks", ["taskable_type"], name: "index_dorsale_flyboy_tasks_on_taskable_type"
 
   create_table "dummy_models", force: :cascade do |t|
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.string   "string_field"
+    t.text     "text_field"
+    t.integer  "integer_field"
+    t.decimal  "decimal_field"
+    t.date     "date_field"
+    t.datetime "datetime_field"
+    t.boolean  "boolean_field"
   end
 
   create_table "taggings", force: :cascade do |t|
@@ -307,17 +338,22 @@ ActiveRecord::Schema.define(version: 20160317124838) do
     t.string   "tagger_type"
     t.string   "context",       limit: 128
     t.datetime "created_at"
+    t.index ["context"], name: "index_taggings_on_context"
+    t.index ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true
+    t.index ["tag_id"], name: "index_taggings_on_tag_id"
+    t.index ["taggable_id", "taggable_type", "context"], name: "index_taggings_on_taggable_id_and_taggable_type_and_context"
+    t.index ["taggable_id", "taggable_type", "tagger_id", "context"], name: "taggings_idy"
+    t.index ["taggable_id"], name: "index_taggings_on_taggable_id"
+    t.index ["taggable_type"], name: "index_taggings_on_taggable_type"
+    t.index ["tagger_id", "tagger_type"], name: "index_taggings_on_tagger_id_and_tagger_type"
+    t.index ["tagger_id"], name: "index_taggings_on_tagger_id"
   end
-
-  add_index "taggings", ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true
-  add_index "taggings", ["taggable_id", "taggable_type", "context"], name: "index_taggings_on_taggable_id_and_taggable_type_and_context"
 
   create_table "tags", force: :cascade do |t|
     t.string  "name"
     t.integer "taggings_count", default: 0
+    t.index ["name"], name: "index_tags_on_name", unique: true
   end
-
-  add_index "tags", ["name"], name: "index_tags_on_name", unique: true
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -334,9 +370,8 @@ ActiveRecord::Schema.define(version: 20160317124838) do
     t.datetime "updated_at",                          null: false
     t.boolean  "is_active"
     t.string   "avatar"
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
-
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
 
 end

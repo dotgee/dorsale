@@ -1,20 +1,13 @@
-- content_for :context do
-  .task-context: .context
-    = context_icon :check_square_o
-
+.panel.panel-default
+  .panel-heading: .panel-title
+    = icon :check_square_o
+    = " "
     - if @task.persisted?
-      = context_title (t("update") + " " + @task.name)
-      - if can?(:delete, @task)
-        = delete_button dorsale.flyboy_task_path(@task)
-
+      = t("actions.update") + " : " + @task.name
     - else
-      = context_title t('messages.folders.new_task')
+      =  t('messages.folders.new_task')
 
-  - if can?(:read, @task.taskable)
-    = render "#{@task.taskable.class.to_s.tableize}/context", taskable: @task.taskable
-
-- content_for :main do
-  .well
+  .panel-body
     = horizontal_form_for @task, as: :task do |f|
       = f.input :name
       = f.input :description
@@ -26,5 +19,3 @@
       = f.input :owner_guid, collection: @owners.map{ |e| [e.to_s, e.guid] }
 
       = form_buttons
-
-= render_contextual

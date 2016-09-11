@@ -39,7 +39,7 @@ fr:
     unlock     : "Ouvrir"
     snooze     : "Reporter"
     alert      : "Alerter"
-    complete   : "Terminer"
+    complete   : "Marquer terminé"
     done       : "Terminer"
     download   : "Télécharger"
     upload     : "Envoyer"
@@ -79,6 +79,7 @@ fr:
     continue   : "Continuer"
     rename     : "Renommer"
     email      : "Envoyer par email"
+    print      : "Imprimer"
 
   attributes: &attributes
     id                    : "Id"
@@ -143,6 +144,18 @@ fr:
     current_avatar        : "Avatar actuel"
     logo                  : "Logo"
     active                : "Actif ?"
+    user                  : "Utilisateur"
+    category              : "Catégorie"
+    corporation_name      : "Nom"
+
+    # TODO : Move to bakkbone
+    administrator         : "Administrateur?"
+    billing_machine       : "Accès Facturation?"
+    time_machine          : "Accès Gestion Du Temps?"
+    expense_gun           : "Accès Note de Frais?"
+    customer_vault        : "Accès Annuaire?"
+    flyboy                : "Accès Taches?"
+    notify_invoices_late_payments: "Notifications de Retard de Paiement?"
 
   errors:
     messages:
@@ -165,3 +178,11 @@ fr:
 
   labels:
     <<: *attributes
+
+  simple_form:
+    "yes" : 'Oui'
+    "no"  : 'Non'
+
+    required:
+      text: 'Requis'
+      mark: '*'

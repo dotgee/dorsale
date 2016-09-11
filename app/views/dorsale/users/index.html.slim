@@ -1,5 +1,13 @@
 .users
-  .actions
+  - content_for :title
+    = icon(:users)
+    = " "
+    = User.ts
+
+  - content_for :actions
     = create_button dorsale.new_user_path
 
-  = render "dorsale/users/list", users: @users
+  - content_for :table
+    = render "dorsale/users/list", users: @users
+
+  = render_dorsale_index

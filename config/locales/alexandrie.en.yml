@@ -9,6 +9,18 @@ en:
       delete_error : "Impossible to delete the file."
       no_file_selected: "No file selected."
 
+  categories:
+    create_ok : "Category successfully created."
+    update_ok : "Category successfully updated."
+
+  id_cards:
+    create_ok : "Card successfully created."
+    update_ok : "Card successfully updated."
+
+  payment_terms:
+    create_ok : "Payment Term successfully created."
+    update_ok : "Payment Term successfully updated."
+
   activerecord:
     models:
       dorsale/alexandrie/attachment:

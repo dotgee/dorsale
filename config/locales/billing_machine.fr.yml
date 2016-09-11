@@ -1,6 +1,8 @@
 fr:
   actions:
     create_invoice: "Facturer"
+    new_payment_term: "Nouvelles conditions de paiement"
+    new_id_card: "Nouvelle carte d'identité"
 
   attributes:
     id_card: "Carte d'identité"
@@ -57,10 +59,21 @@ fr:
 
   activerecord:
     models:
-      dorsale/billing_machine/invoice: "Facture"
-      dorsale/billing_machine/quotation: "Devis"
-      dorsale/billing_machine/id_card: "Carte d'identité"
-      dorsale/billing_machine/payment_term: "Conditions de paiement"
+      dorsale/billing_machine/invoice:
+        one: "Facture"
+        other: "Factures"
+
+      dorsale/billing_machine/quotation:
+        one: "Devis"
+        other: "Devis"
+
+      dorsale/billing_machine/id_card:
+        one: "Carte d'identité"
+        other: "Cartes d'identité"
+
+      dorsale/billing_machine/payment_term:
+        one: "Condition de paiement"
+        other: "Conditions de paiement"
 
     attributes:
       dorsale/billing_machine/invoice:

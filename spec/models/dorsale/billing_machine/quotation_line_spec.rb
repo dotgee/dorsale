@@ -30,11 +30,11 @@ describe ::Dorsale::BillingMachine::QuotationLine do
   end
 
   it "should be sorted by created_at" do
-    line1 = create(:billing_machine_quotation_line,:created_at => DateTime.now + 1.seconds)
-    line2 = create(:billing_machine_quotation_line,:created_at => DateTime.now + 2.seconds)
-    line3 = create(:billing_machine_quotation_line,:created_at => DateTime.now + 3.seconds)
-    line4 = create(:billing_machine_quotation_line,:created_at => DateTime.now + 4.seconds)
-    line3.update(:created_at => DateTime.now+5.seconds)
+    line1 = create(:billing_machine_quotation_line,:created_at => Time.zone.now + 1.minutes)
+    line2 = create(:billing_machine_quotation_line,:created_at => Time.zone.now + 2.minutes)
+    line3 = create(:billing_machine_quotation_line,:created_at => Time.zone.now + 3.minutes)
+    line4 = create(:billing_machine_quotation_line,:created_at => Time.zone.now + 4.minutes)
+    line3.update!(:created_at => Time.zone.now + 5.minutes)
     lines = ::Dorsale::BillingMachine::QuotationLine.all
     expect(lines).to eq [line1, line2, line4, line3]
   end

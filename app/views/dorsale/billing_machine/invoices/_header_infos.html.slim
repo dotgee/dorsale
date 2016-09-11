@@ -1,8 +1,8 @@
 .well
-  .row.text-center
+  .row
     .col-md-4
-      = info ::Dorsale::BillingMachine::Quotation, :total_excluding_taxes, bm_currency(@total_excluding_taxes)
+      = info ::Dorsale::BillingMachine::Invoice, :total_excluding_taxes, bm_currency(@total_excluding_taxes)
     .col-md-4
-      = info ::Dorsale::BillingMachine::Quotation, :vat_amount, bm_currency(@vat_amount)
+      = info ::Dorsale::BillingMachine::Invoice, :vat_amount, bm_currency(@vat_amount)
     .col-md-4
-      = info ::Dorsale::BillingMachine::Quotation, :total_including_taxes, bm_currency(@total_including_taxes)
+      = info ::Dorsale::BillingMachine::Invoice, :total_including_taxes, bm_currency(@total_including_taxes)

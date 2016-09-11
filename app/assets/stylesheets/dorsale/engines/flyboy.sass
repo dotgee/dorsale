@@ -1,0 +1,78 @@
+.flyboy
+  table
+    @extend .table
+
+    th, td
+      padding-left: 1em !important
+      padding-right: 1em !important
+
+    th
+      text-align: left
+
+  .finished td
+    background: $state-success-bg !important
+
+  .onwarning td
+    background: $state-warning-bg !important
+
+  .onalert td
+    background: $state-danger-bg !important
+
+  td.actions
+    width: 5em
+
+  td.folder-status
+    width: 5em
+    white-space: nowrap
+
+  td.task-status,
+  td.task-snooze,
+    width: 3em
+
+  div.progress
+    display: inline-block
+    width: 150px
+    margin: 0
+
+  .taskable-name
+    max-width: 10em
+    white-space: nowrap
+    overflow: hidden
+
+  td.task-progress,
+  td.folder-progress,
+  td.taskable-progress,
+  td.task_comment-progress,
+    width: 150px
+
+    form
+      display: inline-block
+      width: 30em
+
+    form, p
+      margin: 0
+      padding: 0
+
+  td.folder-status,
+  td.task-status,
+  td.task-snooze,
+  td.folder-status a,
+  td.task-status a,
+  td.task-snooze a,
+  td.task-term,
+    color: black
+
+  .task-term
+    text-align: right
+
+  .task_comment-description .input-group
+    .input-group-addon
+      background: $btn-success-bg
+      overflow: auto
+
+      &:hover
+        @extend .btn-success:hover
+
+      input
+        color: $btn-success-color
+        line-height: 4em

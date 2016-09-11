@@ -1,9 +1,2 @@
-= simple_form_for :filters, url: dorsale.small_data_filters_path, wrapper: :inline_form do |f|
-    .form-group
-      label.sr-only for="fb_status" Status
-      select.form-control name="filters[fb_status]"
-        option value="" = t("messages.folders.status.all")
-        option value="open" selected=(@filters.get("status") == "open") = t("messages.folders.status.open")
-        option value="closed" selected=(@filters.get("status") == "closed") = t("messages.folders.status.closed")
-
-    = filter_buttons
+= filters_form do |f|
+  = f.input :fb_status, collection: flyboy_status_for_filters_select, include_blank: false

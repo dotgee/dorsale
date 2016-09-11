@@ -16,14 +16,10 @@ describe ::Dorsale::BillingMachine::QuotationMultipleVatPdf, pdfs: true do
     q
   }
 
-  let(:pdf) {
-    quotation.pdf
-  }
-
   let(:content) {
     tempfile = Tempfile.new("pdf")
     tempfile.binmode
-    tempfile.write(pdf.render)
+    tempfile.write(quotation.to_pdf)
     tempfile.flush
     Yomu.new(tempfile.path).text
   }
@@ -39,7 +35,7 @@ describe ::Dorsale::BillingMachine::QuotationMultipleVatPdf, pdfs: true do
     quotation = ::Dorsale::BillingMachine::Quotation.new(id_card: id_card)
 
     expect {
-      quotation.pdf.render
+      quotation.to_pdf
     }.to_not raise_error
   end
 

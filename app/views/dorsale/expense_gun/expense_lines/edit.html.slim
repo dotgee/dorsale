@@ -1,8 +1,0 @@
-.expenses.expense_lines
-  .actions-block
-    = link_to t("expense_gun.expense_line.back_to_expense"), dorsale.expense_gun_expense_path(@expense), class: "btn btn-default"
-    = link_to t("expense_gun.expense.list"), dorsale.expense_gun_expenses_path, class: "btn btn-default"
-
-  h1 = t("expense_gun.expense_line.edit")
-
-  = render "form", url: dorsale.expense_gun_expense_expense_line_path(@expense, @expense_line)

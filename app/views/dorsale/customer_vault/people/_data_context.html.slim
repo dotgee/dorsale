@@ -1,32 +1,35 @@
-.person-context: .context
-  h3 = ::Dorsale::Flyboy::Task.t.pluralize
+.context
+  .context-title
+    = icon("check-square-o")
+    = " "
+    = ::Dorsale::Flyboy::Task.ts
 
-  ul
+  ul.list-group
     - person.tasks.where(done: false).map do |task|
-      li
+      li.list-group-item
         a href=dorsale.flyboy_task_path(task)
           = task.name
 
-        - if can?(:complete, task)
+        - if policy(task).complete?
           span.pull-right
             = complete_button dorsale.complete_flyboy_task_path(task)
 
-  = create_button dorsale.new_flyboy_task_path(taskable_guid: person.guid), action: :new_task
+  .context-footer
+    = create_button dorsale.new_flyboy_task_path(taskable_guid: person.guid), action: :new_task
 
-  hr
+.context
+  .context-title
+    = icon("link")
+    = " "
+    = ::Dorsale::CustomerVault::Link.ts
 
-  h3 = ::Dorsale::CustomerVault::Link.t.pluralize
-
-  ul
+  ul.list-group
     - person.links.map do |link|
-      li
-        a href=dorsale.polymorphic_path(link[:person])
-          = link[:person].name
+      li.list-group-item
+        a href=dorsale.polymorphic_path(link.other_person)
+          = link.other_person
         = " / "
-        = link[:title]
+        = link.title
 
-  - if person.is_a?(::Dorsale::CustomerVault::Individual)
-    = create_button dorsale.new_customer_vault_individual_link_path(person), action: :new_link
-
-  - if person.is_a?(::Dorsale::CustomerVault::Corporation)
-    = create_button dorsale.new_customer_vault_corporation_link_path(person), action: :new_link
+  .context-footer
+    = create_button dorsale.new_customer_vault_person_link_path(person), action: :new_link

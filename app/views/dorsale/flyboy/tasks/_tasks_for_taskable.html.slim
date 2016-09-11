@@ -1,6 +1,8 @@
 .flyboy
   = render "dorsale/flyboy/filters"
-  = render "dorsale/flyboy/tasks/list", tasks: tasks, nested: true
 
-  p.center
+  .panel.panel-default
+    = render "dorsale/flyboy/tasks/list", tasks: tasks, nested: true
+
+  p.text-center
     = create_button dorsale.new_flyboy_task_path(taskable_guid: taskable.guid), action: :new_task

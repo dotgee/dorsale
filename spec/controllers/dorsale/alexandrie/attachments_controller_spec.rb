@@ -24,12 +24,12 @@ describe Dorsale::Alexandrie::AttachmentsController, type: :controller do
 
   describe "create" do
     it "should create attachment" do
-      post :create, attachment: valid_attributes, back_url: "/"
+      post :create, params: {attachment: valid_attributes, back_url: "/"}
       expect(assigns(:attachment)).to be_persisted
     end
 
     it "should redirect to back_url" do
-      post :create, attachment: valid_attributes, back_url: "/"
+      post :create, params: {attachment: valid_attributes, back_url: "/"}
       expect(response).to redirect_to("/")
     end
   end
@@ -38,13 +38,13 @@ describe Dorsale::Alexandrie::AttachmentsController, type: :controller do
     it "should delete attachment" do
       attachment = create(:alexandrie_attachment)
       expect {
-        delete :destroy, id: attachment, back_url: "/"
+        delete :destroy, params: {id: attachment, back_url: "/"}
       }.to change(::Dorsale::Alexandrie::Attachment, :count).by(-1)
     end
 
     it "should redirect to back_url" do
       attachment = create(:alexandrie_attachment)
-      delete :destroy, id: attachment, back_url: "/"
+      delete :destroy, params: {id: attachment, back_url: "/"}
       expect(response).to redirect_to("/")
     end
   end

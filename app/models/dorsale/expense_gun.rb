@@ -1,0 +1,2 @@
+module Dorsale::ExpenseGun
+end

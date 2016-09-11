@@ -3,14 +3,17 @@
     = render "dorsale/customer_vault/people/context", person: @person
 
   - content_for :main do
-    .well
-      = horizontal_form_for [@person, @link], as: :link do |f|
-        - if @person == @link.bob
-          = f.input :alice, input_html: {value: @link.alice.name}, disabled: true
-        - else
-          = f.input :bob, input_html: {value: @link.bob.name}, disabled: true
+    .panel.panel-default
+      .panel-heading: .panel-title
+          = @link.t
+          = " : "
+          = @link.person
+          = " / "
+          = @link.other_person
 
-        = f.input :title
-        = form_buttons
+      .panel-body
+        = horizontal_form_for @link, as: :link, url: customer_vault_link_form_path do |f|
+          = f.input :title
+          = form_buttons
 
   = render_contextual

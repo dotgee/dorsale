@@ -1,2 +1,8 @@
 .flyboy
-  = render "dorsale/flyboy/tasks/form"
+  - content_for :context do
+    = render "dorsale/flyboy/tasks/context", task: @task
+
+  - content_for :main do
+    = render "dorsale/flyboy/tasks/form"
+
+  = render_contextual

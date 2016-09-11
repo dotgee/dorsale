@@ -12,7 +12,7 @@ Feature: Manage individuals
     And I add his first_name, last_name and email
     And I fill the address
     And I validate the new individual
-    Then the individual is created with all the data provided
+    Then the individual is created
 
   Scenario: New individual without individual
     When I create an new individual

@@ -1,15 +1,16 @@
-module Dorsale
-  class ApplicationController < ::ApplicationController
-    def current_user_scope
-      @current_user_scope ||= UserScope.new(current_user)
-    end
+class Dorsale::ApplicationController < ::ApplicationController
+  include Pundit
+  include Dorsale::BackUrlConcern
 
-    layout -> {
-      if request.xhr?
-        false
-      else
-        "application"
-      end
-    }
-  end
+  after_action :verify_authorized
+  after_action :verify_policy_scoped
+
+  layout -> {
+    if request.xhr?
+      false
+    else
+      "application"
+    end
+  }
+
 end

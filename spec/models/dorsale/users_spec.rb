@@ -25,7 +25,9 @@ RSpec.describe User, type: :model do
     end
 
     it 'should send a welcome message upon creation' do
-      expect { create(:user)}.to change(ActionMailer::Base.deliveries, :count).by(1)
+      expect {
+        create(:user)
+      }.to change(ActionMailer::Base.deliveries, :count).by(1)
     end
   end
 

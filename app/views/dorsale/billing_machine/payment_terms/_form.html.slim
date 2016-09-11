@@ -1,0 +1,13 @@
+.panel.panel-default
+  .panel-heading: .panel-title
+    - if @payment_term.new_record?
+      = t("actions.new_payment_term")
+    - else
+      = t("actions.update")
+      = " : "
+      = @payment_term
+
+  .panel-body
+    = horizontal_form_for @payment_term do |f|
+      = f.input :label
+      = form_buttons

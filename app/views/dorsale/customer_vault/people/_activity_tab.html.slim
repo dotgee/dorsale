@@ -1,5 +1,4 @@
-= comments_for person
+= comments_for(person)
 
 - if person.try(:context).present?
-  .well
-    = text2html(person.context)
+  .panel.panel-default: .panel-body = text2html(person.context)

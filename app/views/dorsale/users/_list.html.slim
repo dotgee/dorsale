@@ -1,10 +1,10 @@
-table.default
+table#users-list.default
   thead
     tr
-      th = User.t(:avatar)
-      th = User.t(:name)
-      th = User.t(:email)
-      th = t("actions.actions")
+      th.user-avatar = User.t(:avatar)
+      th.user-name   = User.t(:name)
+      th.user-email  = User.t(:email)
+      th.actions     = t("actions.actions")
 
   tbody
     - users.each do |user|

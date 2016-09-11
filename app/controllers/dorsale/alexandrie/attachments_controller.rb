@@ -1,118 +1,123 @@
-module Dorsale
-  module Alexandrie
-    class AttachmentsController < ::Dorsale::ApplicationController
-      layout false
+class Dorsale::Alexandrie::AttachmentsController < ::Dorsale::ApplicationController
+  layout false
 
-      before_action :set_objects, only: [
-        :edit,
-        :update,
-        :destroy,
-      ]
+  before_action :set_objects, only: [
+    :edit,
+    :update,
+    :destroy,
+  ]
 
-      def index
-        @attachable = find_attachable
+  def index
+    @attachable = find_attachable
+    skip_policy_scope
 
-        authorize! :read, @attachable
-      end
+    authorize @attachable, :read?
+  end
 
-      def create
-        @attachment = ::Dorsale::Alexandrie::Attachment.new(attachment_params_for_create)
+  def create
+    @attachment = scope.new(attachment_params_for_create)
 
-        authorize! :create, @attachment
+    authorize @attachment, :create?
 
-        if @attachment.save
-          flash[:notice] = t("messages.attachments.create_ok")
-        else
-          flash[:alert] = t("messages.attachments.create_error")
-        end
+    if @attachment.save
+      flash[:notice] = t("messages.attachments.create_ok")
+    else
+      flash[:alert] = t("messages.attachments.create_error")
+    end
 
-        render_or_redirect
-      end
+    render_or_redirect
+  end
 
-      def edit
-        authorize! :update, @attachment
-      end
+  def edit
+    authorize @attachment, :update?
+  end
 
-      def update
-        authorize! :update, @attachment
+  def update
+    authorize @attachment, :update?
 
-        if @attachment.update_attributes(attachment_params_for_update)
-          flash[:notice] = t("messages.attachments.update_ok")
-        else
-          flash[:alert] = t("messages.attachments.update_error")
-        end
+    if @attachment.update(attachment_params_for_update)
+      flash[:notice] = t("messages.attachments.update_ok")
+    else
+      flash[:alert] = t("messages.attachments.update_error")
+    end
 
-        render_or_redirect
-      end
+    render_or_redirect
+  end
 
-      def destroy
-        authorize! :delete, @attachment
+  def destroy
+    authorize @attachment, :delete?
 
-        if @attachment.destroy
-          flash[:notice] = t("messages.attachments.delete_ok")
-        else
-          flash[:alert] = t("messages.attachments.delete_error")
-        end
+    if @attachment.destroy
+      flash[:notice] = t("messages.attachments.delete_ok")
+    else
+      flash[:alert] = t("messages.attachments.delete_error")
+    end
 
-        render_or_redirect
-      end
+    render_or_redirect
+  end
 
-      private
+  private
 
-      def set_objects
-        @attachment = ::Dorsale::Alexandrie::Attachment.find params[:id]
-      end
+  def model
+    ::Dorsale::Alexandrie::Attachment
+  end
 
-      def attachable_type
-        params[:attachable_type] || @attachment.attachable_type
-      end
+  def scope
+    policy_scope(model)
+  end
 
-      def attachable_id
-        params[:attachable_id] || @attachment.attachable_id
-      end
+  def set_objects
+    @attachment = scope.find(params[:id])
+  end
 
-      def find_attachable
-        attachable_type.to_s.constantize.find(attachable_id)
-      rescue NameError
-        raise ActiveRecord::RecordNotFound
-      end
+  def attachable_type
+    params[:attachable_type] || @attachment.attachable_type
+  end
 
-      def permitted_params_for_create
-        [
-          :attachable_id,
-          :attachable_type,
-          :file,
-          :name
-        ]
-      end
+  def attachable_id
+    params[:attachable_id] || @attachment.attachable_id
+  end
 
-      def attachment_params_for_create
-        params
-          .require(:attachment)
-          .permit(permitted_params_for_create)
-          .merge(sender: current_user)
-      end
+  def find_attachable
+    attachable_type.to_s.constantize.find(attachable_id)
+  rescue NameError
+    raise ActiveRecord::RecordNotFound
+  end
 
-      def permitted_params_for_update
-        [
-          :name,
-        ]
-      end
+  def permitted_params_for_create
+    [
+      :attachable_id,
+      :attachable_type,
+      :file,
+      :name
+    ]
+  end
 
-      def attachment_params_for_update
-        params
-          .require(:attachment)
-          .permit(permitted_params_for_update)
-      end
+  def attachment_params_for_create
+    params
+      .require(:attachment)
+      .permit(permitted_params_for_create)
+      .merge(sender: current_user)
+  end
 
-      def render_or_redirect
-        if request.xhr?
-          render nothing: true
-        else
-          redirect_to params[:back_url] || request.referer
-        end
-      end
+  def permitted_params_for_update
+    [
+      :name,
+    ]
+  end
 
+  def attachment_params_for_update
+    params
+      .require(:attachment)
+      .permit(permitted_params_for_update)
+  end
+
+  def render_or_redirect
+    if request.xhr?
+      head :ok
+    else
+      redirect_to back_url
     end
   end
+
 end

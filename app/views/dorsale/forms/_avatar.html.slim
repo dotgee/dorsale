@@ -1,0 +1,8 @@
+= f.input :avatar, wrapper: :horizontal_form
+
+- if f.object.persisted?
+  .form-group
+    label.col-md-3.control-label
+      = f.object.t(:current_avatar)
+    .col-md-9
+      = avatar_img(f.object)

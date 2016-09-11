@@ -35,14 +35,14 @@ Given(/^a bunch of existing invoices$/) do
   i2 = create(:customer_vault_individual, first_name: 'Ah')
   i3 = create(:customer_vault_individual, first_name: 'Eh')
 
-  create(:billing_machine_invoice, id_card: @id_card, customer: c1, date: Date.today, paid: true)
-  create(:billing_machine_invoice, id_card: @id_card, customer: c2, date: Date.today)
-  create(:billing_machine_invoice, id_card: @id_card, customer: c3, date: Date.today)
-  create(:billing_machine_invoice, id_card: @id_card, customer: c1, date: Date.today - 2.days)
+  create(:billing_machine_invoice, id_card: @id_card, customer: c1, date: Time.zone.now.to_date, paid: true)
+  create(:billing_machine_invoice, id_card: @id_card, customer: c2, date: Time.zone.now.to_date)
+  create(:billing_machine_invoice, id_card: @id_card, customer: c3, date: Time.zone.now.to_date)
+  create(:billing_machine_invoice, id_card: @id_card, customer: c1, date: Time.zone.now.to_date - 2.days)
 
-  create(:billing_machine_invoice, id_card: @id_card, customer: i1, date: Date.today - 3.days)
-  create(:billing_machine_invoice, id_card: @id_card, customer: i2, date: Date.today - 3.days)
-  create(:billing_machine_invoice, id_card: @id_card, customer: i3, date: Date.today - 3.days)
+  create(:billing_machine_invoice, id_card: @id_card, customer: i1, date: Time.zone.now.to_date - 3.days)
+  create(:billing_machine_invoice, id_card: @id_card, customer: i2, date: Time.zone.now.to_date - 3.days)
+  create(:billing_machine_invoice, id_card: @id_card, customer: i3, date: Time.zone.now.to_date - 3.days)
 end
 
 Given(/^an existing unpaid invoice$/) do
@@ -50,19 +50,19 @@ Given(/^an existing unpaid invoice$/) do
 end
 
 Given(/^its due date is not yet passed$/) do
-  @invoice.update(due_date: (Date.today + 1))
+  @invoice.update!(due_date: (Time.zone.now.to_date + 1))
 end
 
 Given(/^its due date is the same day$/) do
-  @invoice.update(due_date: (Date.today))
+  @invoice.update!(due_date: (Time.zone.now.to_date))
 end
 
 Given(/^its due date is yesterday$$/) do
-  @invoice.update(due_date: (Date.today - 1))
+  @invoice.update!(due_date: (Time.zone.now.to_date - 1))
 end
 
 Given(/^its due date is (\d+) days ago$/) do |days|
-  @invoice.update(due_date: (Date.today - days.to_i))
+  @invoice.update!(due_date: (Time.zone.now.to_date - days.to_i))
 end
 
 Given(/^existing "(.*?)" invoices with "(.*?)" amount$/) do |n, amount|
@@ -243,7 +243,7 @@ Then(/^the invoice is marked paid$/) do
 end
 
 Then(/^can't set the invoice as paid again$/) do
-  expect(all("[href$=pay]").count).to eq 0
+  expect(page).to_not have_selector("[href$=pay]")
 end
 
 Then(/^the invoice is marked unpaid$/) do
@@ -299,11 +299,11 @@ Then(/^the invoice line shows the right customer's name$/) do
 end
 
 Then(/^the invoice default date is set to today's date\.$/) do
-  expect(page).to have_field('invoice_date', with: I18n.l(Date.today))
+  expect(page).to have_field('invoice_date', with: I18n.l(Time.zone.now.to_date))
 end
 
 Then(/^the invoice default due date is set to today's date\.$/) do
-  expect(page).to have_field('invoice_due_date', with: I18n.l(Date.today + 30.days))
+  expect(page).to have_field('invoice_due_date', with: I18n.l(Time.zone.now.to_date + 30.days))
 end
 
 Then(/^a new invoice is displayed with the informations$/) do

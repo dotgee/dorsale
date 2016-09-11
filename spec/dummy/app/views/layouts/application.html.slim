@@ -16,17 +16,19 @@ html
         = horizontal do
           - if current_user
             = nav class: "navbar-left" do
-              = icon_link_to "users", "Annuaire", dorsale.customer_vault_people_path
-              = icon_link_to "tasks", "Dossiers", dorsale.flyboy_folders_path
-              = icon_link_to "check-square-o", "Tâches", dorsale.flyboy_tasks_path
-              = icon_link_to "euro", "Devis", dorsale.billing_machine_quotations_path
-              = icon_link_to "euro", "Factures", dorsale.billing_machine_invoices_path
-              = icon_link_to "users", "Utilisateurs", dorsale.users_path
-              = icon_link_to "euro", "Notes de frais", dorsale.expense_gun_expenses_path
+              = icon_link_to :book,           "Annuaire",       dorsale.customer_vault_people_path
+              = icon_link_to :tasks,          "Dossiers",       dorsale.flyboy_folders_path
+              = icon_link_to :check_square_o, "Tâches",         dorsale.flyboy_tasks_path
+              = icon_link_to :euro,           "Devis",          dorsale.billing_machine_quotations_path
+              = icon_link_to :euro,           "Factures",       dorsale.billing_machine_invoices_path
+              = icon_link_to :users,          "Utilisateurs",   dorsale.users_path
+              = icon_link_to :euro,           "Notes de frais", dorsale.expense_gun_expenses_path
 
           = nav class: "navbar-right" do
             - if current_user
+              = link_to current_user.name, dorsale.edit_user_path(current_user)
               = link_to "Déconnexion", main_app.destroy_user_session_path, method: :delete
+
             - else
               = link_to "Connexion", main_app.new_user_session_path
 

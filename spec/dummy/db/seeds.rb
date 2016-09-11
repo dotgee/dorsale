@@ -3,8 +3,12 @@
 puts "Stating data seed"
 
 require "database_cleaner"
-DatabaseCleaner.strategy = :truncation
-DatabaseCleaner.clean
+
+DatabaseCleaner.clean_with(:truncation, {except: %w(
+  ar_internal_metadata
+  schema_migrations
+  spatial_ref_sys
+)})
 
 user = User.create!(email: "demo@agilidee.com", password: "password")
 
@@ -98,27 +102,27 @@ individual2 = Dorsale::CustomerVault::Individual.create!(
 )
 
 individual2.comments.create!(
-  :text => "Développeur, premier contact pour mutualiser un projet.",
-  author: user
+  :text   => "Développeur, premier contact pour mutualiser un projet.",
+  :author => user,
 )
 
-goal1 = Dorsale::Flyboy::Folder.create!(
+folder1 = Dorsale::Flyboy::Folder.create!(
   :name        => "Dorsale v2",
   :description => "Tâches pour la version 2 de Dorsale"
 )
 
-goal1_task1 = goal1.tasks.create!(
+folder1_task1 = folder1.tasks.create!(
   :name        => "Traduction",
   :description => "Traduire en français et en anglais"
 )
 
-goal1_task1.comments.create!(
+folder1_task1.comments.create!(
   :description => "Traduction française terminée",
   :progress    => 50,
-  author: user
+  :author      => user,
 )
 
-goal1_task2 = goal1.tasks.create!(
+folder1_task2 = folder1.tasks.create!(
   :name        => "Rediger les documentations",
   :description => "Dorsale, CustomerVault, Flyboy, ..."
 )
@@ -131,5 +135,8 @@ corporation2_task1 = Dorsale::Flyboy::Task.create!(
 corporation2_task1.comments.create!(
   :description => "Relance faire aujourd'hui. Paiement d'ici la fin de la semaine.",
   :progress    => 50,
-  author: user
+  :author      => user,
 )
+
+Dorsale::ExpenseGun::Category.create!(name: "Telecom", vat_deductible: true)
+Dorsale::ExpenseGun::Category.create!(name: "Transport", vat_deductible: false)

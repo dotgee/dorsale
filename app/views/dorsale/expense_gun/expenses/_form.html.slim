@@ -1,5 +1,20 @@
-.row: .col-md-6
-  = horizontal_form_for  @expense do |f|
-    = f.input :name
-    = f.input :date, as: :string, input_html: {type: :date}
+.expense_gun
+  = horizontal_form_for @expense, as: :expense do |f|
+    .panel.panel-default
+      .panel-heading
+        .pull-right
+          = link_to_add_association t("expense_gun.expense_line.actions.create"), f, :expense_lines, class: "btn btn-xs btn-success", id: "add-new-line", "data-association-insertion-node" => "#expense-lines", "data-association-insertion-method" => "append"
+        .panel-title = @expense.t
+
+      .panel-body
+        .row
+          .col-md-6
+            = f.input :name
+          .col-md-6
+            = f.input :date, as: :string, input_html: {type: :date}
+
+    #expense-lines
+      = f.simple_fields_for :expense_lines do |line_form|
+        = render "expense_line_fields", f: line_form
+
     = form_buttons back_url: false

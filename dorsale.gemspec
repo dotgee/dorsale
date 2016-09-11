@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
 
   s.add_dependency "rails", ">= 4.0.0"
+  s.add_dependency "virtus"
   s.add_dependency "slim-rails"
   s.add_dependency "sass-rails"
   s.add_dependency "bootstrap-sass"
@@ -30,8 +31,7 @@ Gem::Specification.new do |s|
   s.add_dependency "bootstrap-kaminari-views"
   s.add_dependency "bh"
   s.add_dependency "rails-i18n"
-  s.add_dependency "cancancan"
-  s.add_dependency "awesome_print"
+  s.add_dependency "pundit"
   s.add_dependency "kaminari-i18n"
   s.add_dependency "bootstrap-datepicker-rails"
   s.add_dependency "carrierwave"
@@ -42,7 +42,7 @@ Gem::Specification.new do |s|
   s.add_dependency "prawn-table"
   s.add_dependency "combine_pdf"
   s.add_dependency "cocoon"
-  s.add_dependency "selectize-rails"
+  s.add_dependency "select2-rails"
   s.add_dependency "acts-as-taggable-on"
   s.add_dependency "mini_magick"
   s.add_dependency "rake"

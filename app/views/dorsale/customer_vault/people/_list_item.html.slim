@@ -1,0 +1,35 @@
+.person.panel.panel-default
+  .panel-heading
+    .panel-title
+      = icon :users if person.corporation?
+      = icon :user  if person.individual?
+      = " "
+      span.name
+        = link_to person.to_s, dorsale.customer_vault_person_path(person)
+
+      - if defined?(link)
+        span.separator = " / "
+        span.title     = link.title
+
+        .actions.pull-right
+          - if policy(link.person).update?
+            = update_button dorsale.edit_customer_vault_person_link_path(link.person, link)
+            = delete_button dorsale.customer_vault_person_link_path(link.person, link)
+
+      - else
+        .actions.pull-right
+          - if policy(person).read?
+            = read_button dorsale.customer_vault_person_path(person)
+
+          - if policy(person).update?
+            = update_button dorsale.edit_customer_vault_person_path(person)
+
+  .panel-body
+    .avatar-container
+      = avatar_img(person)
+
+    .infos-container
+      = info person, :phone
+      = info person, :mobile
+      = info person, :email, helper: :email_link
+      = info person, :tags, person_tags(person)

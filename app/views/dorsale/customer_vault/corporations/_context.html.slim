@@ -1,20 +1,2 @@
-- corporation = corporation || taskable
-
-.corporation-context: .context
-  = context_icon :users
-  = context_title corporation.name
-  = actions_for corporation, url: dorsale.customer_vault_corporation_path(corporation)
-
-  = context_info corporation.t(:tags),                     person_tags(corporation)
-  = context_info corporation.t(:phone),                    tel_link(corporation.phone)
-  = context_info corporation.t(:email),                    email_link(corporation.email)
-  = context_info corporation.t(:www),                      web_link(corporation.www)
-  = context_info corporation.t(:fax),                      tel_link(corporation.fax)
-  = context_info corporation.t(:short_name),               corporation.short_name
-  = context_info corporation.t(:capital),                  corporation.capital.to_s
-  = context_info corporation.t(:immatriculation_number_1), corporation.immatriculation_number_1
-  = context_info corporation.t(:immatriculation_number_2), corporation.immatriculation_number_2
-  = context_info corporation.t(:legal_form),               corporation.legal_form
-
-  - if corporation.address.present?
-    = context_info corporation.t(:address), corporation.address.one_line
+- person = person || taskable
+= render "dorsale/customer_vault/people/context", person: person

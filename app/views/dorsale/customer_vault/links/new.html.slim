@@ -3,10 +3,15 @@
     = render "dorsale/customer_vault/people/context", person: @person
 
   - content_for :main do
-    .well
-      = horizontal_form_for [@person, @link], as: :link do |f|
-        = f.input :bob, collection: @people.map{ |e| [e.name, "#{e.class}-#{e.id}"] }
-        = f.input :title
-        = form_buttons
+    .panel.panel-default
+      .panel-heading: .panel-title
+        = t("actions.new_link")
+
+      .panel-body
+        = horizontal_form_for @link, as: :link, url: customer_vault_link_form_path do |f|
+          = f.association :bob, label: ::Dorsale::CustomerVault::Person.t
+
+          = f.input :title
+          = form_buttons
 
   = render_contextual

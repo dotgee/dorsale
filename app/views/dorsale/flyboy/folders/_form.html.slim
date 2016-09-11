@@ -1,22 +1,15 @@
-- content_for :context do
-  .folder-context: .context
-    = context_icon :tasks
-
+.panel.panel-default
+  .panel-heading: .panel-title
+    = icon :tasks
+    = " "
     - if @folder.persisted?
-      = context_title(t("update") + " " + @folder.name)
-      - if can?(:delete, @folder)
-        = delete_button dorsale.flyboy_folder_path(@folder)
-
+      = t("actions.update") + " : " + @folder.name
     - else
-      = context_title t('messages.folders.title_create')
+      = t('messages.folders.title_create')
 
-
-- content_for :main do
-  .well
+  .panel-body
     = horizontal_form_for @folder, as: :folder do |f|
       = f.input :name
       = f.input :description
 
       = form_buttons
-
-= render_contextual

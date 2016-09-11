@@ -1,6 +1,6 @@
-= simple_form_for [dorsale, Dorsale::Comment.new] do |f|
-  = f.hidden_field :commentable_id,   value: commentable.id.to_s
-  = f.hidden_field :commentable_type, value: commentable.class.to_s
+= simple_form_for [dorsale, Dorsale::Comment.new(commentable: commentable)] do |f|
+  = f.hidden_field :commentable_id
+  = f.hidden_field :commentable_type
 
   = f.input :text, label: false
 

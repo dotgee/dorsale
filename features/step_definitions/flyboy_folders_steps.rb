@@ -72,7 +72,7 @@ end
 When(/^I delete this folder$/) do
   click_link @folder.name
   find("a[href$='folders/#{@folder.id}/edit']").click
-  find(".folder-context a[data-method=delete]").click
+  find(".context a[data-method=delete]").click
 end
 
 Then(/^I am on the folders section$/) do
@@ -118,7 +118,7 @@ Then(/^only open folders appear$/) do
 end
 
 When(/^I filter folders by closed$/) do
-  select I18n.t("messages.folders.status.closed")
+  select Dorsale::Flyboy::Folder.t("status.closed")
   find(".filters [type=submit]:last-child").click
 end
 
@@ -164,7 +164,7 @@ When(/^I sort tasks by "(.*?)" "(.*?)"$/) do |column, direction|
 end
 
 Then(/^tasks are sorted by "(.*?)" "(.*?)"$/) do |column, direction|
-  page_names    = all("tbody td.name").map(&:text)
+  page_names    = all("tbody td.task-name").map(&:text)
   expected_name = @folder.tasks.reorder(column => direction).pluck(:name)
   expect(page_names).to eq expected_name
 end

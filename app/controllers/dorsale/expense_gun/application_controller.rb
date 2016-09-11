@@ -1,11 +1,7 @@
-module Dorsale
-  module ExpenseGun
-    class ApplicationController < ::Dorsale::ApplicationController
-      before_action :set_form_variables
+class Dorsale::ExpenseGun::ApplicationController < ::Dorsale::ApplicationController
+  before_action :set_form_variables
 
-      def set_form_variables
-        @categories ||= ::Dorsale::ExpenseGun::Category.all
-      end
-    end
+  def set_form_variables
+    @categories ||= policy_scope(::Dorsale::ExpenseGun::Category).all
   end
 end

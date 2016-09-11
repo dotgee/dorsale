@@ -1,0 +1,57 @@
+= horizontal_form_for @person, as: :person, multipart: true do |f|
+  - if params[:type].present?
+    input type="hidden" name="type" value=params[:type]
+
+  .panel.panel-default
+    .panel-heading: .panel-title = t("customer_vault.identity_informations")
+    .panel-body
+      - if @person.corporation?
+        = f.input :corporation_name
+
+      - if @person.individual?
+        = f.input :first_name
+        = f.input :last_name
+
+      = f.input :short_name
+      = render "dorsale/forms/avatar", f: f
+      = f.input :tag_list, collection: @tags, input_html: {multiple: true}
+
+  .panel.panel-default
+    .panel-heading: .panel-title = t("customer_vault.contact_informations")
+    .panel-body
+      = f.input :email
+      = f.input :phone
+      = f.input :mobile
+      = f.input :fax
+      = f.input :skype
+      = f.input :www,      as: :string
+      = f.input :twitter,  as: :string
+      = f.input :facebook, as: :string
+      = f.input :linkedin, as: :string
+      = f.input :viadeo,   as: :string
+
+  .panel.panel-default
+    .panel-heading: .panel-title = t("customer_vault.address_informations")
+    .panel-body
+      = f.simple_fields_for :address do |af|
+        = af.input :street
+        = af.input :street_bis
+        = af.input :zip
+        = af.input :city
+        = af.input :country, as: :string
+
+  .panel.panel-default
+    .panel-heading: .panel-title = t("customer_vault.additional_informations")
+    .panel-body
+      - if @person.corporation?
+        = f.input :capital
+        = f.input :immatriculation_number_1
+        = f.input :immatriculation_number_2
+        = f.input :european_union_vat_number
+        = f.input :legal_form
+
+      - if @person.individual?
+        = f.input :title
+        = f.input :context, as: :text
+
+  = form_buttons

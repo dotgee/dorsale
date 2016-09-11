@@ -5,10 +5,10 @@
     = image_tag "dorsale/avatar.png", class: "avatar"
 
   p.actions
-    - if can?(:update, comment)
+    - if policy(comment).update?
       = icon_link_to :pencil, t("actions.edit"), dorsale.edit_comment_path(comment), class: "edit"
 
-    - if can?(:delete, comment)
+    - if policy(comment).delete?
       = icon_link_to :trash, t("actions.delete"), dorsale.comment_path(comment), method: :delete, data: {confirm: t("actions.confirm")}
 
   p.infos

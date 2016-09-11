@@ -1,78 +1,100 @@
-module Dorsale
-  class CommentsController < ApplicationController
-    def create
-      @comment = Comment.new(comment_params)
-      @comment.author = try(:current_user)
+class Dorsale::CommentsController < ::Dorsale::ApplicationController
+  before_action :set_objects, only: [
+    :edit,
+    :update,
+    :destroy,
+  ]
 
-      authorize! :create, @comment
+  def create
+    @comment ||= scope.new(comment_params_for_create)
 
-      if @comment.save
-        flash[:success] = t("messages.comments.create_ok")
-      else
-        flash[:danger] = t("messages.comments.create_error")
-      end
+    authorize @comment, :create?
 
-      redirect_to_back_url
+    if @comment.save
+      flash[:success] = t("messages.comments.create_ok")
+    else
+      flash[:danger] = t("messages.comments.create_error")
     end
 
-    def edit
-      @comment = ::Dorsale::Comment.find params[:id]
+    redirect_to back_url
+  end
 
-      authorize! :update, @comment
+  def edit
+    authorize @comment, :update?
 
-      render layout: false
+    render layout: false
+  end
+
+  def update
+    authorize @comment, :update?
+
+    if @comment.update(comment_params_for_update)
+      flash[:notice] = t("messages.comments.update_ok")
+    else
+      flash[:alert] = t("messages.comments.update_error")
     end
 
-    def update
-      @comment = ::Dorsale::Comment.find params[:id]
+    redirect_to back_url
+  end
 
-      authorize! :update, @comment
+  def destroy
+    authorize @comment, :delete?
 
-      if @comment.update_attributes(comment_params)
-        flash[:notice] = t("messages.comments.update_ok")
-      else
-        flash[:alert] = t("messages.comments.update_error")
-      end
-
-      redirect_to_back_url
+    if @comment.destroy
+      flash[:notice] = t("messages.comments.delete_ok")
+    else
+      flash[:alert] = t("messages.comments.delete_error")
     end
 
-    def destroy
-      @comment = ::Dorsale::Comment.find params[:id]
+    redirect_to back_url
+  end
 
-      authorize! :delete, @comment
+  private
 
-      if @comment.destroy
-        flash[:notice] = t("messages.comments.delete_ok")
-      else
-        flash[:alert] = t("messages.comments.delete_error")
-      end
+  def back_url
+    [
+      params[:form_url],
+      request.referer,
+      (main_app.root_path rescue "/"),
+    ].select(&:present?).first
+  end
 
-      redirect_to_back_url
-    end
+  def model
+    ::Dorsale::Comment
+  end
 
-    private
+  def scope
+    policy_scope(model)
+  end
 
-    def permitted_params_for_comment
-      if params[:action] == "create"
-        [
-          :commentable_id,
-          :commentable_type,
-          :text,
-        ]
-      else
-        [
-          :text,
-        ]
-      end
-    end
+  def set_objects
+    @comment ||= scope.find(params[:id])
+  end
 
-    def comment_params
-      params.require(:comment).permit(permitted_params_for_comment)
-    end
-
-    def redirect_to_back_url
-      redirect_to params[:back_url] || request.referer
+  def permitted_params_for_comment
+    if params[:action] == "create"
+      [
+        :commentable_id,
+        :commentable_type,
+        :text,
+      ]
+    else
+      [
+        :text,
+      ]
     end
   end
+
+  def comment_params
+    params.fetch(:comment, {}).permit(permitted_params_for_comment)
+  end
+
+  def comment_params_for_create
+    comment_params.merge(author: current_user)
+  end
+
+  def comment_params_for_update
+    comment_params
+  end
+
 end

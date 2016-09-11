@@ -51,32 +51,32 @@ describe Dorsale::Flyboy::FoldersController, type: :controller do
       end
 
       it "sorting by name asc" do
-        get :index, sort: "name"
+        get :index, params: {sort: "name"}
         expect(assigns(:folders).to_a).to eq [@folder1, @folder2, @folder3]
       end
 
       it "sorting by name desc" do
-        get :index, sort: "-name"
+        get :index, params: {sort: "-name"}
         expect(assigns(:folders).to_a).to eq [@folder3, @folder2, @folder1]
       end
 
       it "sorting by progress asc" do
-        get :index, sort: "progress"
+        get :index, params: {sort: "progress"}
         expect(assigns(:folders).to_a).to eq [@folder2, @folder3, @folder1]
       end
 
       it "sorting by progress desc" do
-        get :index, sort: "-progress"
+        get :index, params: {sort: "-progress"}
         expect(assigns(:folders).to_a).to eq [@folder1, @folder3, @folder2]
       end
 
       it "sorting by status asc" do
-        get :index, sort: "status"
+        get :index, params: {sort: "status"}
         expect(assigns(:folders).to_a).to eq [@folder2, @folder3, @folder1]
       end
 
       it "sorting by status desc" do
-        get :index, sort: "-status"
+        get :index, params: {sort: "-status"}
         expect(assigns(:folders).to_a).to eq [@folder1, @folder2, @folder3]
       end
     end
@@ -88,12 +88,12 @@ describe Dorsale::Flyboy::FoldersController, type: :controller do
     end
 
     it "should close folder" do
-      patch :close, id: @folder
+      patch :close, params: {id: @folder}
       expect(@folder.reload.status).to eq "closed"
     end
 
     it "should redirect to folders path" do
-      patch :close, id: @folder
+      patch :close, params: {id: @folder}
       expect(response).to redirect_to flyboy_folders_path
     end
   end
@@ -104,12 +104,12 @@ describe Dorsale::Flyboy::FoldersController, type: :controller do
     end
 
     it "should open folder" do
-      patch :open, id: @folder
+      patch :open, params: {id: @folder}
       expect(@folder.reload.status).to eq "open"
     end
 
     it "should redirect to folder path" do
-      patch :open, id: @folder
+      patch :open, params: {id: @folder}
       expect(response).to redirect_to flyboy_folder_path(@folder)
     end
   end

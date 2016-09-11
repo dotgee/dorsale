@@ -1,3 +1,3 @@
 module Dorsale
-  VERSION = "2.7.3"
+  VERSION = "3.0.3"
 end

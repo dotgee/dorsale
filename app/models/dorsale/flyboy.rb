@@ -1,0 +1,2 @@
+module Dorsale::Flyboy
+end

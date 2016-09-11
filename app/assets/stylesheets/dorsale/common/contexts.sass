@@ -1,0 +1,54 @@
+.context
+  @extend .panel
+  @extend .panel-default
+
+  .context-title
+    @extend .panel-heading
+    @extend .panel-title
+
+  .context-body
+    @extend .panel-body
+
+  .context-footer
+    @extend .panel-footer
+    text-align: center
+
+  .info
+    display: flex
+
+    strong
+      @extend .text-muted
+
+    span.info-value
+      width: 60%
+
+    span.info-separator
+      text-align: center
+      margin-right: auto
+      padding: 0 0.25em
+
+
+.actions.top
+  text-align: right
+  margin: 1em 0
+
+  .btn
+    @extend .btn
+
+  a.btn[href*='/new']
+    @extend .btn-success
+
+  .btn-primary
+    @extend .btn-primary
+
+  .btn-success
+    @extend .btn-success
+
+  .btn-danger
+    @extend .btn-danger
+
+  .btn-warning
+    @extend .btn-warning
+
+form.search
+  margin: 1em 0

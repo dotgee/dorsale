@@ -1,4 +1,4 @@
-= simple_form_for :filters, url: dorsale.small_data_filters_path, wrapper: :inline_form do |f|
+= filters_form do |f|
   = f.input(:customer_guid,
     :collection    => @people.map { |p| [p.name, p.guid] },
     :include_blank => t("filters.all_customers"),
@@ -13,5 +13,3 @@
     :collection    => billing_machine_payment_status_for_filter_select,
     :include_blank => false,
   )
-
-  = filter_buttons

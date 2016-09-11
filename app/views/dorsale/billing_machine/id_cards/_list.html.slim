@@ -1,0 +1,23 @@
+table.table.default#id_card
+  thead
+    tr
+      th.actions.id_card-id_card_name
+        = ::Dorsale::BillingMachine::IdCard.t(:id_card_name)
+      th.actions.id_card-entity_name
+        = ::Dorsale::BillingMachine::IdCard.t(:entity_name)
+      th.actions.id_card-contact_full_name
+        = ::Dorsale::BillingMachine::IdCard.t(:contact_full_name)
+      th.actions.id_card-action
+        = "Action"
+
+  tbody
+    - @id_cards.each do |id_card|
+      tr.actions.id_card
+        td.actions.id_card-id_card_name
+          = id_card.id_card_name
+        td.actions.id_card-entity_name
+          = id_card.entity_name
+        td.actions.id_card-contact_full_name
+          = id_card.contact_full_name
+        td.actions.id_card-action
+          = update_button edit_billing_machine_id_card_path(id_card), id: "edit-#{id_card.id}"

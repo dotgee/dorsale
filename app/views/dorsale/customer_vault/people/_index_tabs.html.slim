@@ -1,7 +1,6 @@
-.index_tabs_container
-  = nav class: "index_tabs" do
-    = link_to t("sections.activity"), dorsale.customer_vault_people_activity_path
-    = link_to t("sections.people"), dorsale.customer_vault_people_list_path
+.index-tabs-container
+  = nav class: "index-tabs" do
+    = link_to t("sections.activity"), url_for(action: :activity)
+    = link_to t("sections.people"),   url_for(action: :list)
 
-  = search_form action: dorsale.customer_vault_people_list_path
-
+  = search_form action: url_for(action: :list)

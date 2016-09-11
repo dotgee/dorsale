@@ -71,6 +71,7 @@ en:
     continue   : "Continue"
     rename     : "Rename"
     email      : "Send by email"
+    print      : "Print"
 
   attributes: &attributes
     id                    : "Id"
@@ -132,6 +133,9 @@ en:
     current_avatar        : "Current avatar"
     logo                  : "Logo"
     active                : "Active ?"
+    user                  : "User"
+    category              : "Category"
+    corporation_name      : "Name"
 
   errors:
     messages:
@@ -154,3 +158,11 @@ en:
 
   labels:
     <<: *attributes
+
+  simple_form:
+    "yes" : 'Yes'
+    "no"  : 'No'
+
+    required:
+      text: 'Required'
+      mark: '*'

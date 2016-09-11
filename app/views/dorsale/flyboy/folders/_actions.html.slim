@@ -1,15 +1,10 @@
-.actions
-  - if dorsale.flyboy_folder_path(folder) != request.path
-    = read_button dorsale.flyboy_folder_path(folder)
+= actions_for(folder)
 
-  - if can?(:create, folder.tasks.new)
-    = create_button dorsale.new_flyboy_task_path(taskable_guid: folder.guid), text: t("actions.folders.new_task")
+- if policy(folder.tasks.new).create? && request.path == dorsale.flyboy_folder_path(folder)
+  = create_button dorsale.new_flyboy_task_path(taskable_guid: folder.guid), text: t("actions.folders.new_task")
 
-  - if can?(:update, folder)
-    = update_button dorsale.edit_flyboy_folder_path(folder)
+- if policy(folder).close?
+  = lock_button dorsale.close_flyboy_folder_path(folder), text: t("actions.close")
 
-  - if can?(:close, folder)
-    = lock_button dorsale.close_flyboy_folder_path(folder), text: t("actions.close")
-
-  - if can?(:open, folder)
-    = unlock_button dorsale.open_flyboy_folder_path(folder), text: t("actions.open")
+- if policy(folder).open?
+  = unlock_button dorsale.open_flyboy_folder_path(folder), text: t("actions.open")
