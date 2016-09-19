@@ -1,16 +1,9 @@
-GIT
-  remote: git://github.com/mbleigh/acts-as-taggable-on.git
-  revision: 8e64c3d4a81cfbb8af621228eae36a65c1f94501
-  specs:
-    acts-as-taggable-on (4.0.0)
-      activerecord (>= 4.0)
-
 PATH
   remote: .
   specs:
     dorsale (3.0.3)
       aasm
-      acts-as-taggable-on
+      acts-as-taggable-on (>= 4.0.0)
       axlsx
       bh
       bootstrap-datepicker-rails
@@ -83,11 +76,13 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
+    acts-as-taggable-on (4.0.0)
+      activerecord (>= 4.0)
     addressable (2.4.0)
     afm (0.2.2)
-    arel (7.1.1)
+    arel (7.1.2)
     ast (2.3.0)
-    autoprefixer-rails (6.4.1)
+    autoprefixer-rails (6.4.1.1)
       execjs
     awesome_print (1.7.0)
     axiom-types (0.1.1)
@@ -254,7 +249,7 @@ GEM
       nenv (~> 0.1)
       shellany (~> 0.0)
     orm_adapter (0.5.0)
-    parser (2.3.1.2)
+    parser (2.3.1.3)
       ast (~> 2.2)
     pdf-core (0.6.1)
     pdf-inspector (1.2.1)
@@ -348,7 +343,7 @@ GEM
     rspec-support (3.5.0)
     rspec-wait (0.0.9)
       rspec (>= 3, < 4)
-    rubocop (0.42.0)
+    rubocop (0.43.0)
       parser (>= 2.3.1.1, < 3.0)
       powerpack (~> 0.1)
       rainbow (>= 1.99.1, < 3.0)
@@ -425,7 +420,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  acts-as-taggable-on!
   awesome_print
   byebug
   capybara
