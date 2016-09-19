@@ -1,5 +1,5 @@
 .context
-  .context-title
+  .context-header
     = icon("check-square-o")
     = " "
     = ::Dorsale::Flyboy::Task.ts
@@ -15,10 +15,11 @@
             = complete_button dorsale.complete_flyboy_task_path(task)
 
   .context-footer
-    = create_button dorsale.new_flyboy_task_path(taskable_guid: person.guid), action: :new_task
+    - if policy(::Dorsale::Flyboy::Task).create?
+      = create_button dorsale.new_flyboy_task_path(taskable_guid: person.guid), action: :new_task
 
 .context
-  .context-title
+  .context-header
     = icon("link")
     = " "
     = ::Dorsale::CustomerVault::Link.ts
@@ -32,4 +33,5 @@
         = link.title
 
   .context-footer
-    = create_button dorsale.new_customer_vault_person_link_path(person), action: :new_link
+    - if policy(person).update?
+      = create_button dorsale.new_customer_vault_person_link_path(person), action: :new_link

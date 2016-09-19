@@ -42,6 +42,7 @@ en:
     tax: "Tax %"
     unit_price: "Unit Price"
     line_total: "Total"
+    payment_term: "Payment terms"
     payment_terms: "Payment terms"
     iban: "IBAN"
     bic_swift: "BIC / SWIFT"
@@ -51,11 +52,13 @@ en:
     siret: "SIRET"
     vat: "VAT"
     vat_amount: "VAT Amount"
+    vat_rate: "VAT Rate"
     commercial_discount: "Discount"
     total_excluding_taxes: "Subtotal"
     advance: "Advance"
     total_including_taxes: "Total"
     expires_at: "Expires at"
+    balance: "Balance"
 
   activerecord:
     models:

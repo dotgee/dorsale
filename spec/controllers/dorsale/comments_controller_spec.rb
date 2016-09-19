@@ -7,24 +7,26 @@ describe Dorsale::CommentsController, type: :controller do
 
   before(:each) { sign_in(user) }
 
-  let(:valid_attributes){
+  let(:valid_params){
     commentable = DummyModel.create!(name: "A")
-
     {
       :commentable_id   => commentable.id,
       :commentable_type => commentable.class.to_s,
-      :text             => "Hello"
+      :comment => {
+        :text => "Hello",
+      },
+      :back_url => "/",
     }
   }
 
   describe "create" do
     it "should create comment" do
-      post :create, params: {comment: valid_attributes, back_url: "/"}
+      post :create, params: valid_params
       expect(assigns(:comment)).to be_persisted
     end
 
     it "should redirect to back_url" do
-      post :create, params: {comment: valid_attributes, back_url: "/"}
+      post :create, params: valid_params
       expect(response).to redirect_to("/")
     end
   end

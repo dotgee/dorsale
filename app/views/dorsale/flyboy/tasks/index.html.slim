@@ -11,9 +11,10 @@
     = search_form
 
   - content_for :actions
-    = download_button url_for(format: :csv), action: :export_csv
-    = download_button url_for(format: :xls), action: :export_xls
-    = download_button url_for(format: :pdf), action: :export_pdf
+    - if policy(::Dorsale::Flyboy::Task).export?
+      = download_button url_for(format: :csv), action: :export_csv
+      = download_button url_for(format: :xls), action: :export_xls
+      = download_button url_for(format: :pdf), action: :export_pdf
 
   - content_for :table
     = render "dorsale/flyboy/tasks/list", tasks: @tasks, nested: false

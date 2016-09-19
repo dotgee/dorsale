@@ -5,8 +5,21 @@ class Dorsale::CommentsController < ::Dorsale::ApplicationController
     :destroy,
   ]
 
+  layout false
+
+  def index
+    @comment     = scope.new(comment_params_for_create)
+    @commentable = @comment.commentable
+    @comments    = scope
+      .where(commentable: @commentable)
+      .preload(:commentable, :author)
+
+    authorize @commentable, :read?
+  end
+
   def create
     @comment ||= scope.new(comment_params_for_create)
+    @commentable = @comment.commentable
 
     authorize @comment, :create?
 
@@ -16,13 +29,11 @@ class Dorsale::CommentsController < ::Dorsale::ApplicationController
       flash[:danger] = t("messages.comments.create_error")
     end
 
-    redirect_to back_url
+    render_or_redirect
   end
 
   def edit
     authorize @comment, :update?
-
-    render layout: false
   end
 
   def update
@@ -34,7 +45,7 @@ class Dorsale::CommentsController < ::Dorsale::ApplicationController
       flash[:alert] = t("messages.comments.update_error")
     end
 
-    redirect_to back_url
+    render_or_redirect
   end
 
   def destroy
@@ -46,7 +57,7 @@ class Dorsale::CommentsController < ::Dorsale::ApplicationController
       flash[:alert] = t("messages.comments.delete_error")
     end
 
-    redirect_to back_url
+    render_or_redirect
   end
 
   private
@@ -57,6 +68,14 @@ class Dorsale::CommentsController < ::Dorsale::ApplicationController
       request.referer,
       (main_app.root_path rescue "/"),
     ].select(&:present?).first
+  end
+
+  def render_or_redirect
+    if request.xhr?
+      head :ok
+    else
+      redirect_to back_url
+    end
   end
 
   def model
@@ -90,11 +109,28 @@ class Dorsale::CommentsController < ::Dorsale::ApplicationController
   end
 
   def comment_params_for_create
-    comment_params.merge(author: current_user)
+    comment_params.merge(
+      :author      => current_user,
+      :commentable => find_commentable,
+    )
   end
 
   def comment_params_for_update
     comment_params
+  end
+
+  def commentable_type
+    params[:commentable_type] || @comment.commentable_type
+  end
+
+  def commentable_id
+    params[:commentable_id] || @comment.commentable_id
+  end
+
+  def find_commentable
+    commentable_type.to_s.constantize.find(commentable_id)
+  rescue NameError
+    raise ActiveRecord::RecordNotFound
   end
 
 end

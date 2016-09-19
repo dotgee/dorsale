@@ -16,7 +16,7 @@
             = f.hidden_field :id_card_id
             = info document, :id_card
           - else
-            = f.input :id_card_id, collection: @id_cards
+            = f.association :id_card, collection: @id_cards
 
         = f.input :label
 
@@ -46,7 +46,7 @@
       .col-sm-6
         = link_to_add_association t("actions.add_line"), f, :lines, class: "btn btn-success btn-sm", id: "add-new-line", "data-association-insertion-node" => "#lines-table tbody", "data-association-insertion-method" => "append"
 
-        = f.input :payment_term_id, collection: @payment_terms
+        = f.association :payment_term, collection: @payment_terms
 
         - if document_type == :invoice
           = f.input :due_date, html5: true

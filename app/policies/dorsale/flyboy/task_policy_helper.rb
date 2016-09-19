@@ -1,6 +1,7 @@
 module Dorsale::Flyboy::TaskPolicyHelper
   POLICY_METHODS = [
     :list?,
+    :export?,
     :create?,
     :read?,
     :update?,
@@ -38,10 +39,16 @@ module Dorsale::Flyboy::TaskPolicyHelper
   private
 
   def folder_is_closed?
-    task.taskable.is_a?(::Dorsale::Flyboy::Folder) && task.taskable.closed?
+    return false unless task.is_a?(::Dorsale::Flyboy::Task)
+    return false unless task.taskable.is_a?(::Dorsale::Flyboy::Folder)
+
+    task.taskable.closed?
   end
 
   def cannot_read_taskable?
-    task.taskable.present? && !policy(task.taskable).read?
+    return false unless task.is_a?(::Dorsale::Flyboy::Task)
+    return false unless task.taskable.present?
+
+    ! policy(task.taskable).read?
   end
 end

@@ -42,6 +42,7 @@ fr:
     tax: "TVA %"
     unit_price: "P.U HT"
     line_total: "TOTAL HT"
+    payment_term: "Conditions de paiement"
     payment_terms: "Conditions de paiement"
     iban: "IBAN"
     bic_swift: "BIC / SWIFT"
@@ -51,11 +52,13 @@ fr:
     siret: "SIRET "
     vat: "TVA"
     vat_amount: "Montant TVA"
+    vat_rate: "Taux TVA"
     commercial_discount: "Remise"
     total_excluding_taxes: "Total HT"
     advance: "Acompte"
     total_including_taxes: "Total TTC"
     expires_at: "Date d'expiration"
+    balance: "Reste à payer"
 
   activerecord:
     models:

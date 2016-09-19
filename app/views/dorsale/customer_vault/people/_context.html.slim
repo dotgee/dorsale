@@ -1,7 +1,7 @@
 - person = person || taskable
 
 .context
-  .context-title
+  .context-header
     = icon(:users) if person.corporation?
     = icon(:user)  if person.individual?
     = " "

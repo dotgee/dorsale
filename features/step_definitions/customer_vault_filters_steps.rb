@@ -11,7 +11,7 @@ Given(/^an other existing corporation with tag yeah$/) do
 end
 
 When(/^I go the to people list$/) do
-  visit dorsale.customer_vault_people_list_path
+  visit dorsale.customer_vault_people_path
 end
 
 When(/^I filter with tag hello$/) do

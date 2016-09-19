@@ -11,7 +11,8 @@
     = search_form
 
   - content_for :actions
-    = create_button dorsale.new_flyboy_folder_path
+    - if policy(::Dorsale::Flyboy::Folder).create?
+      = create_button dorsale.new_flyboy_folder_path
 
   - content_for :table
     = render "dorsale/flyboy/folders/list", folders: @folders

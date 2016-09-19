@@ -1,6 +1,6 @@
 .index-tabs-container
   = nav class: "index-tabs" do
     = link_to t("sections.activity"), url_for(action: :activity)
-    = link_to t("sections.people"),   url_for(action: :list)
+    = link_to t("sections.people"),   url_for(action: :index)
 
-  = search_form action: url_for(action: :list)
+  = search_form action: url_for(action: :index)

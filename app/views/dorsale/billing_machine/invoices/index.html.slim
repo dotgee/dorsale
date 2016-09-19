@@ -11,8 +11,11 @@
     = Dorsale::BillingMachine::Invoice.ts
 
   - content_for :actions
-    = create_button dorsale.new_billing_machine_invoice_path
-    = download_button dorsale.billing_machine_invoices_path(format: :csv), action: :export_csv
+    - if policy(::Dorsale::BillingMachine::Invoice).create?
+      = create_button dorsale.new_billing_machine_invoice_path
+
+    - if policy(::Dorsale::BillingMachine::Invoice).export?
+      = download_button dorsale.billing_machine_invoices_path(format: :csv), action: :export_csv
 
   - content_for :table
     = render "dorsale/billing_machine/invoices/list", invoices: @invoices

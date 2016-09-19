@@ -11,7 +11,8 @@
     = Dorsale::BillingMachine::Quotation.ts
 
   - content_for :actions
-    = create_button dorsale.new_billing_machine_quotation_path
+    - if policy(Dorsale::BillingMachine::Quotation).create?
+      = create_button dorsale.new_billing_machine_quotation_path
 
   - content_for :table
     = render "dorsale/billing_machine/quotations/list", quotations: @quotations

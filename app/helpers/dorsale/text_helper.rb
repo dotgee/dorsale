@@ -69,7 +69,7 @@ module Dorsale::TextHelper
 
     label       = options[:label]     || object.t(attribute)
     tag         = options[:tag]       || :div
-    separator   = options[:separator] || ":"
+    separator   = options[:separator] || " : "
     helper      = options[:helper]
     i18n_key    = "#{object.class.to_s.tableize.singularize}/#{attribute}"
     nested      = I18n.t("activerecord.attributes.#{i18n_key}").is_a?(Hash)

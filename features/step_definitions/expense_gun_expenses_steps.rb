@@ -83,8 +83,7 @@ When(/^I submit the expense$/) do
 end
 
 Then(/^I am redirect to the expenses page$/) do
-  wait_for { current_path }.to include dorsale.expense_gun_expenses_path
-  wait_for { current_path }.to include "state/all"
+  wait_for { current_path }.to eq dorsale.expense_gun_expenses_path
 end
 
 Then(/^the expense state is "([^"]*)"$/) do |new_state|

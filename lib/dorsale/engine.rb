@@ -32,18 +32,8 @@ if Rails.env.test? || Rails.env.development?
   require "factory_girl"
 end
 
-require "dorsale/file_loader"
-require "dorsale/polymorphic_id"
-require "dorsale/simple_form"
-require "dorsale/simple_form_bootstrap"
-require "dorsale/model_i18n"
-require "dorsale/model_to_s"
-require "dorsale/alexandrie/prawn"
-require "dorsale/form_back_url"
-
 require "acts-as-taggable-on"
 require "active_record_comma_type_cast"
-
 
 module Dorsale
   class Engine < ::Rails::Engine
@@ -71,3 +61,12 @@ module Dorsale
     Mime::Type.register "application/vnd.ms-excel", :xlsx
   end
 end
+
+require "dorsale/file_loader"
+require "dorsale/polymorphic_id"
+require "dorsale/simple_form"
+require "dorsale/simple_form_bootstrap"
+require "dorsale/model_i18n"
+require "dorsale/model_to_s"
+require "dorsale/alexandrie/prawn"
+require "dorsale/form_back_url"

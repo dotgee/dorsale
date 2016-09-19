@@ -3,7 +3,8 @@
     = ::Dorsale::BillingMachine::PaymentTerm.ts
 
   - content_for :actions
-    = create_button new_billing_machine_payment_term_path, action: :create
+    - if policy(::Dorsale::BillingMachine::PaymentTerm).create?
+      = create_button new_billing_machine_payment_term_path, action: :create
 
   - content_for :table
     = render "dorsale/billing_machine/payment_terms/list", payment_terms: @payment_terms

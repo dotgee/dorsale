@@ -7,12 +7,27 @@ RSpec.describe ::Dorsale::CustomerVault::PeopleController, type: :controller do
 
   before(:each) { sign_in(user) }
 
-  describe "#index" do
-    it "should redirect to activity" do
-      get :index
-      expect(response).to redirect_to customer_vault_people_activity_path
+  describe "#corporations" do
+    render_views
+
+    it "should return corporations only" do
+      corporation = create(:customer_vault_corporation)
+      individual  = create(:customer_vault_individual)
+      get :corporations
+      expect(assigns :people).to eq [corporation]
     end
-  end # describe "#index"
+  end # describe "#corporations"
+
+  describe "#individuals" do
+    render_views
+
+    it "should return individuals only" do
+      corporation = create(:customer_vault_corporation)
+      individual  = create(:customer_vault_individual)
+      get :individuals
+      expect(assigns :people).to eq [individual]
+    end
+  end # describe "#individuals"
 
   describe "#list" do
     describe "sorting" do
@@ -22,7 +37,7 @@ RSpec.describe ::Dorsale::CustomerVault::PeopleController, type: :controller do
         alice = create(:customer_vault_individual, last_name: 'Alice')
         zorg  = create(:customer_vault_corporation, name: 'Zorg Corp')
 
-        get :list
+        get :index
 
         expect(assigns(:people)).to eq([abc, alice, bob, zorg])
       end
@@ -33,7 +48,7 @@ RSpec.describe ::Dorsale::CustomerVault::PeopleController, type: :controller do
         corporation1 = create(:customer_vault_corporation, tag_list: "abc", name: "aaa")
         corporation2 = create(:customer_vault_corporation, tag_list: "xyz", name: "bbb")
         @request.cookies["filters"] = {tags: ["abc"]}.to_json
-        get :list, params: {q: "bbb"}
+        get :index, params: {q: "bbb"}
         expect(assigns(:people)).to eq [corporation2]
       end
     end # describe "search"

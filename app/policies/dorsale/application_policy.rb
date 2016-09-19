@@ -6,6 +6,10 @@ class Dorsale::ApplicationPolicy
     @subject = subject
   end
 
+  def record
+    subject
+  end
+
   def policy(subject)
     Pundit.policy(user, subject)
   end
@@ -15,10 +19,10 @@ class Dorsale::ApplicationPolicy
   end
 
   def self.inherited(klass)
-    klass.define_accessor
+    klass.define_subject_accessor!
   end
 
-  def self.define_accessor
+  def self.define_subject_accessor!
     # Dorsale::BillingMachine::InvoicePolicy -> :invoice
     object_type = self.to_s.demodulize.gsub("Policy", "").underscore.to_sym
 

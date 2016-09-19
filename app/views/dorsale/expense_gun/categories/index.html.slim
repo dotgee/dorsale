@@ -3,7 +3,8 @@
     = ::Dorsale::ExpenseGun::Category.ts
 
   - content_for :actions
-    = create_button new_expense_gun_category_path, action: :create
+    - if policy(::Dorsale::ExpenseGun::Category).create?
+      = create_button new_expense_gun_category_path, action: :create
 
   - content_for :table
     = render "dorsale/expense_gun/categories/list", categories: @categories

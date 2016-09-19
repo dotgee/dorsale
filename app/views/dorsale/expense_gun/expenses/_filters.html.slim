@@ -1,0 +1,3 @@
+= filters_form do |f|
+  = f.input :expense_state, collection: expense_states_for_filters_select, include_blank: t("expense_gun.filters.all_states")
+  = f.input :expense_user_id, collection: @users, include_blank: t("expense_gun.filters.all_users")

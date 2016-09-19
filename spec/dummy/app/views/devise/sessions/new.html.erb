@@ -8,7 +8,7 @@
     <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { role: "form" }) do |f| %>
       <div class="form-group">
         <%= f.label :email %>
-        <%= f.email_field :email, autofocus: true, class: "form-control", value: "demo@agilidee.com" %>
+        <%= f.email_field :email, autofocus: true, class: "form-control", value: User.reorder(:id).first.email %>
       </div>
       <div class="form-group">
         <%= f.label :password %>

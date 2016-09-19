@@ -1,8 +1,16 @@
-= simple_form_for [dorsale, Dorsale::Comment.new(commentable: commentable)] do |f|
-  = f.hidden_field :commentable_id
-  = f.hidden_field :commentable_type
+= simple_form_for [dorsale, @comment], remote: true do |f|
+  - if defined?(commentable)
+    input type="hidden" name="commentable_id"   value=commentable.id
+    input type="hidden" name="commentable_type" value=commentable.class
 
-  = f.input :text, label: false
+  .comment
+    - if @comment.author.try(:avatar_url).present?
+      = image_tag @comment.author.avatar_url, class: "avatar"
+    - else
+      = image_tag "dorsale/avatar.png", class: "avatar"
 
-  .center
-    input.btn.btn-success type="submit" value=t("actions.send")
+    .textarea-input-group
+      = f.text_area :text, rows: 3, class: "form-control"
+      input type="submit" value=t("actions.send")
+
+    .clearfix

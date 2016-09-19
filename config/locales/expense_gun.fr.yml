@@ -24,6 +24,12 @@ fr:
       actions:
         create: "Nouvelle catégorie"
 
+
+    filters:
+      all_states: "Tous les états"
+      all_users: "Tous les utilisateurs"
+
+
   activerecord:
     models:
       dorsale/expense_gun/expense:
@@ -59,7 +65,7 @@ fr:
 
       dorsale/expense_gun/expense/state:
         all      : "Toutes"
-        new      : "Nouvelle"
+        new      : "Brouillon"
         submited : "Soumise"
         accepted : "Accepée"
         refused  : "Refusée"

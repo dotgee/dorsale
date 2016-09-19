@@ -1,0 +1,11 @@
+= render "dorsale/flash"
+
+- if policy(@comment).create?
+  = render "dorsale/comments/form", commentable: @commentable
+
+= render "dorsale/comments/list", comments: @comments
+
+javascript:
+  if(location.pathname == "#{engine_polymorphic_path(@commentable)}") {
+    $("#dorsale-comments .commentable-container").hide()
+  }

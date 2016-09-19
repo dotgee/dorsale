@@ -5,7 +5,8 @@
     = User.ts
 
   - content_for :actions
-    = create_button dorsale.new_user_path
+    - if policy(User).create?
+      = create_button dorsale.new_user_path
 
   - content_for :table
     = render "dorsale/users/list", users: @users

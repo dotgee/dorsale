@@ -9,10 +9,10 @@
       = icon_link_to :pencil, t("actions.edit"), dorsale.edit_comment_path(comment), class: "edit"
 
     - if policy(comment).delete?
-      = icon_link_to :trash, t("actions.delete"), dorsale.comment_path(comment), method: :delete, data: {confirm: t("actions.confirm")}
+      = icon_link_to :trash, t("actions.delete"), dorsale.comment_path(comment), method: :delete, remote: true, data: {confirm: t("actions.confirm")}
 
   p.infos
-    - if engine_polymorphic_path(comment.commentable) != request.fullpath
+    span.commentable-container
       span.commentable
         = link_to comment.commentable.name, engine_polymorphic_path(comment.commentable)
 

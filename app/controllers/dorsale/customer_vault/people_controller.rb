@@ -9,13 +9,6 @@ class Dorsale::CustomerVault::PeopleController < ::Dorsale::CustomerVault::Appli
   ]
 
   def index
-    skip_authorization
-    skip_policy_scope
-
-    redirect_to url_for(action: :activity)
-  end
-
-  def list
     authorize model, :list?
 
     @filters ||= ::Dorsale::CustomerVault::SmallData::FilterForPeople.new(cookies)
@@ -31,6 +24,16 @@ class Dorsale::CustomerVault::PeopleController < ::Dorsale::CustomerVault::Appli
     @people = @people.page(params[:page]).per(25)
   end
 
+  def corporations
+    index
+    render :index
+  end
+
+  def individuals
+    index
+    render :index
+  end
+
   def activity
     authorize model, :list?
 
@@ -39,6 +42,7 @@ class Dorsale::CustomerVault::PeopleController < ::Dorsale::CustomerVault::Appli
     @comments ||= policy_scope(::Dorsale::Comment)
       .where("commentable_type LIKE ?", "%CustomerVault%")
       .order("created_at DESC, id DESC")
+      .preload(:commentable, :author)
 
     @comments = @comments.page(params[:page]).per(50)
   end
@@ -48,7 +52,7 @@ class Dorsale::CustomerVault::PeopleController < ::Dorsale::CustomerVault::Appli
 
     if model == Dorsale::CustomerVault::Person
       skip_policy_scope
-      redirect_to url_for(action: :list)
+      redirect_to url_for(action: :index)
       return
     end
 
@@ -115,9 +119,9 @@ class Dorsale::CustomerVault::PeopleController < ::Dorsale::CustomerVault::Appli
   end
 
   def model
-    # New / Create
-    return ::Dorsale::CustomerVault::Corporation if params[:type] == "corporation"
-    return ::Dorsale::CustomerVault::Individual  if params[:type] == "individual"
+    # New / Create / Individuals / Corporations
+    return ::Dorsale::CustomerVault::Corporation if request.path.include?("/corporations")
+    return ::Dorsale::CustomerVault::Individual  if request.path.include?("/individuals")
 
     # Other member actions
     return ::Dorsale::CustomerVault::Corporation if @person.try(:person_type) == :corporation

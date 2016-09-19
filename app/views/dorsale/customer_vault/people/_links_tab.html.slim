@@ -3,4 +3,5 @@
     = render "dorsale/customer_vault/people/list_item", person: link.other_person, link: link
 
 .text-center
-  = create_button dorsale.new_customer_vault_person_link_path(person), action: :new_link
+  - if policy(person).update?
+    = create_button dorsale.new_customer_vault_person_link_path(person), action: :new_link

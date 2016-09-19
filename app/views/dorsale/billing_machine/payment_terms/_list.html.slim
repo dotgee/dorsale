@@ -12,4 +12,5 @@ table.default#payment_term
         td.actions.payment_term-label
           = payment_term.label
         td.actions.payment_term-action
-          = update_button edit_billing_machine_payment_term_path(payment_term), id: "edit-#{payment_term.id}"
+          - if policy(payment_term).create?
+            = update_button edit_billing_machine_payment_term_path(payment_term), id: "edit-#{payment_term.id}"

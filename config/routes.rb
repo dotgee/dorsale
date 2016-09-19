@@ -1,18 +1,25 @@
 Dorsale::Engine.routes.draw do
-  resources :comments, only: [:create, :edit, :update, :destroy]
+  # Comments
+
+  resources :comments, only: [:index, :create, :edit, :update, :destroy]
+
+  # Users
 
   resources :users, except: [:destroy]
+
+  # Small Sata / Filters
 
   namespace :small_data do
     resources :filters, only: [:create]
   end
 
-
+  # Alexandrie / Attachments
 
   namespace :alexandrie do
     resources :attachments, only: [:index, :create, :edit, :update, :destroy]
   end
 
+  # Flyboy
 
   namespace :flyboy do
     resources :folders do
@@ -33,6 +40,8 @@ Dorsale::Engine.routes.draw do
     resources :task_comments, only: [:create]
   end
 
+  # Billing Machine
+
   namespace :billing_machine do
     resources :id_cards, except: [:destroy, :show]
     resources :payment_terms, except: [:destroy, :show]
@@ -51,10 +60,14 @@ Dorsale::Engine.routes.draw do
     end
   end
 
+  # Customer Vault
+
+  get "customer_vault/corporations" => "customer_vault/people#corporations"
+  get "customer_vault/individuals"  => "customer_vault/people#individuals"
+
   namespace :customer_vault do
     namespace :people do
       get :activity
-      get :list
     end
 
     resources :people do
@@ -68,11 +81,12 @@ Dorsale::Engine.routes.draw do
     resources :individuals,  path: "people", except: [:new] do
       resources :links, except: [:index]
     end
+
+    resources :corporations, only: [:new, :create], controller: :people
+    resources :individuals,  only: [:new, :create], controller: :people
   end
 
-  get "customer_vault/people/new/corporation" => "customer_vault/people#new", type: "corporation", as: :new_customer_vault_corporation
-  get "customer_vault/people/new/individual"  => "customer_vault/people#new", type: "individual",  as: :new_customer_vault_individual
-
+  # Expense Gun
 
   namespace :expense_gun do
     resources :categories, except: [:destroy, :show]
@@ -87,9 +101,7 @@ Dorsale::Engine.routes.draw do
       end
     end
 
-    get "/expenses/state/:state" => "expenses#index"
-    get "/expenses/state/:state/page/:page" => "expenses#index"
-
     get "/" => redirect{ ExpenseGun::Engine.routes.url_helpers.expenses_path }
   end
+
 end

@@ -16,3 +16,17 @@ form
 
 .btn + .btn
   margin-left: 0.5em
+
+.textarea-input-group
+  @extend .input-group
+  display: flex
+
+  button, input
+    @extend .input-group-addon
+    @extend .btn-success
+    background: $btn-success-bg
+    color: $btn-success-color
+    width: auto
+
+    &:hover
+      @extend .btn-success:hover

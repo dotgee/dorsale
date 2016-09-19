@@ -1,5 +1,5 @@
 Lorsqu(/^he go to the people list$/) do
-  visit dorsale.customer_vault_people_list_path
+  visit dorsale.customer_vault_people_path
 end
 
 Etantdonné(/^existing individuals$/) do

@@ -16,7 +16,6 @@ gem 'uglifier'
 gem "pry-rails"
 gem "awesome_print"
 gem "delayed_job_active_record"
-gem "acts-as-taggable-on", github: "mbleigh/acts-as-taggable-on"
 
 gemspec
 

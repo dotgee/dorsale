@@ -1,7 +1,4 @@
 = horizontal_form_for @person, as: :person, multipart: true do |f|
-  - if params[:type].present?
-    input type="hidden" name="type" value=params[:type]
-
   .panel.panel-default
     .panel-heading: .panel-title = t("customer_vault.identity_informations")
     .panel-body
@@ -15,6 +12,20 @@
       = f.input :short_name
       = render "dorsale/forms/avatar", f: f
       = f.input :tag_list, collection: @tags, input_html: {multiple: true}
+
+  .panel.panel-default
+    .panel-heading: .panel-title = t("customer_vault.additional_informations")
+    .panel-body
+      - if @person.corporation?
+        = f.input :capital
+        = f.input :immatriculation_number_1
+        = f.input :immatriculation_number_2
+        = f.input :european_union_vat_number
+        = f.input :legal_form
+
+      - if @person.individual?
+        = f.input :title
+        = f.input :context, as: :text, input_html: {rows: 4}
 
   .panel.panel-default
     .panel-heading: .panel-title = t("customer_vault.contact_informations")
@@ -39,19 +50,5 @@
         = af.input :zip
         = af.input :city
         = af.input :country, as: :string
-
-  .panel.panel-default
-    .panel-heading: .panel-title = t("customer_vault.additional_informations")
-    .panel-body
-      - if @person.corporation?
-        = f.input :capital
-        = f.input :immatriculation_number_1
-        = f.input :immatriculation_number_2
-        = f.input :european_union_vat_number
-        = f.input :legal_form
-
-      - if @person.individual?
-        = f.input :title
-        = f.input :context, as: :text
 
   = form_buttons

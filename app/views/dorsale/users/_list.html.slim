@@ -19,4 +19,5 @@ table#users-list.default
           = user.email
 
         td.actions
-          = update_button dorsale.edit_user_path(user)
+          - if policy(user).update?
+            = update_button dorsale.edit_user_path(user)

@@ -14,6 +14,7 @@ module Dorsale::AllHelpers
 
   include ::Dorsale::Alexandrie::AttachmentsHelper
   include ::Dorsale::Flyboy::ApplicationHelper
+  include ::Dorsale::ExpenseGun::ApplicationHelper
   include ::Dorsale::UsersHelper
 
   extend self

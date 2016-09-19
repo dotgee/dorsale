@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.description = "Run your own business."
   s.test_files = Dir["spec/**/*"]
 
-  s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.files = Dir["{app,config,db,lib}/**/*", "LICENSE.md", "Rakefile", "README.md", "CHANGELOG.md"]
 
   s.add_dependency "rails", ">= 4.0.0"
   s.add_dependency "virtus"
@@ -43,7 +43,7 @@ Gem::Specification.new do |s|
   s.add_dependency "combine_pdf"
   s.add_dependency "cocoon"
   s.add_dependency "select2-rails"
-  s.add_dependency "acts-as-taggable-on"
+  s.add_dependency "acts-as-taggable-on", ">= 4.0.0"
   s.add_dependency "mini_magick"
   s.add_dependency "rake"
   s.add_dependency "axlsx"

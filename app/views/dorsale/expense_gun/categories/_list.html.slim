@@ -23,4 +23,5 @@ table.table.default#category
           - else
             = icon(:remove)
         td.actions.category-action
-          = update_button edit_expense_gun_category_path(category), id: "edit-#{category.id}"
+          - if policy(category).create?
+            = update_button edit_expense_gun_category_path(category), id: "edit-#{category.id}"

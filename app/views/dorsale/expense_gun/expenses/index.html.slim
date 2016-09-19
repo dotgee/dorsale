@@ -2,49 +2,19 @@
   - content_for :title
     = icon(:euro)
     = " "
-    = Dorsale::ExpenseGun::Expense.ts
+    = ::Dorsale::ExpenseGun::Expense.ts
 
   - content_for :pagination
     = paginate @expenses
 
   - content_for :actions
-    = create_button dorsale.new_expense_gun_expense_path, text: t("expense_gun.expense.actions.create")
+    - if policy(::Dorsale::ExpenseGun::Expense).create?
+      = create_button dorsale.new_expense_gun_expense_path, text: t("expense_gun.expense.actions.create")
+
+  - content_for :filters
+    = render "dorsale/expense_gun/expenses/filters"
 
   - content_for :page_body
-    hr
-
-    ul.nav.nav-pills
-      li class=("active" if params[:state] == "all")
-        a href=dorsale.url_for(state: "all", only_path: true)
-          = Dorsale::ExpenseGun::Expense.t("state.all")
-          span.badge = @all_expenses.count
-
-      - for state in %w(submited new accepted refused canceled)
-        li class=("active" if params[:state] == state)
-          a href=dorsale.url_for(state: state, only_path: true)
-            = Dorsale::ExpenseGun::Expense.t("state.#{state}").pluralize
-            span.badge = @all_expenses.where(state: state).count
-    hr
-
-    - @expenses.each do |expense|
-      .panel.panel-default.expense
-        .panel-heading
-          .pull-right
-            = read_button dorsale.expense_gun_expense_path(expense)
-
-            - if policy(expense).update?
-              = update_button dorsale.edit_expense_gun_expense_path(expense)
-
-          .panel-title = expense.name
-
-        .panel-body
-          .row
-            .col-md-6
-              = info expense, :user
-              = info expense, :total_all_taxes,        helper: :euros
-              = info expense, :total_employee_payback, helper: :euros
-            .col-md-6
-              = info expense, :state
-              = info expense, :date
+    = render "dorsale/expense_gun/expenses/list", expenses: @expenses
 
   = render_dorsale_index

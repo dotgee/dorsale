@@ -17,10 +17,9 @@
           td.task_comment-description
             = f.hidden_field :task_id
 
-            .input-group
+            .textarea-input-group
               = f.text_area :description, rows: 3, class: "form-control"
-              span.input-group-addon
-                input.nostyle type="submit" value=t("actions.create")
+              input type="submit" value=t("actions.save")
 
 
       - @task.reload.comments.map do |comment|

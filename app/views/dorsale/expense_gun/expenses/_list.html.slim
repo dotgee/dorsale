@@ -1,0 +1,20 @@
+- expenses.each do |expense|
+  .panel.panel-default.expense
+    .panel-heading
+      .pull-right
+        = read_button dorsale.expense_gun_expense_path(expense)
+
+        - if policy(expense).update?
+          = update_button dorsale.edit_expense_gun_expense_path(expense)
+
+      .panel-title = expense.name
+
+    .panel-body
+      .row
+        .col-md-6
+          = info expense, :user
+          = info expense, :total_all_taxes,        helper: :euros
+          = info expense, :total_employee_payback, helper: :euros
+        .col-md-6
+          = info expense, :state
+          = info expense, :date

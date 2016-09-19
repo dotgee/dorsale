@@ -64,8 +64,9 @@ class Dorsale::PolicyChecker
     end
 
     helper_klass::POLICY_METHODS.each do |method|
-      unless policy_klass.public_instance_methods.include?(method)
+      unless policy_klass.public_instance_methods(false).include?(method)
         errors << "#{policy_klass}##{method} is not defined"
+        next
       end
     end
   end

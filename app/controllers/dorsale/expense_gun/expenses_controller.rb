@@ -10,22 +10,14 @@ class Dorsale::ExpenseGun::ExpensesController < Dorsale::ExpenseGun::Application
     :cancel,
   ]
 
+  before_action :set_filters_variables, only: [:index]
+
   def index
     authorize model, :list?
 
-    if params[:state].blank?
-      redirect_to state: "all"
-      return
-    end
-
-    @all_expenses ||= scope.all
-
-    if params[:state] == "all"
-      @expenses ||= @all_expenses
-    else
-      @expenses ||= @all_expenses.where(state: params[:state])
-    end
-
+    @expenses ||= scope.all
+    @filters ||= Dorsale::ExpenseGun::SmallData::FilterForExpenses.new(cookies)
+    @expenses = @filters.apply(@expenses)
     @expenses = @expenses.page(params[:page]).per(25)
   end
 
@@ -152,6 +144,10 @@ class Dorsale::ExpenseGun::ExpensesController < Dorsale::ExpenseGun::Application
 
   def expense_params_for_update
     expense_params
+  end
+
+  def set_filters_variables
+    @users ||= policy_scope(User).all
   end
 
 end
