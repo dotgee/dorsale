@@ -14,27 +14,12 @@ class Dorsale::BillingMachine::InvoicesController < ::Dorsale::BillingMachine::A
 
     @invoices ||= scope.all
     @filters  ||= ::Dorsale::BillingMachine::SmallData::FilterForInvoices.new(cookies)
-    @order    ||= {unique_index: :desc}
 
     @invoices = @filters.apply(@invoices)
-    @invoices = @invoices.order(@order)
     @invoices_without_pagination = @invoices
     @invoices = @invoices.page(params[:page]).per(50)
 
-    @total_excluding_taxes = @invoices_without_pagination.to_a
-      .map(&:total_excluding_taxes)
-      .delete_if(&:blank?)
-      .sum
-
-    @vat_amount = @invoices_without_pagination.to_a
-      .map(&:vat_amount)
-      .delete_if(&:blank?)
-      .sum
-
-    @total_including_taxes = @invoices_without_pagination.to_a
-      .map(&:total_including_taxes)
-      .delete_if(&:blank?)
-      .sum
+    @statistics = ::Dorsale::BillingMachine::Invoice::Statistics.new(@invoices_without_pagination)
   end
 
   def new

@@ -21,15 +21,14 @@ fr:
       complete_ok: "La tâche a été marquée comme terminée"
       complete_eror: "Impossible de terminer la tâche"
 
-  email:
-    task:
-      the_task: "La tâche "
-      new:
-        subject: "Une nouvelle tâche vous a été attribuée"
-        attributed_by: " vous a été attribuée par %{author}"
-      term:
-        subject: "La tâche "
-        expire: " est arrivé à terme, veuillez la reporter ou la clôturer"
+  task_mailer:
+    new_task:
+      subject: "Nouvelle tâche : %{task_name}"
+      body: "Bonjour %{owner},\n\nUne <a href='%{task_url}'>nouvelle tâche</a> vous a été assignée par %{author}."
+
+    term_email:
+      subject: "La tâche %{task_name} arrive à échéance"
+      body: "Bonjour %{owner},\n\nLa Tâche <a href='%{task_url}'>%{task_name}</a> arrive à échéance aujourd'hui, merci de la repousser ou de la terminer."
 
   actions:
     label: "Actions"
@@ -47,8 +46,13 @@ fr:
         one: "Tâche"
         other: "Tâches"
 
+      dorsale/flyboy/task_comment:
+        one: "Commentaire de tâche"
+        other: "Commentaires de tâche"
+
     attributes:
       dorsale/flyboy/folder:
+        folderable: "Origine"
         name: "Titre"
         status: "Status"
         description: "Description"
@@ -79,3 +83,4 @@ fr:
       dorsale/flyboy/task_comment:
         progress: "Progression"
         description: "Description"
+        task: "Tâche"

@@ -23,6 +23,7 @@ group :development, :test do
   gem "byebug"
   gem "faker"
   gem "database_cleaner"
+  gem "desktop_delivery"
 end
 
 group :test do

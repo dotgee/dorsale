@@ -1,7 +1,7 @@
 = actions_for(folder)
 
 - if policy(folder.tasks.new).create? && request.path == dorsale.flyboy_folder_path(folder)
-  = create_button dorsale.new_flyboy_task_path(taskable_guid: folder.guid), text: t("actions.folders.new_task")
+  = create_button dorsale.new_flyboy_task_path(taskable_guid: folder.guid), text: t("actions.new_task")
 
 - if policy(folder).close?
   = lock_button dorsale.close_flyboy_folder_path(folder), text: t("actions.close")

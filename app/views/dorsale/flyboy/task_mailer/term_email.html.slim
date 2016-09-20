@@ -1,7 +1,1 @@
-p = "#{@task.owner.to_s},"
-
-p
-  = t("email.task.the_task")
-  = link_to @task.name, flyboy_task_url(@task)
-  = t("email.task.term.expire")
-
+p == lf2br t("task_mailer.term_email.body", @locals)

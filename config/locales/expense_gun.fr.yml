@@ -53,6 +53,7 @@ fr:
         total_all_taxes        : "Total TTC"
 
       dorsale/expense_gun/expense_line:
+        expense              : "Note de frais"
         name                 : "Description"
         employee_payback     : "Remboursement employé"
         vat                  : "Montant TVA"

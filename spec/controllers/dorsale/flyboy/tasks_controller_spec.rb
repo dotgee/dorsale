@@ -192,7 +192,7 @@ describe Dorsale::Flyboy::TasksController, type: :controller do
         expect(ActionMailer::Base.deliveries.count).to eq 1
         email = ActionMailer::Base.deliveries.last
         expect(email.to).to include owner.email
-        expect(email.subject).to include I18n.t("emails.task.new.subject")
+        expect(email.subject).to include "New Task"
         expect(email.body).to include @user.to_s
         expect(email.body).to include "http://"
       end

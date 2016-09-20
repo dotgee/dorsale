@@ -43,6 +43,19 @@ RSpec.describe ::Dorsale::CustomerVault::PeopleController, type: :controller do
       end
     end # describe "sorting"
 
+    describe "filters" do
+      it "should filter by person type" do
+        individual  = create(:customer_vault_individual)
+        corporation = create(:customer_vault_corporation)
+
+        cookies[:filters] = {person_type: "Dorsale::CustomerVault::Individual"}.to_json
+
+        get :index
+
+        expect(assigns(:people)).to eq [individual]
+      end
+    end # describe "filters"
+
     describe "search" do
       it "search should ignore filters" do
         corporation1 = create(:customer_vault_corporation, tag_list: "abc", name: "aaa")

@@ -1,4 +1,4 @@
-class Dorsale::FileUploader < CarrierWave::Uploader::Base
+class ApplicationUploader < CarrierWave::Uploader::Base
   storage :file
 
   def store_dir

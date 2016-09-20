@@ -75,6 +75,7 @@ en:
 
   attributes: &attributes
     id                    : "Id"
+    type                  : "Type"
     code                  : "Code"
     reference             : "Réference"
     created_at            : "Created at"
@@ -120,12 +121,18 @@ en:
     paid                  : "Paid ?"
     customer              : "Customer"
     customer_guid         : "Customer"
+    tracking              : "Tracking ID"
     tracking_id           : "Tracking ID"
+    unique_index          : "Tracking ID"
     count                 : "Number"
     length                : "Number"
     number                : "Number"
     message               : "Message"
     skype                 : "Skype"
+    facebook              : "Facebook"
+    twitter               : "Twitter"
+    linkedin              : "Linkedin"
+    viadeo                : "Viadeo"
     subject               : "Subject"
     body                  : "Message"
     attachment            : "Attachment"
@@ -136,6 +143,17 @@ en:
     user                  : "User"
     category              : "Category"
     corporation_name      : "Name"
+    author                : "Author"
+    sender                : "Author"
+    total                 : "Total"
+    version               : "Version"
+    commentable           : "Origin"
+    addressable           : "Origin"
+    attachable            : "Origin"
+    email_subject         : "Subject"
+    email_to              : "Recipient"
+    email_attachment      : "Attachment"
+    email_body            : "Message"
 
   errors:
     messages:
@@ -158,6 +176,17 @@ en:
 
   labels:
     <<: *attributes
+
+  activerecord:
+    models:
+      dorsale/address:
+        one: "Address"
+        other: "Addresses"
+
+      dorsale/comment:
+        one: "Comment"
+        other: "Comments"
+
 
   simple_form:
     "yes" : 'Yes'

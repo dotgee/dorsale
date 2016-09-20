@@ -5,6 +5,8 @@ en:
     new_id_card: "New Id Card"
 
   attributes:
+    invoice: "Invoice"
+    quotation: "Quotation"
     id_card: "Id Card"
     id_card_name: "Id Card name"
     entity_name: "Entity name"
@@ -66,9 +68,17 @@ en:
         one: "Invoice"
         other: "Invoices"
 
+      dorsale/billing_machine/invoice_line:
+        one: "Invoice Line"
+        other: "Invoice Lines"
+
       dorsale/billing_machine/quotation:
         one: "Quotation"
         other: "Quotations"
+
+      dorsale/billing_machine/quotation_line:
+        one: "Quotation Line"
+        other: "Quotation Lines"
 
       dorsale/billing_machine/id_card:
         one: "Id card"

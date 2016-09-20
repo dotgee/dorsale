@@ -1,2 +1,2 @@
-class Dorsale::Alexandrie::FileUploader < ::Dorsale::FileUploader
+class Dorsale::Alexandrie::FileUploader < ::Dorsale::ApplicationUploader
 end

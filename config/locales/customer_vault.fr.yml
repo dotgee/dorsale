@@ -61,6 +61,7 @@ fr:
       dorsale/customer_vault/person: &customer_vault_person_attributes
         context: "Contexte"
         all_tags: "Tous les tags"
+        all_types: "Tous les types"
         capital: "Capital"
         immatriculation_number_1: "SIREN"
         immatriculation_number_2: "RCS"

@@ -38,7 +38,7 @@ class Dorsale::Flyboy::Task < ActiveRecord::Base
 
 
   validates :taskable, presence: true
-  validates :name,    presence: true
+  validates :name,     presence: true
   validates :term,     presence: true
   validates :reminder, presence: true
 

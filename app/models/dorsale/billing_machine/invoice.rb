@@ -14,14 +14,15 @@ class Dorsale::BillingMachine::Invoice < ActiveRecord::Base
   validates :id_card, presence: true
   validates :date,    presence: true
 
-  # simple_form
-  validates :id_card_id, presence: true
+  default_scope -> {
+    order(unique_index: :desc)
+  }
 
   def initialize(*args)
     super
     assign_default_values
-    self.due_date              = 30.days.from_now if due_date.nil?
-    self.date                  = Time.zone.now.to_date       if date.nil?
+    self.due_date              = 30.days.from_now      if due_date.nil?
+    self.date                  = Time.zone.now.to_date if date.nil?
   end
 
   before_create :assign_unique_index

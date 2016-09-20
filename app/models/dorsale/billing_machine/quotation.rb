@@ -24,8 +24,9 @@ class Dorsale::BillingMachine::Quotation < ActiveRecord::Base
   validates :date,    presence: true
   validates :state,   presence: true, inclusion: {in: STATES}
 
-  # simple_form
-  validates :id_card_id, presence: true
+  default_scope -> {
+    order(unique_index: :desc)
+  }
 
   def initialize(*)
     super

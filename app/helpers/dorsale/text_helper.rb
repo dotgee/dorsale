@@ -59,6 +59,12 @@ module Dorsale::TextHelper
     strip_tags(str).gsub("\n", "<br />").html_safe
   end
 
+  def lf2br(str)
+    return if str.to_s.blank?
+
+    str.gsub("\r", "").gsub("\n", "<br />").html_safe
+  end
+
   def info(object, attribute, text_or_options = nil, options = {})
     if text_or_options.is_a?(Hash)
       text    = nil

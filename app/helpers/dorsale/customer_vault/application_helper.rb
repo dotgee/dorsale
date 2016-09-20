@@ -16,4 +16,11 @@ module Dorsale::CustomerVault::ApplicationHelper
       customer_vault_person_link_path(person)
     end
   end
+
+  def person_types_for_filter_select
+    [
+      [Dorsale::CustomerVault::Corporation.t, "Dorsale::CustomerVault::Corporation"],
+      [Dorsale::CustomerVault::Individual.t,  "Dorsale::CustomerVault::Individual"],
+    ]
+  end
 end

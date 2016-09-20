@@ -61,6 +61,7 @@ en:
       dorsale/customer_vault/person: &customer_vault_person_attributes
         context: "Context"
         all_tags: "All tags"
+        all_types: "All types"
         capital: "Capital"
         immatriculation_number_1: "Immatriculation number 1"
         immatriculation_number_2: "Immatriculation number 2"

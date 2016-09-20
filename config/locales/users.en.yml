@@ -1,4 +1,7 @@
 en:
+  actions:
+    new_user: "New user"
+
   activerecord:
     models:
       user:

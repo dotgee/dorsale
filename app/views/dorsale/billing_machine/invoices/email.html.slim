@@ -6,25 +6,25 @@
       = horizontal_form_for :email do |f|
         = f.input(:subject,
           :as => :string,
-          :label => t("attributes.subject"),
+          :label => t("attributes.email_subject"),
           :input_html => {value: @subject},
         )
 
         = f.input(:to,
           :disabled => true,
-          :label => t("attributes.to"),
+          :label => t("attributes.email_to"),
           :input_html => {value: "#{@invoice.customer} <#{@invoice.customer.email}>"},
         )
 
         = f.input(:attachment,
           :disabled => true,
-          :label => t("attributes.attachment"),
+          :label => t("attributes.email_attachment"),
           :input_html => {value: "#{@invoice.class.t}_#{@invoice.tracking_id}.pdf"},
         )
 
         = f.input(:body,
           :as => :text,
-          :label => t("attributes.body"),
+          :label => t("attributes.email_body"),
           :input_html => {value: @body},
         )
 

@@ -1,5 +1,9 @@
 = filters_form do |f|
-  = f.input :tags,
+  = f.input :person_type,
+    :collection => person_types_for_filter_select,
+    :include_blank => ::Dorsale::CustomerVault::Person.t(:all_types)
+
+  = f.input :person_tags,
     :collection    => @tags,
     :input_html    => {multiple: true},
     :placeholder => ::Dorsale::CustomerVault::Person.t(:all_tags)

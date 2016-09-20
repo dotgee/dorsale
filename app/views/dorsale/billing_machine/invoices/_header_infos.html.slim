@@ -1,8 +1,4 @@
-.well
-  .row
-    .col-md-4
-      = info ::Dorsale::BillingMachine::Invoice, :total_excluding_taxes, bm_currency(@total_excluding_taxes)
-    .col-md-4
-      = info ::Dorsale::BillingMachine::Invoice, :vat_amount, bm_currency(@vat_amount)
-    .col-md-4
-      = info ::Dorsale::BillingMachine::Invoice, :total_including_taxes, bm_currency(@total_including_taxes)
+.well: .row
+  .col-md-4 = info @statistics, :total_excluding_taxes, helper: :bm_currency
+  .col-md-4 = info @statistics, :vat_amount,            helper: :bm_currency
+  .col-md-4 = info @statistics, :total_including_taxes, helper: :bm_currency

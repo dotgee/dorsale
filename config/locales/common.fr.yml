@@ -83,6 +83,7 @@ fr:
 
   attributes: &attributes
     id                    : "Id"
+    type                  : "Type"
     code                  : "Code"
     reference             : "Référence"
     created_at            : "Créé le"
@@ -129,12 +130,18 @@ fr:
     paid                  : "Payée ?"
     customer              : "Client"
     customer_guid         : "Client"
+    tracking              : "Numéro"
     tracking_id           : "Numéro"
+    unique_index          : "Numéro"
     count                 : "Nombre"
     length                : "Nombre"
     number                : "Nombre"
     message               : "Message"
     skype                 : "Skype"
+    facebook              : "Facebook"
+    twitter               : "Twitter"
+    linkedin              : "Linkedin"
+    viadeo                : "Viadeo"
     is_active             : "Actif ?"
     short_name            : "Initiales"
     subject               : "Objet"
@@ -147,6 +154,17 @@ fr:
     user                  : "Utilisateur"
     category              : "Catégorie"
     corporation_name      : "Nom"
+    author                : "Auteur"
+    sender                : "Auteur"
+    total                 : "Total"
+    version               : "Version"
+    commentable           : "Origine"
+    addressable           : "Origine"
+    attachable            : "Origine"
+    email_subject         : "Object"
+    email_to              : "Destinataire"
+    email_attachment      : "Pièce jointe"
+    email_body            : "Message"
 
     # TODO : Move to bakkbone
     administrator         : "Administrateur?"
@@ -178,6 +196,16 @@ fr:
 
   labels:
     <<: *attributes
+
+  activerecord:
+    models:
+      dorsale/address:
+        one: "Adresse"
+        other: "Adresses"
+
+      dorsale/comment:
+        one: "Commentaire"
+        other: "Commentaires"
 
   simple_form:
     "yes" : 'Oui'

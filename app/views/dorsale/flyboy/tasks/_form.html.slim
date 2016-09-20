@@ -5,7 +5,7 @@
     - if @task.persisted?
       = t("actions.update") + " : " + @task.name
     - else
-      =  t('messages.folders.new_task')
+      =  t('actions.new_task')
 
   .panel-body
     = horizontal_form_for @task, as: :task do |f|

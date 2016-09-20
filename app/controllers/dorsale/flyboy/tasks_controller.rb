@@ -173,7 +173,7 @@ class Dorsale::Flyboy::TasksController < ::Dorsale::Flyboy::ApplicationControlle
   def notify_owner(author, task)
     return if author == task.owner
     return if task.owner.nil?
-    Dorsale::Flyboy::TaskMailer.new_task(author, task).deliver_later
+    Dorsale::Flyboy::TaskMailer.new_task(task, author).deliver_later
   end
 
   def set_objects

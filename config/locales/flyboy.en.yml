@@ -21,15 +21,14 @@ en:
       complete_ok: "Task completed"
       complete_eror: "One error occurs, task can't be completed"
 
-  email:
-    task:
-      the_task: "The task "
-      new:
-        subject: "A new Task has been attributed to you"
-        attributed_by: " has been attributed to you by %{author}"
-      term:
-        subject: "The task %{task} expire"
-        expire: "expire today, please delay it or close it"
+  task_mailer:
+    new_task:
+      subject: "New task : %{task_name}"
+      body: "Hi %{owner},\n\nA <a href='%{task_url}'>new task</a> has been assigned to you by %{author}."
+
+    term_email:
+      subject: "The task %{task_name} expires"
+      body: "Hi %{owner},\n\nThe task <a href='%{task_url}'>%{task_name}</a> expires today, please delay it or close it."
 
   actions:
     label: "Actions"
@@ -47,8 +46,13 @@ en:
         one: "Task"
         other: "Tasks"
 
+      dorsale/flyboy/task_comment:
+        one: "Task Comment"
+        other: "Task Comments"
+
     attributes:
       dorsale/flyboy/folder:
+        folderable: "Origin"
         name: "Name"
         status: "Status"
         description: "Description"
@@ -79,3 +83,4 @@ en:
       dorsale/flyboy/task_comment:
         progress: "Progress"
         description: "Description"
+        task: "Task"

@@ -1,6 +1,6 @@
 # Changelog
 
-## Next realease
+## 3.1.0
 
 - Migrate from CanCan to Pundit
 - ExpenseGun improvements
@@ -12,13 +12,14 @@
   - dorsale/dependencies
   - dorsale/common
   - dorsale/engines
-- CustomerVault
+- CustomerVault improvements
   - Corporation and Individual merged into STI model
   - Add avatar and other new fields
   - Add Corporations and Individuals lists
 - Refactoring
 - UX improvements
 - Use ajax to CRUD comments
+- Fix missing i18n
 
 ## 3.0.3
 

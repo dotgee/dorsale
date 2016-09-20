@@ -38,4 +38,4 @@ table#folders-list
 
         td.actions
           - if policy(Dorsale::Flyboy::Task.new(taskable: folder)).create?
-            = create_button dorsale.new_flyboy_task_path(taskable_guid: folder.guid), text: t("actions.folders.new_task")
+            = create_button dorsale.new_flyboy_task_path(taskable_guid: folder.guid), text: t("actions.new_task")

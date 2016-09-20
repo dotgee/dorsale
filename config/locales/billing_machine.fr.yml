@@ -5,6 +5,8 @@ fr:
     new_id_card: "Nouvelle carte d'identité"
 
   attributes:
+    invoice: "Facture"
+    quotation: "Devis"
     id_card: "Carte d'identité"
     id_card_name: "Nom de la carte"
     entity_name: "Nom de l'entité"
@@ -66,9 +68,17 @@ fr:
         one: "Facture"
         other: "Factures"
 
+      dorsale/billing_machine/invoice_line:
+        one: "Ligne de facture"
+        other: "Lignes de facture"
+
       dorsale/billing_machine/quotation:
         one: "Devis"
         other: "Devis"
+
+      dorsale/billing_machine/quotation_line:
+        one: "Ligne de devis"
+        other: "Lignes de devis"
 
       dorsale/billing_machine/id_card:
         one: "Carte d'identité"
