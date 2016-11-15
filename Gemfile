@@ -13,7 +13,6 @@ gem 'devise-bootstrap-views'
 gem 'devise-i18n'
 gem 'pg'
 gem 'uglifier'
-gem "pry-rails"
 gem "awesome_print"
 gem "delayed_job_active_record"
 
